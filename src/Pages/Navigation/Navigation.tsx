@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTicketAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSignOutAlt, faTicketAlt, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { createUseStyles } from 'react-jss';
 import { Theme } from '../../Styling/Theme';
+import { Avatar, Button, Menu, MenuItem } from '@mui/material';
 
 const useStyles = createUseStyles((theme: Theme) => {
 	return {
@@ -45,11 +46,38 @@ const useStyles = createUseStyles((theme: Theme) => {
 				color: theme.textGreen,
 			},
 		},
+		profileButton: {
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+			padding: 0,
+			minWidth: 'auto',
+			backgroundColor: 'transparent',
+			border: 'none',
+			cursor: 'pointer',
+		},
+		profileAvatar: {
+			width: '2rem',
+			height: '2rem',
+			marginRight: '0.5rem',
+		},
 	}
 });
 
 export const Navigation: React.FC<{}> = (): JSX.Element => {
 	const classes = useStyles();
+	const [profileMenuAnchorEl, setProfileMenuAnchorEl] = useState(null);
+
+  const handleProfileMenuClick = (event: any) => {
+    setProfileMenuAnchorEl(event.currentTarget);
+  };
+
+  const handleProfileMenuClose = () => {
+    setProfileMenuAnchorEl(null);
+  };
+
+  const handleLogoutClick = () => {
+  };
 
   return (
     <div className={classes.navbar}>
@@ -76,6 +104,14 @@ export const Navigation: React.FC<{}> = (): JSX.Element => {
         <NavLink to="/admin" className={classes.navLink}>
           Admin Panel
         </NavLink>
+				<Button className={classes.profileButton} onClick={handleProfileMenuClick}>
+					<Avatar alt="Profile picture" src="/profile.jpg" className={classes.profileAvatar} />
+				</Button>
+				<Menu anchorEl={profileMenuAnchorEl} open={Boolean(profileMenuAnchorEl)} onClose={handleProfileMenuClose}>
+					<MenuItem onClick={handleLogoutClick}>
+						<FontAwesomeIcon icon={faSignOutAlt} style={{ marginRight: '0.5rem' }} /> Logout
+					</MenuItem>
+				</Menu>
       </div>
     </div>
   );
