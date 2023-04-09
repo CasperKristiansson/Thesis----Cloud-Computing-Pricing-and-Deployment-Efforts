@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt, faTicketAlt, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { createUseStyles } from 'react-jss';
 import { Theme } from '../../Styling/Theme';
 import { Avatar, Button, Menu, MenuItem } from '@mui/material';
+import Logo from '../../Assets/Logo.png';
 
 const useStyles = createUseStyles((theme: Theme) => {
 	return {
@@ -23,6 +24,12 @@ const useStyles = createUseStyles((theme: Theme) => {
 			textDecoration: 'none',
 			'&:hover': {
 				color: '#000',
+			},
+			'& span': {
+				color: theme.textWhite,
+				fontSize: '2.8rem',
+				marginTop: 6,
+				marginLeft: 15,
 			},
 		},
 		logoIcon: {
@@ -61,6 +68,9 @@ const useStyles = createUseStyles((theme: Theme) => {
 			height: '2rem',
 			marginRight: '0.5rem',
 		},
+		logoImage: {
+			height: 35,
+		}
 	}
 });
 
@@ -82,7 +92,7 @@ export const Navigation: React.FC<{}> = (): JSX.Element => {
   return (
     <div className={classes.navbar}>
       <NavLink to="/" className={classes.logo}>
-        <FontAwesomeIcon icon={faTicketAlt} className={classes.logoIcon} />
+        <img src={Logo} alt="Logo" className={classes.logoImage} />
         <span>Ticket System</span>
       </NavLink>
       <div className={classes.navLinks}>
