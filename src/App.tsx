@@ -1,15 +1,15 @@
-import React from 'react';
-import { Theme } from './Styling/Theme';
+import { Theme, initializeTheme } from './Styling/Theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from './store';
 import { ThemeProvider } from 'react-jss';
 import { ComponentRouting } from './ComponentRouting';
 import { createUseStyles } from 'react-jss';
-import { getDarkMode, getOperationInProgress, getTheme } from './Redux/Selectors';
+import { getOperationInProgress } from './Redux/Selectors';
 import { Toaster } from 'react-hot-toast';
 import { ThemeProvider as MuiThemeProvider, createTheme } from '@mui/material/styles';
 import { Backdrop, CircularProgress } from '@mui/material';
 import './App.css'
+import { Navigation } from './Pages/Navigation/Navigation';
 
 
 const useStyles = createUseStyles((theme: Theme) => {
@@ -24,28 +24,21 @@ const useStyles = createUseStyles((theme: Theme) => {
 
 export const App = (): JSX.Element => {
   const operationInProgress = useSelector(getOperationInProgress);
-  const theme = useSelector(getTheme);
-  const darkMode = useSelector(getDarkMode);
 
   const dispatch: AppDispatch = useDispatch();
   const classes = useStyles();
 
-  const MuiTheme = React.useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: darkMode ? 'dark' : 'light',
-          // background: {
-          //   default: theme.backgroundPrimary,
-          //   paper: theme.backgroundPrimary,
-          // },
-        },
-      }),
-    [darkMode],
-  );
+  const MuiTheme = createTheme({
+    palette: {
+      // background: {
+      //   default: theme.backgroundPrimary,
+      //   paper: theme.backgroundPrimary,
+      // },
+    },
+  });
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={initializeTheme}>
       <div className={classes.section}>
       <Toaster />
       <Backdrop
@@ -56,6 +49,7 @@ export const App = (): JSX.Element => {
       </Backdrop>
         <MuiThemeProvider theme={MuiTheme}>
           <div>
+            <Navigation />
             <ComponentRouting
               dispatch={dispatch}
             />

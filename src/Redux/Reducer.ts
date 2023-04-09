@@ -1,19 +1,11 @@
-import { Theme, initializeTheme } from "../Styling/Theme";
-
-if (localStorage['darkMode'] == null) localStorage['darkMode'] = 'false';
-
 export interface State {
     operationInProgress: boolean;
     inLineOperationInProgress: boolean;
-    darkMode: boolean;
-    theme: Theme
 }
 
 export const initialState: State = {
-    operationInProgress: true,
+    operationInProgress: false,
     inLineOperationInProgress: false,
-    darkMode: localStorage['darkMode'],
-    theme: initializeTheme(localStorage['darkMode'])
 };
 
 export default function Reducer(state = initialState, { type, payload }: { type: string; payload: any }) {
@@ -27,13 +19,6 @@ export default function Reducer(state = initialState, { type, payload }: { type:
             return {
                 ...state,
                 inLineOperationInProgress: payload,
-            };
-        case 'SET_DARK_MODE':
-            localStorage['darkMode'] = payload;
-            return {
-                ...state,
-                darkMode: payload,
-                theme: initializeTheme(payload)
             };
         default:
             return state;
