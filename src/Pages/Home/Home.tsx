@@ -2,6 +2,7 @@ import { Box, Button, Grid, Typography } from '@mui/material';
 import { createUseStyles } from 'react-jss';
 import { Link } from 'react-router-dom';
 import Logo from '../../Assets/Logo.png';
+import Illustration from '../../Assets/Home.svg';
 
 const useStyles = createUseStyles({
   root: {
@@ -59,17 +60,11 @@ const useStyles = createUseStyles({
   },
   aboutWrapper: {
     height: '40%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
     zIndex: 1,
     backgroundColor: '#fffff',
   },
   aboutBox: {
     width: '450px',
-    marginLeft: "25%",
-    marginRight: 'auto',
     textAlign: 'left',
   },
   aboutTitle: {
@@ -120,20 +115,27 @@ export const Home: React.FC<{}> = (): JSX.Element => {
           </Box>
         </Grid>
         <Grid item className={classes.aboutWrapper}>
-          <Box className={classes.aboutBox}>
-						<Typography variant="h4" className={classes.aboutTitle}>
-							About the Ticker System
-						</Typography>
-						<Typography variant="body1" className={classes.aboutText}>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-							quis nisl euismod, aliquam nisl eu, aliquet nisl. Donec
-							condimentum, nisl eget aliquam lacinia, nisl nisl aliquet
-							ligula, eget aliquam nisl nisl eget nisl. Donec condimentum,
-							nisl eget aliquam lacinia, nisl nisl aliquet ligula, eget
-							aliquam nisl nisl eget nisl.
-						</Typography>
-					</Box>
-				</Grid>
+          <Grid container direction="row" justifyContent="center" gap={20} sx={{ marginTop: "min(8vh, 3vw)" }}>
+            <Grid item justifyContent={"center"}>
+              <Box className={classes.aboutBox}>
+                <Typography variant="h4" className={classes.aboutTitle}>
+                  About the Ticket System
+                </Typography>
+                <Typography variant="body1" className={classes.aboutText}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  quis nisl euismod, aliquam nisl eu, aliquet nisl. Donec
+                  condimentum, nisl eget aliquam lacinia, nisl nisl aliquet
+                  ligula, eget aliquam nisl nisl eget nisl. Donec condimentum,
+                  nisl eget aliquam lacinia, nisl nisl aliquet ligula, eget
+                  aliquam nisl nisl eget nisl.
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item>
+              <img src={Illustration} alt="Home Illustration" width={250} />
+            </Grid>
+          </Grid>
+        </Grid>
 			</Grid>
 		</>
 	);
