@@ -13,9 +13,10 @@ const useStyles = createUseStyles((theme: Theme) => {
 			display: 'flex',
 			alignItems: 'center',
 			justifyContent: 'space-between',
-			padding: '1.5rem',
-			width: "100vw",
+			padding: '10px 1rem',
+			width: "calc(100vw - 2rem)",
 			backgroundColor: theme.navbar,
+			height: "70px",
 		},
 		logo: {
 			display: 'flex',
@@ -46,7 +47,6 @@ const useStyles = createUseStyles((theme: Theme) => {
 			alignItems: 'center',
 			justifyContent: 'flex-end',
 			gap: '1.2rem',
-			marginRight: '2.5rem',
 		},
 		navLink: {
 			color: theme.textWhite,

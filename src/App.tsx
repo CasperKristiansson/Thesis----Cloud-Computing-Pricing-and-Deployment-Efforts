@@ -28,17 +28,18 @@ export const App = (): JSX.Element => {
   const dispatch: AppDispatch = useDispatch();
   const classes = useStyles();
 
+  const theme = initializeTheme();
+
   const MuiTheme = createTheme({
     palette: {
-      // background: {
-      //   default: theme.backgroundPrimary,
-      //   paper: theme.backgroundPrimary,
-      // },
+      primary: {
+        main: theme.buttonPrimary,
+      },
     },
   });
 
   return (
-    <ThemeProvider theme={initializeTheme}>
+    <ThemeProvider theme={theme}>
       <div className={classes.section}>
       <Toaster />
       <Backdrop
