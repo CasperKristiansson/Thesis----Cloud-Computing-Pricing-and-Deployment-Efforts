@@ -14,7 +14,7 @@ const useStyles = createUseStyles((theme: Theme) => ({
     borderCollapse: 'collapse',
     width: '80%',
     margin: '0 auto',
-    overflow: "auto",
+    overflow: "scroll",
     height: "100%",
   },
   tableHeader: {

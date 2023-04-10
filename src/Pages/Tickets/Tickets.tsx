@@ -119,13 +119,14 @@ export const Tickets: React.FC<{}> = () => {
           width={"80%"}
           sx={{ margin: "0 auto" }}
         >
-          <Typography variant="h4" component="h1">
-            Table 1
+          <Typography variant="h4" component="h1" mb={1} sx={{ marginLeft: -3 }}>
+            My Tickets
           </Typography>
           <Button
             variant="contained"
             color="primary"
             startIcon={<FontAwesomeIcon icon={faPlus} />}
+						sx={{ color: "white", marginBottom: 1 }}
           >
             Create Ticket
           </Button>
