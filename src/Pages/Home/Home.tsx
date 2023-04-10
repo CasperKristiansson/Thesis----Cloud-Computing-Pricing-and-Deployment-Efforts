@@ -119,7 +119,7 @@ export const Home: React.FC<{}> = (): JSX.Element => {
             <Grid item justifyContent={"center"}>
               <Box className={classes.aboutBox}>
                 <Typography variant="h4" className={classes.aboutTitle}>
-                  About the Ticker System
+                  About the Ticket System
                 </Typography>
                 <Typography variant="body1" className={classes.aboutText}>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
