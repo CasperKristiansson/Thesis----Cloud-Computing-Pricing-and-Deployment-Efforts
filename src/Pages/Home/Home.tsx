@@ -115,7 +115,7 @@ export const Home: React.FC<{}> = (): JSX.Element => {
           </Box>
         </Grid>
         <Grid item className={classes.aboutWrapper}>
-          <Grid container direction="row" justifyContent="center" gap={20} sx={{ marginTop: "min(7vh, 2vw)" }}>
+          <Grid container direction="row" justifyContent="center" gap={20} sx={{ marginTop: "min(8vh, 3vw)" }}>
             <Grid item justifyContent={"center"}>
               <Box className={classes.aboutBox}>
                 <Typography variant="h4" className={classes.aboutTitle}>

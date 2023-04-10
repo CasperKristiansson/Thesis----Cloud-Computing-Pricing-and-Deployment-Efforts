@@ -17,6 +17,12 @@ const useStyles = createUseStyles((theme: Theme) => ({
     margin: '0 auto',
     overflow: "scroll",
     height: "100%",
+    "@media (max-width: 1210px)": {
+      width: "90%",
+    },
+    "@media (max-width: 1072px)": {
+      width: "98%",
+    },
   },
   tableHeader: {
     borderBottom: '1px solid #e0e0e0',
