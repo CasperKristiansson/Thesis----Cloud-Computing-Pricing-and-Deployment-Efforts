@@ -1,11 +1,12 @@
 import React from 'react';
-import { Routes} from 'react-router-dom';
+import { Route, Routes} from 'react-router-dom';
+import { Home } from './Pages/Home/Home';
 
 export const ComponentRouting: React.FC<{dispatch: any}> = ({ dispatch }) => {
 	return (
-		<div>
+		<div style={{ height: "calc(100% - 90px)" }}>
 			<Routes>
-				{/* <Route path="/" element={<Home dispatch={dispatch} darkMode={darkMode} />} /> */}
+				<Route path="/" element={<Home />} />
 			</Routes>
 		</div>
 	);
