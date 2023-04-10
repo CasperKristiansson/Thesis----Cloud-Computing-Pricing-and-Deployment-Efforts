@@ -8,17 +8,17 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-export const CreateTicket: React.FC<{}> = () => {
+export const CreateProject: React.FC<{}> = () => {
 	const [currentStep, setCurrentStep] = useState(0);
 
   return (
 		<Box sx={{ display: 'flex', justifyContent: 'center', paddingTop: "10px" }}>
 			<Box sx={{ width: '700px' }}>
 				<Typography variant="h2" textAlign={"center"}>
-					Create Ticket
+					Create Project
 				</Typography>
 				<Stepper activeStep={currentStep} alternativeLabel sx={{ marginTop: "35px", height: "70vh"}}>
-					{[1,2,3].map((label) => (
+					{[1,2].map((label) => (
 						<Step key={label}>
 								<StepLabel StepIconComponent={StepperComponent} />
 						</Step>
@@ -43,7 +43,7 @@ export const CreateTicket: React.FC<{}> = () => {
 							setCurrentStep(currentStep+1)
 						}}
 					>
-						{currentStep === 2 ? "Create" : "Next"}&nbsp;
+						{currentStep === 1 ? "Create" : "Next"}&nbsp;
 						<FontAwesomeIcon icon={faArrowRight} />
 					</Button>
 				</div>
