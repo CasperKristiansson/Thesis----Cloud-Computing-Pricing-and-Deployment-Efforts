@@ -7,6 +7,7 @@ interface TableProps {
   rows: Record<string, string | number | JSX.Element>[];
   columns: string[];
   maxHeight?: string;
+  columnSpacing?: string;
 }
 
 const useStyles = createUseStyles((theme: Theme) => ({
@@ -35,17 +36,17 @@ const useStyles = createUseStyles((theme: Theme) => ({
   },
 }));
 
-export const CustomTable: React.FC<TableProps> = ({ rows, columns, maxHeight="100%" }) => {
+export const CustomTable: React.FC<TableProps> = ({ rows, columns, maxHeight="100%", columnSpacing="px" }) => {
   const classes = useStyles();
 
   return (
     <TableContainer className={classes.root} style={{maxHeight: maxHeight}}>
       <Table>
         <TableHead>
-          <TableRow className={classes.tableHeader}>
+          <TableRow className={classes.tableHeader} >
             <TableCell />
-            {columns.map((column) => (
-              <TableCell key={column} sx={{color: "#75BC5B"}} >{column}</TableCell>
+            {columns.map((column, index) => (
+              <TableCell key={column} sx={{color: "#75BC5B", paddingLeft: index ? columnSpacing : 0, width: "100%" }}>{column}</TableCell>
             ))}
           </TableRow>
         </TableHead>
@@ -56,7 +57,7 @@ export const CustomTable: React.FC<TableProps> = ({ rows, columns, maxHeight="10
                 <Avatar />
               </TableCell>
               {Object.values(row).map((value, index) => (
-                <TableCell key={index} className={classes.tableCell}>
+                <TableCell key={index} className={classes.tableCell} sx={{ paddingLeft: index ? columnSpacing : 0 }}>
                   <>
                   {value}
                   </>
