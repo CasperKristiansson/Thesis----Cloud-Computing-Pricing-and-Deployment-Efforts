@@ -13,6 +13,7 @@ const useStyles = createUseStyles((theme: Theme) => ({
     borderCollapse: 'collapse',
     width: '80%',
     margin: '0 auto',
+    overflow: "auto",
   },
   tableHeader: {
     borderBottom: '1px solid #e0e0e0',
@@ -36,8 +37,8 @@ export const CustomTable: React.FC<TableProps> = ({ rows, columns }) => {
   const classes = useStyles();
 
   return (
-    <TableContainer>
-      <Table className={classes.root}>
+    <TableContainer className={classes.root}>
+      <Table>
         <TableHead>
           <TableRow className={classes.tableHeader}>
             <TableCell />
