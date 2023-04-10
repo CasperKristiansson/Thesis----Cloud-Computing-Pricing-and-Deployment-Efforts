@@ -13,10 +13,10 @@ const useStyles = createUseStyles((theme: Theme) => {
 			display: 'flex',
 			alignItems: 'center',
 			justifyContent: 'space-between',
-			padding: '10px 1rem',
+			padding: '5px 1rem',
 			width: "calc(100vw - 2rem)",
 			backgroundColor: theme.navbar,
-			height: "70px",
+			height: "60px",
 		},
 		logo: {
 			display: 'flex',
