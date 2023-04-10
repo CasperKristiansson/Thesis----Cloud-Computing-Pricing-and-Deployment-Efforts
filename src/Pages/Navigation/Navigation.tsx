@@ -27,9 +27,14 @@ const useStyles = createUseStyles((theme: Theme) => {
 			},
 			'& span': {
 				color: theme.textWhite,
-				fontSize: '2.8rem',
+				fontSize: '2.6rem',
 				marginTop: 6,
 				marginLeft: 15,
+				fontFamily: "'Poppins', sans-serif",
+				"@media (max-width: 1150px)": {
+					fontSize: '2rem',
+					marginLeft: 10,
+				},
 			},
 		},
 		logoIcon: {
@@ -70,6 +75,9 @@ const useStyles = createUseStyles((theme: Theme) => {
 		},
 		logoImage: {
 			height: 35,
+			"@media (max-width: 1150px)": {
+				height: 25,
+			},
 		}
 	}
 });
