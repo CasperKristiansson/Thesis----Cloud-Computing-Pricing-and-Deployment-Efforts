@@ -140,10 +140,12 @@ export const Tickets: React.FC<{}> = () => {
           display="flex"
           alignItems="center"
           justifyContent="space-between"
-          mb={2}
+          mb={3}
+          width={"80%"}
+          sx={{ margin: "0 auto" }}
         >
-          <Typography variant="h4" component="h1">
-            Table 2
+          <Typography variant="h4" component="h1"  mb={1} sx={{ marginLeft: -3 }}>
+            All Tickets
           </Typography>
           <Box display="flex" alignItems="center">
             <TextField
@@ -151,18 +153,21 @@ export const Tickets: React.FC<{}> = () => {
               variant="outlined"
               size="small"
               margin="dense"
+							sx={{ marginBottom: 1, marginRight: 1 }}
             />
             <TextField
               label="Search Assignee"
               variant="outlined"
               size="small"
               margin="dense"
+							sx={{ marginBottom: 1, marginRight: 1 }}
             />
             <TextField
               label="Search Ticket nr"
               variant="outlined"
               size="small"
               margin="dense"
+							sx={{ marginBottom: 1 }}
             />
           </Box>
         </Box>
