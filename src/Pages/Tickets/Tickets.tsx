@@ -132,7 +132,7 @@ export const Tickets: React.FC<{}> = () => {
           </Button>
         </Box>
         <Box>
-          <CustomTable rows={rows_d} columns={columns} maxHeight='calc(44vh - 90px)'/>
+          <CustomTable rows={rows} columns={columns} maxHeight='calc(46vh - 90px)'/>
         </Box>
       </Grid>
       <Grid item sx={{ height: "55%" }}>
@@ -172,7 +172,7 @@ export const Tickets: React.FC<{}> = () => {
           </Box>
         </Box>
         <Box flexGrow={1}>
-          <CustomTable rows={rows_d} columns={columns} maxHeight='calc(52vh - 90px)'/>
+          <CustomTable rows={rows_d} columns={columns} maxHeight='calc(53vh - 90px)'/>
         </Box>
       </Grid>
     </Grid>
