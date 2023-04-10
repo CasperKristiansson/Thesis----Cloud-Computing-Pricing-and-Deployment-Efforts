@@ -1,5 +1,8 @@
 import React from 'react';
 import { CustomTable } from '../../Components/CustomTable';
+import { Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const rows = [
   { 
@@ -28,6 +31,73 @@ const rows = [
   },
 ];
 
+const rows_d = [
+  { 
+    subject: 'Forgot password',
+    lastUpdated: '2022-04-01T12:15:00.000Z',
+		status: <span style={{color: 'green'}}>Open</span>,
+		priority: <span style={{color: 'orange'}}>Medium</span>,
+    ticketNr: 'TCKT-12348',
+    assigned: 'Samantha Lee',
+  },
+  { 
+    subject: 'Error message when trying to checkout',
+    lastUpdated: '2022-04-02T14:20:00.000Z',
+		status: <span style={{color: 'blue'}}>In Progress</span>,
+		priority: <span style={{color: 'red'}}>High</span>,
+    ticketNr: 'TCKT-12349',
+    assigned: 'David Kim',
+  },
+  { 
+    subject: 'Missing order confirmation email',
+    lastUpdated: '2022-04-03T09:55:00.000Z',
+		status: <span style={{color: 'green'}}>Open</span>,
+		priority: <span style={{color: 'green'}}>Low</span>,
+    ticketNr: 'TCKT-12350',
+    assigned: 'Michael Chen',
+  },
+  { 
+    subject: 'Product not delivered on time',
+    lastUpdated: '2022-04-04T17:30:00.000Z',
+		status: <span style={{color: 'blue'}}>In Progress</span>,
+		priority: <span style={{color: 'orange'}}>Medium</span>,
+    ticketNr: 'TCKT-12351',
+    assigned: 'Jessica Lee',
+  },
+  { 
+    subject: 'Wrong item received',
+    lastUpdated: '2022-04-05T11:10:00.000Z',
+		status: <span style={{color: 'red'}}>Closed</span>,
+		priority: <span style={{color: 'green'}}>Low</span>,
+    ticketNr: 'TCKT-12352',
+    assigned: 'Kevin Chen',
+  },
+	{ 
+    subject: 'Wrong item received',
+    lastUpdated: '2022-04-05T11:10:00.000Z',
+		status: <span style={{color: 'red'}}>Closed</span>,
+		priority: <span style={{color: 'green'}}>Low</span>,
+    ticketNr: 'TCKT-12352',
+    assigned: 'Kevin Chen',
+  },
+	{ 
+    subject: 'Wrong item received',
+    lastUpdated: '2022-04-05T11:10:00.000Z',
+		status: <span style={{color: 'red'}}>Closed</span>,
+		priority: <span style={{color: 'green'}}>Low</span>,
+    ticketNr: 'TCKT-12352',
+    assigned: 'Kevin Chen',
+  },
+	{ 
+    subject: 'Wrong item received',
+    lastUpdated: '2022-04-05T11:10:00.000Z',
+		status: <span style={{color: 'red'}}>Closed</span>,
+		priority: <span style={{color: 'green'}}>Low</span>,
+    ticketNr: 'TCKT-12352',
+    assigned: 'Kevin Chen',
+  },
+];
+
 const columns = [
 	'Subject', 
 	'Last Updated',
@@ -39,8 +109,66 @@ const columns = [
 
 export const Tickets: React.FC<{}> = () => {
   return (
-    <div style={{marginTop: 10}}>
-      <CustomTable rows={rows} columns={columns} />
-    </div>
+    <Grid container spacing={2} direction="column" pt={2} sx={{ height: "100%" }}>
+      <Grid item sx={{ height: "45%" }}>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={2}
+          width={"80%"}
+          sx={{ margin: "0 auto" }}
+        >
+          <Typography variant="h4" component="h1">
+            Table 1
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<FontAwesomeIcon icon={faPlus} />}
+          >
+            Create Ticket
+          </Button>
+        </Box>
+        <Box>
+          <CustomTable rows={rows_d} columns={columns} maxHeight='calc(44vh - 90px)'/>
+        </Box>
+      </Grid>
+      <Grid item sx={{ height: "55%" }}>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={2}
+        >
+          <Typography variant="h4" component="h1">
+            Table 2
+          </Typography>
+          <Box display="flex" alignItems="center">
+            <TextField
+              label="Search Subject"
+              variant="outlined"
+              size="small"
+              margin="dense"
+            />
+            <TextField
+              label="Search Assignee"
+              variant="outlined"
+              size="small"
+              margin="dense"
+            />
+            <TextField
+              label="Search Ticket nr"
+              variant="outlined"
+              size="small"
+              margin="dense"
+            />
+          </Box>
+        </Box>
+        <Box flexGrow={1}>
+          <CustomTable rows={rows_d} columns={columns} maxHeight='calc(52vh - 90px)'/>
+        </Box>
+      </Grid>
+    </Grid>
   );
 };

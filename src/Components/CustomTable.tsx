@@ -6,6 +6,7 @@ import { Theme } from '../Styling/Theme';
 interface TableProps {
   rows: Record<string, string | number | JSX.Element>[];
   columns: string[];
+  maxHeight?: string;
 }
 
 const useStyles = createUseStyles((theme: Theme) => ({
@@ -14,6 +15,7 @@ const useStyles = createUseStyles((theme: Theme) => ({
     width: '80%',
     margin: '0 auto',
     overflow: "auto",
+    height: "100%",
   },
   tableHeader: {
     borderBottom: '1px solid #e0e0e0',
@@ -33,11 +35,11 @@ const useStyles = createUseStyles((theme: Theme) => ({
   },
 }));
 
-export const CustomTable: React.FC<TableProps> = ({ rows, columns }) => {
+export const CustomTable: React.FC<TableProps> = ({ rows, columns, maxHeight="100%" }) => {
   const classes = useStyles();
 
   return (
-    <TableContainer className={classes.root}>
+    <TableContainer className={classes.root} style={{maxHeight: maxHeight}}>
       <Table>
         <TableHead>
           <TableRow className={classes.tableHeader}>
