@@ -1,17 +1,11 @@
 import logging
 
-import os
-
-from dotenv import load_dotenv
-
 import azure.functions as func
+import azure.durable_functions as df
+import azure.durable_functions.models.utils.entity_utils as utils
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
-
-    load_dotenv()
-
-    logging.info(f"ENVIRONMENT VARIABLE: {os.getenv('TEST')}")
 
     name = req.params.get('name')
     if not name:
