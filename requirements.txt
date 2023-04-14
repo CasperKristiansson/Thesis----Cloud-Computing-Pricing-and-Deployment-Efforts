@@ -5,3 +5,4 @@
 azure-functions
 azure-functions-durable
 python-dotenv
+pymssql
