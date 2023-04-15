@@ -4,6 +4,7 @@ export interface Theme {
     backgroundPrimary: string;
     backgroundPrimaryLight: string;
     backgroundSecondary: string;
+    backgroundSecondaryLight: string;
 
     navbar: string;
 
@@ -20,6 +21,7 @@ export const initializeTheme = () => {
         backgroundPrimary: "#75BC5B",
         backgroundPrimaryLight: "AFE29D",
         backgroundSecondary: "#D9D9D9",
+        backgroundSecondaryLight: "#F2F2F2",
 
         navbar: "#141416",
 
