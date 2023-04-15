@@ -14,6 +14,7 @@ import { Theme } from '../../Styling/Theme';
 import { useSelector } from 'react-redux';
 import { StepTwo } from './ChildComponents/StepTwo';
 import { getCreateTicket } from '../../Redux/Selectors';
+import { StepThree } from './ChildComponents/StepThree';
 
 const useStyles = createUseStyles((theme: Theme) => {
 	return {
@@ -39,6 +40,8 @@ export const CreateTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) =>
 				return <StepOne dispatch={dispatch} />
 			case 1:
 				return <StepTwo dispatch={dispatch} />
+			case 2:
+				return <StepThree dispatch={dispatch} />
 		}
 	}
 
@@ -89,7 +92,7 @@ export const CreateTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) =>
 						}}
 						disabled={!getCondition()}
 					>
-						{currentStep === 1 ? "Create" : "Next"}&nbsp;
+						{currentStep === 2 ? "Create" : "Next"}&nbsp;
 						<FontAwesomeIcon icon={faArrowRight} />
 					</Button>
 				</div>

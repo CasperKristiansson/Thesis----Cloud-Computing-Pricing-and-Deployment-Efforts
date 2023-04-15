@@ -1,34 +1,35 @@
 import { Theme } from '../../../Styling/Theme';
 import { createUseStyles } from 'react-jss';
-import { Typography, Grid, Paper } from '@mui/material';
+import { Typography, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { AppDispatch } from '../../../store';
-import { getCreateProjectAssociatedCompany, getCreateProjectDescription, getCreateProjectName } from '../../../Redux/Selectors';
+import { getCreateTicketDescription } from '../../../Redux/Selectors';
+import { SET_CREATE_TICKET_DESCRIPTION } from '../../../Redux/Actions';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCloudArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 const useStyles = createUseStyles((theme: Theme) => {
   return {
     root: {
 			height: 'calc(100% - 80px)',
+			'& > :not(style)': { marginBottom: "10px"},
     },
-		paper: {
-      height: '100%',
-			padding: 5,
-			backgroundColor: theme.backgroundSecondaryLight,
-    },
-		paperInner: {
+		downloadBox: {
+			borderColor: theme.backgroundSecondary,
+			border: '1px solid',
+			borderStyle: 'dashed',
+			borderRadius: '5px',
+			height: '50%',
 			display: 'flex',
-      flexDirection: 'column',
+			flexDirection: 'column',
+			justifyContent: 'center',
+			alignItems: 'center',
 		},
-    row: {
-      textAlign: 'left',
-    },
   };
 });
 
 export const StepTwo: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
-  const projectName = useSelector(getCreateProjectName);
-  const associatedCompany = useSelector(getCreateProjectAssociatedCompany);
-  const companyDescription = useSelector(getCreateProjectDescription);
+	const ticketDescription = useSelector(getCreateTicketDescription);
   const classes = useStyles();
 
   return (
@@ -37,30 +38,23 @@ export const StepTwo: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
 			<Typography variant="h5" textAlign={"center"} sx={{ paddingBottom: 2 }}>
 				Project Information
 			</Typography>
-      <Paper className={classes.paper}>
-				<div className={classes.paperInner}>
-					<Grid container spacing={3} height="100%">
-						<Grid item xs={12} sm={6} className={classes.row}>
-							<Typography variant="h6">
-								Project Name
-							</Typography>
-							<Typography variant="body1">{projectName}</Typography>
-						</Grid>
-						<Grid item xs={12} sm={6} className={classes.row}>
-							<Typography variant="h6">
-								Associated Company
-							</Typography>
-							<Typography variant="body1">{associatedCompany}</Typography>
-						</Grid>
-						<Grid item xs={12} className={classes.row}>
-							<Typography variant="h6">
-								Company Description
-							</Typography>
-							<Typography variant="body1">{companyDescription}</Typography>
-						</Grid>
-					</Grid>
-				</div>
-      </Paper>
+      <TextField
+        id="company-description-input"
+        label="Ticket Description"
+        multiline
+        rows={4}
+        value={ticketDescription ? ticketDescription : ''}
+        onChange={(e) => {
+          dispatch({ type: SET_CREATE_TICKET_DESCRIPTION, payload: e.target.value });
+        }}
+				sx={{ width: "100%" }}
+      />
+			<div className={classes.downloadBox}>
+				<FontAwesomeIcon icon={faCloudArrowDown} size='4x' color={"#75BC5B"} />
+				<Typography variant="body1" textAlign={"center"} sx={{ paddingLeft: 2 }}>
+					Drag and Drop, or browse your files
+				</Typography>
+			</div>
     </div>
     </>
   );
