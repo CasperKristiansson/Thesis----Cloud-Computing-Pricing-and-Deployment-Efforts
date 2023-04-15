@@ -11,6 +11,8 @@ import { StepOne } from './ChildComponents/StepOne';
 import { AppDispatch } from '../../store';
 import { createUseStyles } from 'react-jss';
 import { Theme } from '../../Styling/Theme';
+import { useSelector } from 'react-redux';
+import { getCreateProject } from '../../Redux/Selectors';
 
 const useStyles = createUseStyles((theme: Theme) => {
 	return {
@@ -25,6 +27,7 @@ const useStyles = createUseStyles((theme: Theme) => {
 
 export const CreateProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
 	const [currentStep, setCurrentStep] = useState(0);
+	const createProject = useSelector(getCreateProject);
 
 	const classes = useStyles();
 
@@ -33,8 +36,16 @@ export const CreateProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) =
 			case 0:
 				return <StepOne dispatch={dispatch} />
 			case 1:
-				// return <StepTwo />
 				<></>
+		}
+	}
+
+	const getCondition = () => {
+		switch(currentStep) {
+			case 0:
+				return createProject.name && createProject.associatedCompany && createProject.description;
+			case 1:
+				return true;
 		}
 	}
 
@@ -72,6 +83,7 @@ export const CreateProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) =
 						onClick={() => {
 							setCurrentStep(currentStep+1)
 						}}
+						disabled={!getCondition()}
 					>
 						{currentStep === 1 ? "Create" : "Next"}&nbsp;
 						<FontAwesomeIcon icon={faArrowRight} />

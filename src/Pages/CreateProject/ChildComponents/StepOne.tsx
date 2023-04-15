@@ -2,9 +2,9 @@ import { Theme } from '../../../Styling/Theme';
 import { createUseStyles } from 'react-jss';
 import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { getCreateProjectAssociatedCompany, getCreateProjectDescription, getCreateProjectName } from '../../../Redux/Selectors';
 import { AppDispatch } from '../../../store';
 import { SET_CREATE_PROJECT_ASSOCIATED_COMPANY, SET_CREATE_PROJECT_DESCRIPTION, SET_CREATE_PROJECT_NAME } from '../../../Redux/Actions';
+import { getCreateProjectAssociatedCompany, getCreateProjectDescription, getCreateProjectName } from '../../../Redux/Selectors';
 
 const useStyles = createUseStyles((theme: Theme) => {
   return {
