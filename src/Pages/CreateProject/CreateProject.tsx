@@ -13,12 +13,13 @@ import { createUseStyles } from 'react-jss';
 import { Theme } from '../../Styling/Theme';
 import { useSelector } from 'react-redux';
 import { getCreateProject } from '../../Redux/Selectors';
+import { StepTwo } from './ChildComponents/StepTwo';
 
 const useStyles = createUseStyles((theme: Theme) => {
 	return {
 		stepContent: {
-			height: "calc(60vh - 50px)",
-			marginTop: "40px",
+			height: "calc(60vh - 70px)",
+			marginTop: "20px",
 			width: 500,
 			margin: "auto",
 		},
@@ -36,7 +37,7 @@ export const CreateProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) =
 			case 0:
 				return <StepOne dispatch={dispatch} />
 			case 1:
-				<></>
+				return <StepTwo dispatch={dispatch} />
 		}
 	}
 

@@ -1,6 +1,6 @@
 import { Theme } from '../../../Styling/Theme';
 import { createUseStyles } from 'react-jss';
-import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { AppDispatch } from '../../../store';
 import { SET_CREATE_PROJECT_ASSOCIATED_COMPANY, SET_CREATE_PROJECT_DESCRIPTION, SET_CREATE_PROJECT_NAME } from '../../../Redux/Actions';
@@ -23,6 +23,9 @@ export const StepOne: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
   return (
 		<>
     <div className={classes.root}>
+      <Typography variant="h5" textAlign={"center"}>
+				Project Information
+			</Typography>
       <TextField
         id="project-name-input"
         label="Project Name"
