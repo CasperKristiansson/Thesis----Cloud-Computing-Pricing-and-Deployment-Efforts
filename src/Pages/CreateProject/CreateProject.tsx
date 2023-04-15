@@ -18,10 +18,11 @@ import { StepTwo } from './ChildComponents/StepTwo';
 const useStyles = createUseStyles((theme: Theme) => {
 	return {
 		stepContent: {
-			height: "calc(60vh - 70px)",
+			height: "calc(70% - 65px)",
 			marginTop: "20px",
 			width: 500,
 			margin: "auto",
+			overflowY: "auto",
 		},
 	};
 });
@@ -51,7 +52,7 @@ export const CreateProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) =
 	}
 
   return (
-		<Box sx={{ display: 'flex', justifyContent: 'center', paddingTop: "10px" }}>
+		<Box sx={{ display: 'flex', justifyContent: 'center', paddingTop: "10px", overflowX: "hidden" }}>
 			<Box sx={{ width: '700px' }}>
 				<Typography variant="h2" textAlign={"center"}>
 					Create Project

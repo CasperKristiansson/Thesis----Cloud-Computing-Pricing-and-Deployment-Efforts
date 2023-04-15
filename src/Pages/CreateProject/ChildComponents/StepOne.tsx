@@ -9,7 +9,7 @@ import { getCreateProjectAssociatedCompany, getCreateProjectDescription, getCrea
 const useStyles = createUseStyles((theme: Theme) => {
   return {
     root: {
-      '& > :not(style)': { width: '100%', marginBottom: "10px" },
+      '& > :not(style)': { width: '100%', marginBottom: "10px"},
     },
   };
 });

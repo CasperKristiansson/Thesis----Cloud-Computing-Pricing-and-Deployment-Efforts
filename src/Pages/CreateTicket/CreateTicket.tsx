@@ -8,23 +8,64 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { AppDispatch } from '../../store';
+import { createUseStyles } from 'react-jss';
+import { Theme } from '../../Styling/Theme';
+import { useSelector } from 'react-redux';
+import { getCreateProject } from '../../Redux/Selectors';
+
+const useStyles = createUseStyles((theme: Theme) => {
+	return {
+		stepContent: {
+			height: "calc(100% - 20px)",
+			marginTop: "20px",
+			width: 500,
+			margin: "auto",
+		},
+	};
+});
 
 export const CreateTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
 	const [currentStep, setCurrentStep] = useState(0);
+	const createProject = useSelector(getCreateProject);
+
+	const classes = useStyles();
+
+	const getCurrentStep = () => {
+		switch(currentStep) {
+			case 0:
+				return <></>
+			case 1:
+				return <></>
+			case 2:
+				return <></>
+		}
+	}
+
+	const getCondition = () => {
+		switch(currentStep) {
+			case 0:
+				return createProject.name && createProject.associatedCompany && createProject.description;
+			case 1:
+				return true;
+		}
+	}
 
   return (
-		<Box sx={{ display: 'flex', justifyContent: 'center', paddingTop: "10px" }}>
-			<Box sx={{ width: '700px' }}>
+		<Box sx={{ display: 'flex', justifyContent: 'center', paddingTop: "10px", height: "100%" }}>
+			<Box sx={{ width: '700px'}}>
 				<Typography variant="h2" textAlign={"center"}>
 					Create Ticket
 				</Typography>
-				<Stepper activeStep={currentStep} alternativeLabel sx={{ marginTop: "35px", height: "70vh"}}>
+				<Stepper activeStep={currentStep} alternativeLabel sx={{ paddingTop: "35px" }}>
 					{[1,2,3].map((label) => (
 						<Step key={label}>
-								<StepLabel StepIconComponent={StepperComponent} />
+							<StepLabel StepIconComponent={StepperComponent} />
 						</Step>
 					))}
 				</Stepper>
+				<div className={classes.stepContent}>
+					{getCurrentStep()}
+				</div>
 				<div>
 					<Button
 						sx={{ float: "left", color: "white" }}
@@ -43,8 +84,9 @@ export const CreateTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) =>
 						onClick={() => {
 							setCurrentStep(currentStep+1)
 						}}
+						disabled={!getCondition()}
 					>
-						{currentStep === 2 ? "Create" : "Next"}&nbsp;
+						{currentStep === 1 ? "Create" : "Next"}&nbsp;
 						<FontAwesomeIcon icon={faArrowRight} />
 					</Button>
 				</div>
