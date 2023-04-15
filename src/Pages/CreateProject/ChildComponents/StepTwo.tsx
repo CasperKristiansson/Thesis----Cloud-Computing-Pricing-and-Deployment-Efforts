@@ -13,6 +13,7 @@ const useStyles = createUseStyles((theme: Theme) => {
 		paper: {
       height: '100%',
 			padding: 5,
+			backgroundColor: theme.backgroundSecondaryLight,
     },
 		paperInner: {
 			display: 'flex',
