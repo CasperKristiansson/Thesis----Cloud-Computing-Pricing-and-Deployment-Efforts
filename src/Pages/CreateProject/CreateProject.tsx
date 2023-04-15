@@ -7,9 +7,36 @@ import { Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { StepOne } from './ChildComponents/StepOne';
+import { AppDispatch } from '../../store';
+import { createUseStyles } from 'react-jss';
+import { Theme } from '../../Styling/Theme';
 
-export const CreateProject: React.FC<{}> = () => {
+const useStyles = createUseStyles((theme: Theme) => {
+	return {
+		stepContent: {
+			height: "calc(60vh - 50px)",
+			marginTop: "40px",
+			width: 500,
+			margin: "auto",
+		},
+	};
+});
+
+export const CreateProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
 	const [currentStep, setCurrentStep] = useState(0);
+
+	const classes = useStyles();
+
+	const getCurrentStep = () => {
+		switch(currentStep) {
+			case 0:
+				return <StepOne dispatch={dispatch} />
+			case 1:
+				// return <StepTwo />
+				<></>
+		}
+	}
 
   return (
 		<Box sx={{ display: 'flex', justifyContent: 'center', paddingTop: "10px" }}>
@@ -17,13 +44,16 @@ export const CreateProject: React.FC<{}> = () => {
 				<Typography variant="h2" textAlign={"center"}>
 					Create Project
 				</Typography>
-				<Stepper activeStep={currentStep} alternativeLabel sx={{ marginTop: "35px", height: "70vh"}}>
+				<Stepper activeStep={currentStep} alternativeLabel sx={{ marginTop: "35px" }}>
 					{[1,2].map((label) => (
 						<Step key={label}>
-								<StepLabel StepIconComponent={StepperComponent} />
+							<StepLabel StepIconComponent={StepperComponent} />
 						</Step>
 					))}
 				</Stepper>
+				<div className={classes.stepContent}>
+					{getCurrentStep()}
+				</div>
 				<div>
 					<Button
 						sx={{ float: "left", color: "white" }}

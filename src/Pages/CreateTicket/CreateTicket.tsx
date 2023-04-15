@@ -7,8 +7,9 @@ import { Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { AppDispatch } from '../../store';
 
-export const CreateTicket: React.FC<{}> = () => {
+export const CreateTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
 	const [currentStep, setCurrentStep] = useState(0);
 
   return (

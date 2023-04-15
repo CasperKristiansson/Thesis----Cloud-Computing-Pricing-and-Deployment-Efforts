@@ -13,8 +13,8 @@ export const ComponentRouting: React.FC<{dispatch: any}> = ({ dispatch }) => {
 				<Route path="/" element={<Home />} />
 				<Route path="/tickets" element={<Tickets />} />
 				<Route path="/projects" element={<Projects />} />
-				<Route path="/create-ticket" element={<CreateTicket />} />
-				<Route path="/create-project" element={<CreateProject />} />
+				<Route path="/create-ticket" element={<CreateTicket dispatch={dispatch} />} />
+				<Route path="/create-project" element={<CreateProject dispatch={dispatch} />} />
 			</Routes>
 		</div>
 	);
