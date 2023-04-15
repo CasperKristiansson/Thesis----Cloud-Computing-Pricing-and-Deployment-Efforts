@@ -1,16 +1,19 @@
 import { CreateProject } from "../Models/CreateProject";
-import { SET_CREATE_PROJECT_ASSOCIATED_COMPANY, SET_CREATE_PROJECT_DESCRIPTION, SET_CREATE_PROJECT_NAME, SET_IN_LINE_OPERATION_IN_PROGRESS, SET_OPERATION_IN_PROGRESS } from "./Actions";
+import { CreateTicket } from "../Models/CreateTicket";
+import { SET_CREATE_PROJECT_ASSOCIATED_COMPANY, SET_CREATE_PROJECT_DESCRIPTION, SET_CREATE_PROJECT_NAME, SET_CREATE_TICKET_ASSIGNEE, SET_CREATE_TICKET_DESCRIPTION, SET_CREATE_TICKET_NAME, SET_CREATE_TICKET_PRIORITY, SET_CREATE_TICKET_PROJECT, SET_IN_LINE_OPERATION_IN_PROGRESS, SET_OPERATION_IN_PROGRESS } from "./Actions";
 
 export interface State {
     operationInProgress: boolean;
     inLineOperationInProgress: boolean;
     createProject: CreateProject;
+    createTicket: CreateTicket;
 }
 
 export const initialState: State = {
     operationInProgress: false,
     inLineOperationInProgress: false,
     createProject: {} as CreateProject,
+    createTicket: {} as CreateTicket,
 };
 
 export default function Reducer(state = initialState, { type, payload }: { type: string; payload: any }) {
@@ -47,6 +50,46 @@ export default function Reducer(state = initialState, { type, payload }: { type:
                 createProject: {
                     ...state.createProject,
                     associatedCompany: payload,
+                },
+            };
+        case SET_CREATE_TICKET_NAME:
+            return {
+                ...state,
+                createTicket: {
+                    ...state.createTicket,
+                    name: payload,
+                },
+            };
+        case SET_CREATE_TICKET_ASSIGNEE:
+            return {
+                ...state,
+                createTicket: {
+                    ...state.createTicket,
+                    assignee: payload,
+                },
+            };
+        case SET_CREATE_TICKET_DESCRIPTION:
+            return {
+                ...state,
+                createTicket: {
+                    ...state.createTicket,
+                    description: payload,
+                },
+            };
+        case SET_CREATE_TICKET_PRIORITY:
+            return {
+                ...state,
+                createTicket: {
+                    ...state.createTicket,
+                    priority: payload,
+                },
+            };
+        case SET_CREATE_TICKET_PROJECT:
+            return {
+                ...state,
+                createTicket: {
+                    ...state.createTicket,
+                    project: payload,
                 },
             };
         default:

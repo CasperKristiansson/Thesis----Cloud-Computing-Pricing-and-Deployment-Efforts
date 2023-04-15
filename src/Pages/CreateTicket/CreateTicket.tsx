@@ -7,56 +7,59 @@ import { Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { StepOne } from './ChildComponents/StepOne';
 import { AppDispatch } from '../../store';
 import { createUseStyles } from 'react-jss';
 import { Theme } from '../../Styling/Theme';
 import { useSelector } from 'react-redux';
-import { getCreateProject } from '../../Redux/Selectors';
+import { StepTwo } from './ChildComponents/StepTwo';
+import { getCreateTicket } from '../../Redux/Selectors';
 
 const useStyles = createUseStyles((theme: Theme) => {
 	return {
 		stepContent: {
-			height: "calc(100% - 20px)",
+			height: "calc(70% - 70px)",
 			marginTop: "20px",
 			width: 500,
 			margin: "auto",
+			overflowY: "auto",
 		},
 	};
 });
 
 export const CreateTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
 	const [currentStep, setCurrentStep] = useState(0);
-	const createProject = useSelector(getCreateProject);
+	const createTicket = useSelector(getCreateTicket);
 
 	const classes = useStyles();
 
 	const getCurrentStep = () => {
 		switch(currentStep) {
 			case 0:
-				return <></>
+				return <StepOne dispatch={dispatch} />
 			case 1:
-				return <></>
-			case 2:
-				return <></>
+				return <StepTwo dispatch={dispatch} />
 		}
 	}
 
 	const getCondition = () => {
 		switch(currentStep) {
 			case 0:
-				return createProject.name && createProject.associatedCompany && createProject.description;
+				return createTicket.name && createTicket.priority && createTicket.assignee && createTicket.project;
 			case 1:
+				return createTicket.description;
+			case 2:
 				return true;
 		}
 	}
 
   return (
-		<Box sx={{ display: 'flex', justifyContent: 'center', paddingTop: "10px", height: "100%" }}>
-			<Box sx={{ width: '700px'}}>
+		<Box sx={{ display: 'flex', justifyContent: 'center', paddingTop: "10px", overflowX: "hidden", height: "100%" }}>
+			<Box sx={{ width: '700px' }}>
 				<Typography variant="h2" textAlign={"center"}>
 					Create Ticket
 				</Typography>
-				<Stepper activeStep={currentStep} alternativeLabel sx={{ paddingTop: "35px" }}>
+				<Stepper activeStep={currentStep} alternativeLabel sx={{ marginTop: "35px" }}>
 					{[1,2,3].map((label) => (
 						<Step key={label}>
 							<StepLabel StepIconComponent={StepperComponent} />
