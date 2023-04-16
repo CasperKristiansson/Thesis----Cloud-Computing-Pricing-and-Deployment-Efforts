@@ -31,6 +31,13 @@ jobs:
           python -m venv venv
           source venv/bin/activate
 
+      - name: Setup environment variables
+        run: |
+          echo "${{secrets.SERVER}}" > ./.env
+          echo "${{secrets.DATABASE}}" >> ./.env
+          echo "${{secrets.USER}}" >> ./.env
+          echo "${{secrets.PASSWORD}}" >> ./.env
+
       - name: Install dependencies
         run: pip install -r requirements.txt
         
