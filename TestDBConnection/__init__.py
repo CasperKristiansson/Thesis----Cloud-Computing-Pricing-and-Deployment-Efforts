@@ -22,4 +22,5 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         cursor = conn.cursor(as_dict=True)
         return func.HttpResponse(f"Connection Successful")
     except Exception as e:
-        return func.HttpResponse(f"Connection Failed: {e}")
+        logging.info(f"Connection Failed to DB! \n SERVER: {server} \n USER: {user} \n PASSWORD: {password} \n DATABASE: {database} \n {e}")
+        return func.HttpResponse(f"Connection Failed: \n {e}")
