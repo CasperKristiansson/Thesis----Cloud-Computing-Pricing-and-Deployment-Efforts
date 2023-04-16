@@ -22,7 +22,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         result = _build_msal_app(cache=cache).acquire_token_by_auth_code_flow(
             session.get("flow", {}), request.args)
         if "error" in result:
-            return render_template("auth_error.html", result=result)
+            return func.HttpResponse(f"Error: {result}")
         session["user"] = result.get("id_token_claims")
         _save_cache(cache)
     except Exception as e:  # Usually caused by CSRF
