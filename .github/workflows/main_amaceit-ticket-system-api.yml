@@ -33,10 +33,10 @@ jobs:
 
       - name: Setup environment variables
         run: |
-          echo "SERVER = ${{secrets.SERVER}}" > ./.env
-          echo "DATABASE = ${{secrets.DATABASE}}" >> ./.env
-          echo "USER = ${{secrets.USER}}" >> ./.env
-          echo "PASSWORD = ${{secrets.PASSWORD}}" >> ./.env
+          echo "DB_SERVER = ${{secrets.DB_SERVER}}" > ./.env
+          echo "DB_DATABASE = ${{secrets.DB_DATABASE}}" >> ./.env
+          echo "DB_USERNAME = ${{secrets.DB_USERNAME}}" >> ./.env
+          echo "DB_PASSWORD = ${{secrets.DB_PASSWORD}}" >> ./.env
 
       - name: Install dependencies
         run: pip install -r requirements.txt
