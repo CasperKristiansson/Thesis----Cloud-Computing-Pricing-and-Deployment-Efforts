@@ -20,7 +20,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     try:
         conn = pymssql.connect(server, username, password, database)
         cursor = conn.cursor(as_dict=True)
-        return func.HttpResponse(f"Connection Successful")
+        return func.HttpResponse(f"Connected to {server} successfully")
     except Exception as e:
-        logging.info(f"Connection Failed to DB! \n SERVER: {server} \n USER: {username} \n PASSWORD: {password} \n DATABASE: {database} \n {e}")
+        logging.info(f"Connection Failed to DB! \n SERVER: {server} \n USER: {username} \n PASSWORD: <secret> \n DATABASE: {database} \n {e}")
         return func.HttpResponse(f"Connection Failed: \n {e}")
