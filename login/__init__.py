@@ -28,7 +28,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     except Exception as e:  # Usually caused by CSRF
         logging.info(f"Error: {e}")
         return func.HttpResponse(f"Error: {e}")
-    return func.HttpResponse(f"Hello {session['user']['name']}")
+    return func.HttpResponse(f"Hello {session['user']}")
 
 def _save_cache(cache):
     if cache.has_state_changed:
