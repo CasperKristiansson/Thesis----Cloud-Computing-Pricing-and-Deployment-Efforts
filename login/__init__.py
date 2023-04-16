@@ -25,8 +25,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             return render_template("auth_error.html", result=result)
         session["user"] = result.get("id_token_claims")
         _save_cache(cache)
-    except ValueError:  # Usually caused by CSRF
-        pass  # Simply ignore them
+    except Exception as e:  # Usually caused by CSRF
+        logging.info(f"Error: {e}")
+        return func.HttpResponse(f"Error: {e}")
     return func.HttpResponse(f"Hello {session['user']['name']}")
 
 def _save_cache(cache):
