@@ -17,10 +17,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     if(server == None or user == None or password == None or database == None):
         return func.HttpResponse(f"Environment Variables not set or could not be loaded.")
 
-    conn = pymssql.connect(server, user, password, database)
-    cursor = conn.cursor(as_dict=True)
-
-    if(conn):
+    try:
+        conn = pymssql.connect(server, user, password, database)
+        cursor = conn.cursor(as_dict=True)
         return func.HttpResponse(f"Connection Successful")
-    else:
-        return func.HttpResponse(f"Connection Failed")
+    except Exception as e:
+        return func.HttpResponse(f"Connection Failed: {e}")
