@@ -13,6 +13,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     user = os.getenv("USER")
     password = os.getenv("PASSWORD")
     database = os.getenv("DATABASE")
+
+    if(server == None or user == None or password == None or database == None):
+        return func.HttpResponse(f"Environment Variables not set or could not be loaded.")
+
     conn = pymssql.connect(server, user, password, database)
     cursor = conn.cursor(as_dict=True)
 
