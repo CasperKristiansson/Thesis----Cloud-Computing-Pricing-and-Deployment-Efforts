@@ -1,10 +1,7 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { createUseStyles } from 'react-jss';
-import { Link } from 'react-router-dom';
 import Logo from '../../Assets/Logo.png';
 import Illustration from '../../Assets/Home.svg';
-import { useMsal } from "@azure/msal-react";
-import { loginRequest } from '../../authConfig';
 import { useSelector } from 'react-redux';
 import { getToken } from '../../Redux/Selectors';
 import { LoginButton } from '../../Components/LoginButton';

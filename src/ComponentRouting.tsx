@@ -5,7 +5,6 @@ import { Tickets } from './Pages/Tickets/Tickets';
 import { Projects } from './Pages/Projects/Projects';
 import { CreateTicket } from './Pages/CreateTicket/CreateTicket';
 import { CreateProject } from './Pages/CreateProject/CreateProject';
-import { MsalProvider } from '@azure/msal-react';
 import { Login } from './Pages/Login/Login';
 
 export const ComponentRouting: React.FC<{dispatch: any}> = ({ dispatch }) => {

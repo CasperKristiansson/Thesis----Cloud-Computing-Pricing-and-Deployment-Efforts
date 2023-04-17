@@ -9,6 +9,7 @@ export const Login: React.FC<{dispatch: any}> = ({ dispatch }) => {
 
     const token = useSelector(getToken);
 
+    // If user already has token then redirect to home.
     React.useEffect(() => {if(token !== ''){
         navigate('/');
     }});
