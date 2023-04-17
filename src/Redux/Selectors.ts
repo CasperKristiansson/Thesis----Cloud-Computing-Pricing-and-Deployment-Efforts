@@ -14,3 +14,5 @@ export const getCreateTicketPriority = (state: State) => state.createTicket.prio
 export const getCreateTicketAssignee = (state: State) => state.createTicket.assignee;
 export const getCreateTicketProject = (state: State) => state.createTicket.project;
 export const getCreateTicketDescription = (state: State) => state.createTicket.description;
+
+export const getToken = (state: State) => state.token;
