@@ -4,12 +4,14 @@ import { AppDispatch } from './store';
 import { ThemeProvider } from 'react-jss';
 import { ComponentRouting } from './ComponentRouting';
 import { createUseStyles } from 'react-jss';
-import { getOperationInProgress } from './Redux/Selectors';
+import { getOperationInProgress, getToken } from './Redux/Selectors';
 import { Toaster } from 'react-hot-toast';
 import { ThemeProvider as MuiThemeProvider, createTheme } from '@mui/material/styles';
 import { Backdrop, CircularProgress } from '@mui/material';
 import './App.css'
 import { Navigation } from './Pages/Navigation/Navigation';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 const useStyles = createUseStyles((theme: Theme) => {
@@ -23,7 +25,10 @@ const useStyles = createUseStyles((theme: Theme) => {
 })
 
 export const App = (): JSX.Element => {
+  const navigate = useNavigate();
+
   const operationInProgress = useSelector(getOperationInProgress);
+  const token = useSelector(getToken);
 
   const dispatch: AppDispatch = useDispatch();
   const classes = useStyles();
@@ -38,16 +43,23 @@ export const App = (): JSX.Element => {
     },
   });
 
+  // If requesting any other page than '/' or '/login' and the token is empty, redirect to login.
+  React.useEffect(() => {
+    if(token === '' && window.location.pathname !== '/login' && window.location.pathname !== '/'){
+      navigate('/login');
+    }
+  }, [navigate, token]);
+
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.section}>
-      <Toaster />
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={operationInProgress}
-      >
-        <CircularProgress color="primary" size={100} />
-      </Backdrop>
+        <Toaster />
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={operationInProgress}
+        >
+          <CircularProgress color="primary" size={100} />
+        </Backdrop>
         <MuiThemeProvider theme={MuiTheme}>
           <div>
             <Navigation />

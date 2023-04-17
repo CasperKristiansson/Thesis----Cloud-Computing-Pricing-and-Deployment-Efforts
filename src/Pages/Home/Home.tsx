@@ -1,8 +1,10 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { createUseStyles } from 'react-jss';
-import { Link } from 'react-router-dom';
 import Logo from '../../Assets/Logo.png';
 import Illustration from '../../Assets/Home.svg';
+import { useSelector } from 'react-redux';
+import { getToken } from '../../Redux/Selectors';
+import { LoginButton } from '../../Components/LoginButton';
 
 const useStyles = createUseStyles({
   root: {
@@ -42,21 +44,7 @@ const useStyles = createUseStyles({
   },
   buttonsWrapper: {
     zIndex: 2,
-		marginTop: 40,
-  },
-  registerButton: {
-    backgroundColor: 'primary.main',
-    '&:hover': {
-      backgroundColor: 'primary.dark',
-    },
-  },
-  loginButton: {
-    borderColor: 'primary.main',
-    color: 'primary.main',
-    '&:hover': {
-      borderColor: 'primary.dark',
-      color: 'primary.dark',
-    },
+    marginTop: 40,
   },
   aboutWrapper: {
     height: '40%',
@@ -76,11 +64,15 @@ const useStyles = createUseStyles({
   },
 });
 
-export const Home: React.FC<{}> = (): JSX.Element => {
-	const classes = useStyles();
+export const Home: React.FC<{ dispatch: any }> = ({ dispatch }): JSX.Element => {
+  const classes = useStyles();
+
+  const token = useSelector(getToken);
+
+  console.log(token);
 
   return (
-		<>
+    <>
       <Grid container direction="column" className={classes.root}>
         <Grid item className={classes.videoWrapper}>
           <video
@@ -94,23 +86,7 @@ export const Home: React.FC<{}> = (): JSX.Element => {
             <img src={Logo} alt="Ticket System" className={classes.logo} />
             <Box className={classes.title}>Ticket System</Box>
             <Box className={classes.buttonsWrapper}>
-              <Button
-                variant="contained"
-                className={classes.registerButton}
-                component={Link}
-                to="/register"
-              >
-                Register
-              </Button>
-              <Button
-                variant="outlined"
-                className={classes.loginButton}
-                sx={{ ml: 2 }}
-                component={Link}
-                to="/login"
-              >
-                Login
-              </Button>
+              {token === '' ? <LoginButton dispatch={dispatch} /> : null}
             </Box>
           </Box>
         </Grid>
@@ -136,7 +112,7 @@ export const Home: React.FC<{}> = (): JSX.Element => {
             </Grid>
           </Grid>
         </Grid>
-			</Grid>
-		</>
-	);
+      </Grid>
+    </>
+  );
 };

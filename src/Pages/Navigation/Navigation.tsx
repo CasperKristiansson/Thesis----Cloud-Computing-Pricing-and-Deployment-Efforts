@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { createUseStyles } from 'react-jss';
@@ -85,43 +85,48 @@ const useStyles = createUseStyles((theme: Theme) => {
 export const Navigation: React.FC<{}> = (): JSX.Element => {
 	const classes = useStyles();
 	const [profileMenuAnchorEl, setProfileMenuAnchorEl] = useState(null);
+	
+	const navigate = useNavigate();
 
-  const handleProfileMenuClick = (event: any) => {
-    setProfileMenuAnchorEl(event.currentTarget);
-  };
+	const handleProfileMenuClick = (event: any) => {
+		setProfileMenuAnchorEl(event.currentTarget);
+	};
 
-  const handleProfileMenuClose = () => {
-    setProfileMenuAnchorEl(null);
-  };
+	const handleProfileMenuClose = () => {
+		setProfileMenuAnchorEl(null);
+	};
 
-  const handleLogoutClick = () => {
-  };
+	const handleLogoutClick = () => {
+		localStorage.removeItem("ats-token");
+		navigate("/");
+		window.location.reload();
+	};
 
-  return (
-    <div className={classes.navbar}>
-      <NavLink to="/" className={classes.logo}>
-        <img src={Logo} alt="Logo" className={classes.logoImage} />
-        <span>Ticket System</span>
-      </NavLink>
-      <div className={classes.navLinks}>
-        <NavLink to="/" className={classes.navLink}>
+	return (
+		<div className={classes.navbar}>
+			<NavLink to="/" className={classes.logo}>
+				<img src={Logo} alt="Logo" className={classes.logoImage} />
+				<span>Ticket System</span>
+			</NavLink>
+			<div className={classes.navLinks}>
+				<NavLink to="/" className={classes.navLink}>
 					Home
-        </NavLink>
-        <NavLink to="/tickets" className={classes.navLink}>
-          Tickets
-        </NavLink>
-        <NavLink to="/create-ticket" className={classes.navLink}>
-          Create Ticket
-        </NavLink>
-        <NavLink to="/projects" className={classes.navLink}>
-          Projects
-        </NavLink>
-        <NavLink to="/create-project" className={classes.navLink}>
-          Create Project
-        </NavLink>
-        <NavLink to="/admin" className={classes.navLink}>
-          Admin Panel
-        </NavLink>
+				</NavLink>
+				<NavLink to="/tickets" className={classes.navLink}>
+					Tickets
+				</NavLink>
+				<NavLink to="/create-ticket" className={classes.navLink}>
+					Create Ticket
+				</NavLink>
+				<NavLink to="/projects" className={classes.navLink}>
+					Projects
+				</NavLink>
+				<NavLink to="/create-project" className={classes.navLink}>
+					Create Project
+				</NavLink>
+				<NavLink to="/admin" className={classes.navLink}>
+					Admin Panel
+				</NavLink>
 				<Button className={classes.profileButton} onClick={handleProfileMenuClick}>
 					<Avatar alt="Profile picture" src="/profile.jpg" className={classes.profileAvatar} />
 				</Button>
@@ -130,7 +135,7 @@ export const Navigation: React.FC<{}> = (): JSX.Element => {
 						<FontAwesomeIcon icon={faSignOutAlt} style={{ marginRight: '0.5rem' }} /> Logout
 					</MenuItem>
 				</Menu>
-      </div>
-    </div>
-  );
+			</div>
+		</div>
+	);
 }

@@ -1,12 +1,13 @@
 import { CreateProject } from "../Models/CreateProject";
 import { CreateTicket } from "../Models/CreateTicket";
-import { SET_CREATE_PROJECT_ASSOCIATED_COMPANY, SET_CREATE_PROJECT_DESCRIPTION, SET_CREATE_PROJECT_NAME, SET_CREATE_TICKET_ASSIGNEE, SET_CREATE_TICKET_DESCRIPTION, SET_CREATE_TICKET_NAME, SET_CREATE_TICKET_PRIORITY, SET_CREATE_TICKET_PROJECT, SET_IN_LINE_OPERATION_IN_PROGRESS, SET_OPERATION_IN_PROGRESS } from "./Actions";
+import { SET_CREATE_PROJECT_ASSOCIATED_COMPANY, SET_CREATE_PROJECT_DESCRIPTION, SET_CREATE_PROJECT_NAME, SET_CREATE_TICKET_ASSIGNEE, SET_CREATE_TICKET_DESCRIPTION, SET_CREATE_TICKET_NAME, SET_CREATE_TICKET_PRIORITY, SET_CREATE_TICKET_PROJECT, SET_IN_LINE_OPERATION_IN_PROGRESS, SET_OPERATION_IN_PROGRESS, SET_TOKEN } from "./Actions";
 
 export interface State {
     operationInProgress: boolean;
     inLineOperationInProgress: boolean;
     createProject: CreateProject;
     createTicket: CreateTicket;
+    token: string;
 }
 
 export const initialState: State = {
@@ -14,6 +15,7 @@ export const initialState: State = {
     inLineOperationInProgress: false,
     createProject: {} as CreateProject,
     createTicket: {} as CreateTicket,
+    token: localStorage.getItem('ats-token') || '',
 };
 
 export default function Reducer(state = initialState, { type, payload }: { type: string; payload: any }) {
@@ -92,6 +94,14 @@ export default function Reducer(state = initialState, { type, payload }: { type:
                     project: payload,
                 },
             };
+
+        case SET_TOKEN:
+            localStorage.setItem('ats-token', payload);
+            return {
+                ...state,
+                token: payload,
+            };
+
         default:
             return state;
     }
