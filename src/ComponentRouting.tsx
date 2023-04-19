@@ -11,7 +11,7 @@ export const ComponentRouting: React.FC<{dispatch: any}> = ({ dispatch }) => {
 	return (
 		<div style={{ height: "calc(100vh - 80px)" }}>
 			<Routes>
-				<Route path="/" element={<Home dispatch={dispatch} />} />
+				<Route path="/" element={<Home />} />
 				<Route path="/tickets" element={<Tickets />} />
 				<Route path="/projects" element={<Projects />} />
 				<Route path="/create-ticket" element={<CreateTicket dispatch={dispatch} />} />
