@@ -67,9 +67,6 @@ const useStyles = createUseStyles((theme: Theme) => {
 			color: theme.textWhite,
 			width: "100%",
 			marginBottom: 10,
-			"&:hover": {
-					backgroundColor: "#F2994A",
-			},
 		},
 		signUpWrapper: {
 			display: "flex",
