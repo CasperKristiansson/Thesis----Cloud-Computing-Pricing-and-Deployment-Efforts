@@ -9,7 +9,7 @@ import { Login } from './Pages/Login/Login';
 
 export const ComponentRouting: React.FC<{dispatch: any}> = ({ dispatch }) => {
 	return (
-		<div style={{ height: "calc(100vh - 80px)" }}>
+		<div style={{ height: "calc(100vh - 70px)" }}>
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/tickets" element={<Tickets />} />
