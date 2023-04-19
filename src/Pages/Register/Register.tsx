@@ -98,7 +98,6 @@ export const Register: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 	const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
 
 	const navigate = useNavigate();
 	const token = useSelector(getToken);
@@ -115,10 +114,6 @@ export const Register: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 
 	const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setPassword(event.target.value);
-	};
-
-	const handleRememberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setRememberMe(event.target.checked);
 	};
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
