@@ -45,7 +45,7 @@ export const App = (): JSX.Element => {
 
   // If requesting any other page than '/' or '/login' and the token is empty, redirect to login.
   React.useEffect(() => {
-    if(token === '' && window.location.pathname !== '/login' && window.location.pathname !== '/'){
+    if(token === '' && window.location.pathname !== '/login' && window.location.pathname !== '/' && window.location.pathname !== '/register'){
       navigate('/login');
     }
   }, [navigate, token]);
