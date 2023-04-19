@@ -8,92 +8,89 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getToken } from "../../Redux/Selectors";
 import { InputAdornment } from "@mui/material";
+import { Theme } from "../../Styling/Theme";
+import { LOGIN } from "../../Redux/Actions";
 
-const useStyles = createUseStyles({
-	loginWrapper: {
-    width: '500px',
-    maxHeight: '800px',
-    height: '80%',
-    margin: '0 auto',
-    padding: '2rem',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-	wrapper: {
-		height: "100%",
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	title: {
-		fontWeight: 600,
-		marginBottom: 10,
-	},
-	inputWrapper: {
-		display: "flex",
-		flexDirection: "column",
-		width: "100%",
-		marginBottom: 10,
-	},
-	iconWrapper: {
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "center",
-		width: 40,
-		height: 40,
-		marginRight: 10,
-		borderRadius: "50%",
-		backgroundColor: "#F2F2F2",
-	},
-	icon: {
-		fontSize: 20,
-		color: "#BDBDBD",
-	},
-	input: {
-		width: "100%",
-	},
-	rememberWrapper: {
-		display: "flex",
-		alignItems: "center",
-		marginBottom: 10,
-	},
-	forgotLink: {
-		marginLeft: "auto",
-		fontSize: 12,
-		color: "#BDBDBD",
-		textDecoration: "none",
-		"&:hover": {
-				textDecoration: "underline",
+const useStyles = createUseStyles((theme: Theme) => {
+	return {
+		loginWrapper: {
+			width: '500px',
+			maxHeight: '800px',
+			height: '80%',
+			margin: '0 auto',
+			padding: '2rem',
+			display: 'flex',
+			flexDirection: 'column',
+			alignItems: 'center',
 		},
-	},
-	signInButton: {
-		backgroundColor: "#F2994A",
-		color: "#FFFFFF",
-		width: "100%",
-		marginBottom: 10,
-		"&:hover": {
-				backgroundColor: "#F2994A",
+		wrapper: {
+			height: "100%",
+			display: "flex",
+			alignItems: "center",
+			justifyContent: "center",
 		},
-	},
-	signUpWrapper: {
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	signUpText: {
-		fontSize: 14,
-		color: "#BDBDBD",
-		marginRight: 5,
-	},
-	signUpLink: {
-		fontSize: 14,
-		color: "#F2994A",
-		textDecoration: "none",
-		"&:hover": {
-				textDecoration: "underline",
+		formWrapper: {
+			width: "80%",
+			marginTop: 80,
 		},
-	},
+		title: {
+			fontWeight: 600,
+			marginBottom: 10,
+		},
+		inputWrapper: {
+			display: "flex",
+			flexDirection: "column",
+			width: "100%",
+			marginBottom: 10,
+		},
+		icon: {
+			color: theme.backgroundPrimary,
+		},
+		input: {
+			width: "100%",
+		},
+		rememberWrapper: {
+			display: "flex",
+			alignItems: "center",
+			marginBottom: 30,
+		},
+		forgotLink: {
+			marginLeft: "auto",
+			fontSize: 12,
+			color: theme.backgroundPrimary,
+			textDecoration: "none",
+			"&:hover": {
+					textDecoration: "underline",
+			},
+		},
+		signInButton: {
+			color: theme.textWhite,
+			width: "100%",
+			marginBottom: 10,
+			"&:hover": {
+					backgroundColor: "#F2994A",
+			},
+		},
+		signUpWrapper: {
+			display: "flex",
+			alignItems: "center",
+			justifyContent: "center",
+			marginTop: 5,
+		},
+		signUpText: {
+			fontSize: 14,
+			color: "#BDBDBD",
+			marginRight: 5,
+		},
+		signUpLink: {
+			fontSize: 14,
+			color: theme.backgroundPrimary,
+			textDecoration: "none",
+			"&:hover": {
+					textDecoration: "underline",
+			},
+		},
+	};
 });
 
 export const Login: React.FC<{ dispatch: any }> = ({ dispatch }) => {
@@ -130,13 +127,13 @@ export const Login: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 	return (
 		<div className={classes.wrapper}>
 			<Paper elevation={3} className={classes.loginWrapper}>
-				<Typography variant="h5" className={classes.title}>
+				<Typography variant="h3" align="left" className={classes.title}>
 						Welcome Back
 				</Typography>
-				<Typography variant="body1">
+				<Typography variant="h5" align="left">
 						Welcome Back! Please enter your details
 				</Typography>
-				<form onSubmit={handleSubmit}>
+				<form onSubmit={handleSubmit} className={classes.formWrapper}>
 					<div className={classes.inputWrapper}>
 						<TextField
 							label="Email"
@@ -176,13 +173,6 @@ export const Login: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 							}}
 						/>
 					</div>
-					<Button
-						type="submit"
-						variant="contained"
-						className={classes.signInButton}
-					>
-						Sign In
-					</Button>
 					<div className={classes.rememberWrapper}>
 						<Checkbox
 							checked={rememberMe}
@@ -195,9 +185,20 @@ export const Login: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 						</Link>
 					</div>
 					<Button
+						type="submit"
+						variant="contained"
+						className={classes.signInButton}
+					>
+						Sign In
+					</Button>
+					<Button
 						startIcon={<FontAwesomeIcon icon={faMicrosoft} />}
 						variant="outlined"
 						fullWidth
+						sx={{ mt: 1 }}
+						onClick={() => {
+							dispatch({ type: LOGIN });
+						}}
 					>
 						Or sign in with Microsoft
 					</Button>
@@ -205,8 +206,8 @@ export const Login: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 						<Typography variant="body2" className={classes.signUpText}>
 								Don't have an account?
 						</Typography>
-						<Link href="#" className={classes.signUpLink}>
-								Sign Up
+						<Link href="/register" className={classes.signUpLink}>
+							Sign Up
 						</Link>
 					</div>
 				</form>

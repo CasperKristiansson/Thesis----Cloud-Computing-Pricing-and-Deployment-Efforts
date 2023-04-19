@@ -3,6 +3,8 @@ import { createUseStyles } from 'react-jss';
 import { Link } from 'react-router-dom';
 import Logo from '../../Assets/Logo.png';
 import Illustration from '../../Assets/Home.svg';
+import { useSelector } from 'react-redux';
+import { getToken } from '../../Redux/Selectors';
 
 const useStyles = createUseStyles({
   root: {
@@ -78,6 +80,7 @@ const useStyles = createUseStyles({
 
 export const Home: React.FC<{}> = (): JSX.Element => {
 	const classes = useStyles();
+  const token = useSelector(getToken);
 
   return (
 		<>
@@ -94,23 +97,26 @@ export const Home: React.FC<{}> = (): JSX.Element => {
             <img src={Logo} alt="Ticket System" className={classes.logo} />
             <Box className={classes.title}>Ticket System</Box>
             <Box className={classes.buttonsWrapper}>
-              <Button
-                variant="contained"
-                className={classes.registerButton}
-                component={Link}
-                to="/register"
-              >
-                Register
-              </Button>
-              <Button
-                variant="outlined"
-                className={classes.loginButton}
-                sx={{ ml: 2 }}
-                component={Link}
-                to="/login"
-              >
-                Login
-              </Button>
+              {!token && <>
+                <Button
+                  variant="contained"
+                  className={classes.registerButton}
+                  component={Link}
+                  to="/register"
+                >
+                  Register
+                </Button>
+                <Button
+                  variant="outlined"
+                  className={classes.loginButton}
+                  sx={{ ml: 2 }}
+                  component={Link}
+                  to="/login"
+                >
+                  Login
+                </Button>
+              </>
+              }
             </Box>
           </Box>
         </Grid>
