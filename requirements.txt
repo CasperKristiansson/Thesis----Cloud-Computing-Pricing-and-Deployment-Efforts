@@ -5,6 +5,5 @@
 azure-functions
 python-dotenv
 pymssql
-msal
 flask
 flask-session

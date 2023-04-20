@@ -1,7 +1,6 @@
 import requests
-import logging
 
-def validateToken(token):
+def validate_token(token):
     try:
         url = "https://graph.microsoft.com/v1.0/users"
         headers = {
