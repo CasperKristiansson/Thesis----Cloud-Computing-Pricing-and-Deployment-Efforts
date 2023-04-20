@@ -1,15 +1,19 @@
 import requests
 
 def validate_token(token):
-    try:
-        url = "https://graph.microsoft.com/v1.0/users"
-        headers = {
-            'Authorization': token
-        }
-        response = requests.request("GET", url, headers=headers)
+    
+    if token is None:
+        raise Exception("No token provided")
+    
+    url = "https://graph.microsoft.com/v1.0/me"
+    
+    headers = {
+        'Authorization': token
+    }
 
-        #logging.info(f"Validation Response: {response.json()}")
+    response = requests.request("GET", url, headers=headers)
 
-        return response.status_code == 200
-    except Exception as e:
-        return False
+    if(response.status_code != 200):
+        raise Exception("Token is not valid")
+    
+    return response

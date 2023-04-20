@@ -10,7 +10,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     try:
         dao = DAO()
-        cursor = dao.conn.cursor(as_dict=True)
         return func.HttpResponse(f"Connection Successful!")
     except Exception as e:
-        return func.HttpResponse(f"Connection Failed: \n {e}")
+        return func.HttpResponse(f"Error: \n {e}")
