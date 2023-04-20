@@ -2,14 +2,9 @@ import logging
 
 import azure.functions as func
 
-from flask import Flask
-from flask_session import Session
 import Helper.validation as validation
-import Integration.UserDAO as UserDAO
+from Integration.UserDAO import UserDAO
 import json
-
-app = Flask(__name__)
-Session(app)
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('initializeProfile function processed a request.')
