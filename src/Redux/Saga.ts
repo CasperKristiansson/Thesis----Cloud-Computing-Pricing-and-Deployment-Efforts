@@ -11,6 +11,9 @@ function* handleLogin(action: any) {
     msalInstance.loginPopup(loginRequest);
     const graphTokenResponse: AuthenticationResult = yield acquireTokenSilent(loginRequest, msalInstance);
     yield put({ type: SET_TOKEN, payload: graphTokenResponse.accessToken });
+    // TODO: GET IMAGE FOR USER
+    // url = `https://graph.microsoft.com/v1.0/me/photo/$value`;
+    // we need to send the token aswell when fetching the image.
   } catch (error) {
     console.log(error);
   } finally {
