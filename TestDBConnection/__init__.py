@@ -1,7 +1,7 @@
 import logging
 import azure.functions as func
 from dotenv import load_dotenv
-import Integration.DAO as DAO
+from Integration.DAO import DAO
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('TestDBConnection function processed a request.')

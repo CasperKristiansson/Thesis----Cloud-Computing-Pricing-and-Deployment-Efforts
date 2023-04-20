@@ -4,6 +4,8 @@ import pymssql
 from dotenv import load_dotenv
 
 class DAO:
+    connection = None
+    
     def __init__(self):
         load_dotenv()
 
