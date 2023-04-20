@@ -18,4 +18,5 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
         return func.HttpResponse(json.dumps(user), 200)
     except Exception as e:
+        logging.inf(f"Error from initializeProfile: {e}")
         return func.HttpResponse(f"Error: {e}", 500)
