@@ -16,6 +16,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         userDAO = UserDAO()
         user = userDAO.find_user_by_id(response_user.id)
 
-        return func.HttpResponse(json.dumps(user))
+        return func.HttpResponse(json.dumps(user), 200)
     except Exception as e:
-            return func.HttpResponse(f"Error: {e}")
+        return func.HttpResponse(f"Error: {e}", 500)
