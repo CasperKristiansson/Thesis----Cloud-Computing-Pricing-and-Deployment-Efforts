@@ -1,6 +1,6 @@
 import { CreateProject } from "../Models/CreateProject";
 import { CreateTicket } from "../Models/CreateTicket";
-import { SET_CREATE_PROJECT_ASSOCIATED_COMPANY, SET_CREATE_PROJECT_DESCRIPTION, SET_CREATE_PROJECT_NAME, SET_CREATE_TICKET_ASSIGNEE, SET_CREATE_TICKET_DESCRIPTION, SET_CREATE_TICKET_NAME, SET_CREATE_TICKET_PRIORITY, SET_CREATE_TICKET_PROJECT, SET_IN_LINE_OPERATION_IN_PROGRESS, SET_OPERATION_IN_PROGRESS, SET_TOKEN } from "./Actions";
+import { RESET_CREATE_PROJECT, RESET_CREATE_TICKET, SET_CREATE_PROJECT_ASSOCIATED_COMPANY, SET_CREATE_PROJECT_DESCRIPTION, SET_CREATE_PROJECT_NAME, SET_CREATE_TICKET_ASSIGNEE, SET_CREATE_TICKET_DESCRIPTION, SET_CREATE_TICKET_NAME, SET_CREATE_TICKET_PRIORITY, SET_CREATE_TICKET_PROJECT, SET_IN_LINE_OPERATION_IN_PROGRESS, SET_OPERATION_IN_PROGRESS, SET_TOKEN } from "./Actions";
 
 export interface State {
     operationInProgress: boolean;
@@ -18,7 +18,7 @@ export const initialState: State = {
     token: localStorage.getItem('ats-token') || '',
 };
 
-export default function Reducer(state = initialState, { type, payload }: { type: string; payload: any }) {
+export default function Reducer(state = initialState, { type, payload }: { type: string; payload?: any }) {
     switch (type) {
         case SET_OPERATION_IN_PROGRESS:
             return {
@@ -94,14 +94,22 @@ export default function Reducer(state = initialState, { type, payload }: { type:
                     project: payload,
                 },
             };
-
         case SET_TOKEN:
             localStorage.setItem('ats-token', payload);
             return {
                 ...state,
                 token: payload,
             };
-
+        case RESET_CREATE_PROJECT:
+            return {
+                ...state,
+                createProject: {} as CreateProject,
+            };
+        case RESET_CREATE_TICKET:
+            return {
+                ...state,
+                createTicket: {} as CreateTicket,
+            };
         default:
             return state;
     }
