@@ -79,6 +79,7 @@ const useStyles = createUseStyles({
     width: 32,
     height: 32,
     borderRadius: '50%',
+    marginTop: 7,
   },
   commentContent: {
     display: 'flex',
