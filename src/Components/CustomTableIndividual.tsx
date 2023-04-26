@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { createUseStyles } from 'react-jss';
 import { Theme } from '../Styling/Theme';
 
