@@ -1,7 +1,7 @@
 import { Button, InputBase, Paper, Typography, Avatar, Box, MenuItem, FormControl, InputLabel, Select } from "@mui/material";
 import { createUseStyles } from "react-jss";
 import { AppDispatch } from "../../store";
-import { RefObject, useEffect, useRef } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
@@ -11,8 +11,8 @@ const useStyles = createUseStyles({
     flexDirection: "column",
     alignItems: "center",
     padding: "2px 20px",
-    height: "calc(100% - 4px)",
-    overflowY: "hidden",
+    marginBottom: "10px",
+    height: "calc(100% - 10px)",
   },
   paperContainer: {
     display: "flex",
@@ -20,6 +20,7 @@ const useStyles = createUseStyles({
     alignItems: "center",
     width: "100%",
     height: "100%",
+    overflowX: "hidden",
     "& > *": {
       margin: "0 2px",
     },
@@ -140,6 +141,22 @@ const useStyles = createUseStyles({
     overflowWrap: 'anywhere',
     fontWeight: 'bold',
   },
+  containerTicketExtended: {
+    display: 'flex',
+    flexDirection: 'row',
+    margin: '30px 15px',
+    columnGap: 20,
+    "& > *:first-child": {
+      width: '33%',
+      height: '100%',
+      overflowY: 'scroll',
+    },
+    "& > *:last-child": {
+      width: '66%',
+      height: '100%',
+      overflowY: 'scroll',
+    },
+  },
 });
 
 const comments = [
@@ -221,6 +238,23 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
   const classes = useStyles();
 
   const divRef: RefObject<HTMLDivElement> = useRef(null);
+  const divTicketInformationRef: RefObject<HTMLDivElement> = useRef(null);
+
+  const [height, setHeight] = useState<number | null>(null);
+  const [deviceWidthUpdate, setDeviceWidthUpdate] = useState<number | null>(null);
+
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      setDeviceWidthUpdate(window.innerWidth);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (divTicketInformationRef.current) {
+      const elementHeight = divTicketInformationRef.current.offsetHeight;
+      setHeight(elementHeight);
+    }
+  }, [deviceWidthUpdate]);
 
   useEffect(() => {
     if (divRef.current) divRef.current.scrollTop = divRef.current.scrollHeight;
@@ -295,34 +329,49 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
           </div>
         </Paper>
         <Paper className={classes.paper}>
-          <Typography variant="h5" sx={{ padding: "10px" }}>Ticket Details</Typography>
-          <div className={classes.ticketManageButtons}>
-            <Button variant="contained" color="primary"
-              endIcon={<FontAwesomeIcon icon={faEdit} style={{ "marginTop": -4 }}/>}
-              sx={{ color: "white", marginTop: "8px", width: 150 }}
-            >Edit Ticket</Button>
-            <FormControl sx={{ m: 1, width: 150}}>
-              <InputLabel id="demo-simple-select-label">Status</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={"open"}
-                label="Status"
-                sx={{ height: 38}}
-              >
-                <MenuItem value={"open"}>Open</MenuItem>
-                <MenuItem value={"inProgress"}>In Progress</MenuItem>
-                <MenuItem value={"closed"}>Closed</MenuItem>
-              </Select>
-            </FormControl>
+          <div ref={divTicketInformationRef}>
+            <Typography variant="h5" sx={{ padding: "10px" }}>Ticket Details</Typography>
+            <div className={classes.ticketManageButtons}>
+              <Button variant="contained" color="primary"
+                endIcon={<FontAwesomeIcon icon={faEdit} style={{ "marginTop": -4 }}/>}
+                sx={{ color: "white", marginTop: "8px", width: 150 }}
+              >Edit Ticket</Button>
+              <FormControl sx={{ m: 1, width: 150}}>
+                <InputLabel id="demo-simple-select-label">Status</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={"open"}
+                  label="Status"
+                  sx={{ height: 38}}
+                >
+                  <MenuItem value={"open"}>Open</MenuItem>
+                  <MenuItem value={"inProgress"}>In Progress</MenuItem>
+                  <MenuItem value={"closed"}>Closed</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+            <div className={classes.containerInformation}>
+              <Info label="Name" data="Issue Regarding Project #5" />
+              <Info label="Creator" data="John Doe" />
+              <Info label="Assignee" data="Jane Smith" />
+              <Info label="Project" data="My Project" />
+              <Info label="Priority" data="High" color="red" />
+              <Info label="Status" data="In Progress" color="blue" />
+            </div>
           </div>
-          <div className={classes.containerInformation}>
-            <Info label="Name" data="Issue Regarding Project #5" />
-            <Info label="Creator" data="John Doe" />
-            <Info label="Assignee" data="Jane Smith" />
-            <Info label="Project" data="My Project" />
-            <Info label="Priority" data="High" color="red" />
-            <Info label="Status" data="In Progress" color="blue" />
+          {/* <div className={classes.containerTicketExtended}> */}
+          {/* Create a div with classes.containerTicketExtended that has the custom styling with the height as 100% - divTicketInformationRef.heigt */}
+          <div className={classes.containerTicketExtended} style={{ height: `calc(100% - ${height}px - 35px)`}}>
+            <Paper>
+              <Typography variant="h6" sx={{ padding: "10px" }}>Description</Typography>
+              <Typography variant="body1" sx={{ padding: "10px" }}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc. Donec euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc. Donec euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc. Donec euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc.
+              </Typography>
+            </Paper>
+            <Paper>
+              <Typography variant="h6" sx={{ padding: "10px" }}>Attachments</Typography>
+            </Paper>
           </div>
         </Paper>
       </div>

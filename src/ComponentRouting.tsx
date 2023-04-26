@@ -10,7 +10,7 @@ import { IndividualTicket } from './Pages/IndividualTicket/IndividualTicket';
 
 export const ComponentRouting: React.FC<{dispatch: any}> = ({ dispatch }) => {
 	return (
-		<div style={{ height: "calc(100vh - 80px)" }}>
+		<div style={{ height: "calc(100vh - 70px)" }}>
 			<Routes>
 				<Route path="/" element={<Home dispatch={dispatch} />} />
 				<Route path="/tickets" element={<Tickets />} />
