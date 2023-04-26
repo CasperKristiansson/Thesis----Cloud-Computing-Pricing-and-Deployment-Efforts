@@ -2,6 +2,8 @@ import { Button, InputBase, Paper, Typography, Avatar, Box, MenuItem, FormContro
 import { createUseStyles } from "react-jss";
 import { AppDispatch } from "../../store";
 import { RefObject, useEffect, useRef } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 const useStyles = createUseStyles({
   root: {
@@ -296,9 +298,10 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
           <Typography variant="h5" sx={{ padding: "10px" }}>Ticket Details</Typography>
           <div className={classes.ticketManageButtons}>
             <Button variant="contained" color="primary"
-              sx={{ color: "white", marginTop: "8px" }}
+              endIcon={<FontAwesomeIcon icon={faEdit} style={{ "marginTop": -4 }}/>}
+              sx={{ color: "white", marginTop: "8px", width: 150 }}
             >Edit Ticket</Button>
-            <FormControl sx={{ m: 1, minWidth: 150}}>
+            <FormControl sx={{ m: 1, width: 150}}>
               <InputLabel id="demo-simple-select-label">Status</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
