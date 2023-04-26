@@ -8,8 +8,8 @@ const useStyles = createUseStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: "20px",
-    height: "calc(100% - 40px)",
+    padding: "2px 20px",
+    height: "calc(100% - 4px)",
     overflowY: "hidden",
   },
   paperContainer: {
@@ -38,11 +38,13 @@ const useStyles = createUseStyles({
     justifyContent: 'flex-end',
   },
   chatMessages: {
-    height: 'calc(100% - 185px)',
+    height: 'calc(100% - 93px)',
+    position: "absolute",
+    overflowY: "hidden",
   },
   inputBoxContainer: {
     position: "absolute",
-    top: "auto",
+    bottom: 0,
     width: 'calc(100% - 20px)',
     margin: "5px 10px",
     zIndex: 1,
@@ -116,6 +118,7 @@ const useStyles = createUseStyles({
   ticketManageButtons: {
     position: "absolute",
     right: 0,
+    top: 0,
   },
 });
 
@@ -272,6 +275,7 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
           </div>
         </Paper>
         <Paper className={classes.paper}>
+          <Typography variant="h5" sx={{ padding: "10px" }}>Ticket Details</Typography>
           <div className={classes.ticketManageButtons}>
             <Button variant="contained" color="primary"
               sx={{ color: "white", marginTop: "8px" }}
