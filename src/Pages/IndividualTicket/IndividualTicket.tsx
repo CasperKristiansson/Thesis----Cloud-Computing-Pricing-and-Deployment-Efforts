@@ -126,8 +126,9 @@ const useStyles = createUseStyles({
   containerInformation: {
     display: 'flex',
     flexWrap: 'wrap',
-    gap: '50px',
     padding: '30px 15px',
+    rowGap: 10,
+    columnGap: 50,
   },
   label: {
     marginRight: '5px',
