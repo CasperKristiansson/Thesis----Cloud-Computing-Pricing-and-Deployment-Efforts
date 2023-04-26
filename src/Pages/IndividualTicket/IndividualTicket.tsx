@@ -4,6 +4,7 @@ import { AppDispatch } from "../../store";
 import { RefObject, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { CustomTableIndividual } from "../../Components/CustomTableIndividual";
 
 const useStyles = createUseStyles({
   root: {
@@ -234,6 +235,31 @@ const comments = [
   },
 ];
 
+const columns = [
+  "File Name", "File Size", "Date Uploaded", "Uploaded By"
+];
+
+const data = [
+  {
+    name: "File 1.pdf",
+    size: "1.5 MB",
+    date: "2021-09-01",
+    uploadedBy: "John Doe",
+  },
+  {
+    name: "File 2.pdf",
+    size: "1.5 MB",
+    date: "2021-09-01",
+    uploadedBy: "John Doe",
+  },
+  {
+    name: "Image 1.png",
+    size: "115 MB",
+    date: "2021-09-01",
+    uploadedBy: "John Doe",
+  },
+];
+
 export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
   const classes = useStyles();
 
@@ -369,6 +395,7 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
             </Paper>
             <Paper>
               <Typography variant="h6" sx={{ padding: "10px" }}>Attachments</Typography>
+              <CustomTableIndividual rows={data} columns={columns} maxHeight='calc(100% - 55px)'/>
             </Paper>
           </div>
         </Paper>
