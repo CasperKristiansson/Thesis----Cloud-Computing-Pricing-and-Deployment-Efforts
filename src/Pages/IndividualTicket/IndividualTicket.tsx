@@ -130,7 +130,7 @@ const useStyles = createUseStyles({
   containerInformation: {
     display: 'flex',
     flexWrap: 'wrap',
-    padding: '30px 15px',
+    padding: '10px 15px',
     rowGap: 10,
     columnGap: 50,
   },
@@ -144,7 +144,7 @@ const useStyles = createUseStyles({
   containerTicketExtended: {
     display: 'flex',
     flexDirection: 'row',
-    margin: '30px 15px',
+    margin: '10px 15px',
     columnGap: 20,
     "& > *:first-child": {
       width: '33%',
@@ -360,9 +360,7 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
               <Info label="Status" data="In Progress" color="blue" />
             </div>
           </div>
-          {/* <div className={classes.containerTicketExtended}> */}
-          {/* Create a div with classes.containerTicketExtended that has the custom styling with the height as 100% - divTicketInformationRef.heigt */}
-          <div className={classes.containerTicketExtended} style={{ height: `calc(100% - ${height}px - 35px)`}}>
+          <div className={classes.containerTicketExtended} style={{ height: `calc(100% - ${height}px - 15px)`}}>
             <Paper>
               <Typography variant="h6" sx={{ padding: "10px" }}>Description</Typography>
               <Typography variant="body1" sx={{ padding: "10px" }}>
