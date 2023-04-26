@@ -31,7 +31,7 @@ const useStyles = createUseStyles((theme: Theme) => {
 		},
 		formWrapper: {
 			width: "80%",
-			marginTop: 80,
+			marginTop: 20,
 		},
 		title: {
 			fontWeight: 600,
@@ -67,6 +67,7 @@ const useStyles = createUseStyles((theme: Theme) => {
 			color: theme.textWhite,
 			width: "100%",
 			marginBottom: 10,
+			marginTop: 30,
 		},
 		signUpWrapper: {
 			display: "flex",
@@ -90,11 +91,10 @@ const useStyles = createUseStyles((theme: Theme) => {
 	};
 });
 
-export const Login: React.FC<{ dispatch: any }> = ({ dispatch }) => {
+export const Register: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 	const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
 
 	const navigate = useNavigate();
 	const token = useSelector(getToken);
@@ -113,10 +113,6 @@ export const Login: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 		setPassword(event.target.value);
 	};
 
-	const handleRememberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setRememberMe(event.target.checked);
-	};
-
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 	};
@@ -124,11 +120,11 @@ export const Login: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 	return (
 		<div className={classes.wrapper}>
 			<Paper elevation={3} className={classes.loginWrapper}>
-				<Typography variant="h3" align="left" className={classes.title}>
-						Welcome Back
+				<Typography variant="h3" className={classes.title}>
+					Register Account
 				</Typography>
-				<Typography variant="h5" align="left">
-						Welcome Back! Please enter your details
+				<Typography variant="h5" align="center">
+					Register for a new Account! Please enter your details
 				</Typography>
 				<form onSubmit={handleSubmit} className={classes.formWrapper}>
 					<div className={classes.inputWrapper}>
@@ -170,23 +166,33 @@ export const Login: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 							}}
 						/>
 					</div>
-					<div className={classes.rememberWrapper}>
-						<Checkbox
-							checked={rememberMe}
-							onChange={handleRememberChange}
-							color="primary"
+					{/* Repeat password */}
+					<div className={classes.inputWrapper}>
+						<TextField
+							label="Repeat Password"
+							variant="outlined"
+							type="password"
+							className={classes.input}
+							value={password}
+							onChange={handlePasswordChange}
+							InputProps={{
+								endAdornment: (
+									<InputAdornment position="start">
+										<FontAwesomeIcon
+											icon={faLock}
+											className={classes.icon}
+										/>
+									</InputAdornment>
+								),
+							}}
 						/>
-						<Typography variant="body2">Remember me</Typography>
-						<Link href="#" className={classes.forgotLink}>
-								Forgot password?
-						</Link>
 					</div>
 					<Button
 						type="submit"
 						variant="contained"
 						className={classes.signInButton}
 					>
-						Sign In
+						Register Account
 					</Button>
 					<Button
 						startIcon={<FontAwesomeIcon icon={faMicrosoft} />}
@@ -197,14 +203,14 @@ export const Login: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 							dispatch({ type: LOGIN });
 						}}
 					>
-						Or sign in with Microsoft
+						Or Sign up with Microsoft
 					</Button>
 					<div className={classes.signUpWrapper}>
 						<Typography variant="body2" className={classes.signUpText}>
-								Don't have an account?
+								Already Have an account?
 						</Typography>
-						<Link href="/register" className={classes.signUpLink}>
-							Sign Up
+						<Link href="/login" className={classes.signUpLink}>
+							Sign In
 						</Link>
 					</div>
 				</form>
