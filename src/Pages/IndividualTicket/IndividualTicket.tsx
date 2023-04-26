@@ -107,10 +107,13 @@ const useStyles = createUseStyles({
     borderRadius: 10,
     padding: '8px 16px',
     width: "100%",
+    marginLeft: -30,
   },
   authorCommentBubble: {
     backgroundColor: '#75BC5B',
     color: '#fff',
+    paddingRight: 15,
+    marginLeft: 0,
   },
   authorComment: {
     alignSelf: 'flex-end',
@@ -244,7 +247,7 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
                           <Typography variant="body2" className={classes.commentDateAuthor}>
                             {comment.date}
                           </Typography>
-                          <Box className={`${classes.commentBubble} ${comment.isAuthor ? classes.authorCommentBubble : ""}`}>
+                          <Box className={`${classes.commentBubble} ${classes.authorCommentBubble}`}>
                             <Typography variant="body1">{comment.comment}</Typography>
                           </Box>
                         </Box>
@@ -260,7 +263,7 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
                           <Typography variant="body2" className={classes.commentDate}>
                             {comment.date}
                           </Typography>
-                          <Box className={`${classes.commentBubble} ${comment.isAuthor ? classes.authorCommentBubble : ""}`}>
+                          <Box className={`${classes.commentBubble}`}>
                             <Typography variant="body1">{comment.comment}</Typography>
                           </Box>
                         </Box>
