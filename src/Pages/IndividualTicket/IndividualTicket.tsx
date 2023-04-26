@@ -120,6 +120,19 @@ const useStyles = createUseStyles({
     right: 0,
     top: 0,
   },
+  containerInformation: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '50px',
+    padding: '30px 15px',
+  },
+  label: {
+    marginRight: '5px',
+  },
+  data: {
+    overflowWrap: 'anywhere',
+    fontWeight: 'bold',
+  },
 });
 
 const comments = [
@@ -295,8 +308,31 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
               </Select>
             </FormControl>
           </div>
+          <div className={classes.containerInformation}>
+            <Info label="Name" data="Issue Regarding Project #5" />
+            <Info label="Creator" data="John Doe" />
+            <Info label="Assignee" data="Jane Smith" />
+            <Info label="Project" data="My Project" />
+            <Info label="Priority" data="High" color="red" />
+            <Info label="Status" data="In Progress" color="blue" />
+          </div>
         </Paper>
       </div>
     </div>
+  );
+};
+
+const Info: React.FC<{ label: string, data: string, color?: string }> = ({ label, data, color }) => {
+  const classes = useStyles();
+
+  return (
+    <Box>
+      <Typography variant="subtitle1" className={classes.label}>
+        {label}
+      </Typography>
+      <Typography variant="body1" className={classes.data} sx={{ color: color ? color: ""}}>
+        {data}
+      </Typography>
+    </Box>
   );
 };
