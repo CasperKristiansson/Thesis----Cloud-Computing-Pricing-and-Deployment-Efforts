@@ -25,7 +25,6 @@ const useStyles = createUseStyles({
     "& > *": {
       margin: "0 2px",
     },
-    marginTop: "5px",
   },
   paper: {
     width: "30%",
