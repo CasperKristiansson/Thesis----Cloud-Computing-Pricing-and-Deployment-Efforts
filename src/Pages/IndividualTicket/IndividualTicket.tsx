@@ -62,6 +62,7 @@ const useStyles = createUseStyles({
     gap: 8,
     overflowY: 'scroll',
     height: '100%',
+    padding: '0 8px',
   },
   commentContainer: {
     display: 'flex',
@@ -76,20 +77,29 @@ const useStyles = createUseStyles({
     display: 'flex',
     flexDirection: 'column',
     gap: 4,
-    maxWidth: '70%',
+    maxWidth: '100%',
   },
   commentName: {
     fontWeight: 'bold',
+  },
+  commentNameAuthor: {
+    fontWeight: 'bold',
+    alignSelf: 'flex-end',
   },
   commentDate: {
     fontSize: 12,
     color: '#666',
   },
+  commentDateAuthor: {
+    fontSize: 12,
+    color: '#666',
+    alignSelf: 'flex-end',
+  },
   commentBubble: {
     backgroundColor: '#e6e6e6',
     borderRadius: 10,
     padding: '8px 16px',
-    width: "fit-content",
+    width: "100%",
   },
   authorCommentBubble: {
     backgroundColor: '#75BC5B',
@@ -154,7 +164,7 @@ const comments = [
     name: "Jane Doe",
     date: "2021-09-01",
     comment: "This is a comment",
-    isAuthor: false,
+    isAuthor: true,
     image: 'https://i.pravatar.cc/300?img=4',
   },
   {
@@ -162,14 +172,14 @@ const comments = [
     name: "Jane Doe",
     date: "2021-09-01",
     comment: "This is a comment",
-    isAuthor: false,
+    isAuthor: true,
     image: 'https://i.pravatar.cc/300?img=4',
   },
   {
     id: 6,
     name: "Jane Doe",
     date: "2021-09-01",
-    comment: "This is a comment",
+    comment: "This is a comment. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc.",
     isAuthor: true,
     image: 'https://i.pravatar.cc/300?img=4',
   },
@@ -194,25 +204,42 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
               <Box className={classes.chatBox}>
                 {comments.map((comment) => (
                   <Box key={comment.id} className={`${classes.commentContainer} ${comment.isAuthor ? classes.authorComment : ''}`}>
-                    <Avatar src={comment.image} alt={comment.name} className={classes.commentImage} />
-                    <Box className={classes.commentContent}>
-                      <Typography variant="subtitle2" className={classes.commentName}>
-                        {comment.name}
-                      </Typography>
-                      <Typography variant="body2" className={classes.commentDate}>
-                        {comment.date}
-                      </Typography>
-                      <Box className={`${classes.commentBubble} ${comment.isAuthor ? classes.authorCommentBubble : ""}`}>
-                        <Typography variant="body1">{comment.comment}</Typography>
-                      </Box>
-                    </Box>
+                    {comment.isAuthor ? (
+                      <>
+                        <Box className={classes.commentContent}>
+                          <Typography variant="subtitle2" className={classes.commentNameAuthor}>
+                            {comment.name}
+                          </Typography>
+                          <Typography variant="body2" className={classes.commentDateAuthor}>
+                            {comment.date}
+                          </Typography>
+                          <Box className={`${classes.commentBubble} ${comment.isAuthor ? classes.authorCommentBubble : ""}`}>
+                            <Typography variant="body1">{comment.comment}</Typography>
+                          </Box>
+                        </Box>
+                        <Avatar src={comment.image} alt={comment.name} className={classes.commentImage} />
+                      </>
+                    ) : (
+                      <>
+                        <Avatar src={comment.image} alt={comment.name} className={classes.commentImage} />
+                        <Box className={classes.commentContent}>
+                          <Typography variant="subtitle2" className={classes.commentName}>
+                            {comment.name}
+                          </Typography>
+                          <Typography variant="body2" className={classes.commentDate}>
+                            {comment.date}
+                          </Typography>
+                          <Box className={`${classes.commentBubble} ${comment.isAuthor ? classes.authorCommentBubble : ""}`}>
+                            <Typography variant="body1">{comment.comment}</Typography>
+                          </Box>
+                        </Box>
+                      </>
+                    )}
                   </Box>
                 ))}
               </Box>
             </div>
             <div className={classes.inputBoxContainer}>
-              {/* <div className={classes.growUpwards}>
-              </div> */}
               <Paper
                 component="form"
                 sx={{ display: 'flex', alignItems: 'center' }}
