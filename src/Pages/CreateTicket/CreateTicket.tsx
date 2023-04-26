@@ -4,7 +4,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import { StepperComponent } from '../../Components/StepperComponent';
 import { Button, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { StepOne } from './ChildComponents/StepOne';
@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux';
 import { StepTwo } from './ChildComponents/StepTwo';
 import { getCreateTicket } from '../../Redux/Selectors';
 import { StepThree } from './ChildComponents/StepThree';
+import { RESET_CREATE_TICKET } from '../../Redux/Actions';
 
 const useStyles = createUseStyles((theme: Theme) => {
 	return {
@@ -55,6 +56,12 @@ export const CreateTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) =>
 				return true;
 		}
 	}
+
+	useEffect(() => {
+		return () => {
+			dispatch({ type: RESET_CREATE_TICKET });
+		}
+	}, [dispatch])
 
   return (
 		<Box sx={{ display: 'flex', justifyContent: 'center', paddingTop: "10px", overflowX: "hidden", height: "100%" }}>
