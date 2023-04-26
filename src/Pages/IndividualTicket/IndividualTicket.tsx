@@ -1,4 +1,4 @@
-import { Button, InputBase, Paper, Typography, Avatar, Box } from "@mui/material";
+import { Button, InputBase, Paper, Typography, Avatar, Box, MenuItem, FormControl, InputLabel, Select } from "@mui/material";
 import { createUseStyles } from "react-jss";
 import { AppDispatch } from "../../store";
 import { RefObject, useEffect, useRef } from "react";
@@ -29,6 +29,7 @@ const useStyles = createUseStyles({
     "&:last-child": {
       width: "70%",
     },
+    position: "relative",
   },
   container: {
     display: 'flex',
@@ -111,6 +112,10 @@ const useStyles = createUseStyles({
   },
   authorComment: {
     alignSelf: 'flex-end',
+  },
+  ticketManageButtons: {
+    position: "absolute",
+    right: 0,
   },
 });
 
@@ -267,7 +272,25 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
           </div>
         </Paper>
         <Paper className={classes.paper}>
-         
+          <div className={classes.ticketManageButtons}>
+            <Button variant="contained" color="primary"
+              sx={{ color: "white", marginTop: "8px" }}
+            >Edit Ticket</Button>
+            <FormControl sx={{ m: 1, minWidth: 150}}>
+              <InputLabel id="demo-simple-select-label">Status</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={"open"}
+                label="Status"
+                sx={{ height: 38}}
+              >
+                <MenuItem value={"open"}>Open</MenuItem>
+                <MenuItem value={"inProgress"}>In Progress</MenuItem>
+                <MenuItem value={"closed"}>Closed</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
         </Paper>
       </div>
     </div>
