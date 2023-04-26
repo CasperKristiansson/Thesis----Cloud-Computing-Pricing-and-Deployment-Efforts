@@ -1,6 +1,7 @@
 import { Button, InputBase, Paper, Typography, Avatar, Box } from "@mui/material";
 import { createUseStyles } from "react-jss";
 import { AppDispatch } from "../../store";
+import { RefObject, useEffect, useRef } from "react";
 
 const useStyles = createUseStyles({
   root: {
@@ -63,6 +64,9 @@ const useStyles = createUseStyles({
     overflowY: 'scroll',
     height: '100%',
     padding: '0 8px',
+    "& > *:last-child": {
+      marginBottom: 25,
+    },
   },
   commentContainer: {
     display: 'flex',
@@ -188,6 +192,12 @@ const comments = [
 export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
   const classes = useStyles();
 
+  const divRef: RefObject<HTMLDivElement> = useRef(null);
+
+  useEffect(() => {
+    if (divRef.current) divRef.current.scrollTop = divRef.current.scrollHeight;
+  }, []);
+
   return (
     <div className={classes.root}>
       <Typography variant="h2">Ticket</Typography>
@@ -201,7 +211,7 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
               Discussion
             </Typography>
             <div className={classes.chatMessages}>
-              <Box className={classes.chatBox}>
+              <Box className={classes.chatBox} ref={divRef}>
                 {comments.map((comment) => (
                   <Box key={comment.id} className={`${classes.commentContainer} ${comment.isAuthor ? classes.authorComment : ''}`}>
                     {comment.isAuthor ? (
