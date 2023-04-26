@@ -289,7 +289,6 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
   return (
     <div className={classes.root}>
       <Typography variant="h2">Ticket</Typography>
-      <Typography variant="h5">Issue Regarding Project #5</Typography>
       <div className={classes.paperContainer}>
         <Paper className={classes.paper}>
           <div className={classes.chatContainer}>
