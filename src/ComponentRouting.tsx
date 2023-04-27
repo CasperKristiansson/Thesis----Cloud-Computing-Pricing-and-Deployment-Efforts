@@ -11,6 +11,7 @@ import { IndividualTicket } from './Pages/IndividualTicket/IndividualTicket';
 import { EditTicket } from './Pages/EditTicket/EditTicket';
 import { EditProject } from './Pages/EditProject/EditProject';
 import { IndividualProject } from './Pages/IndividualProject/IndividualProject';
+import { NotFound } from './Pages/NotFound/NotFound';
 
 export const ComponentRouting: React.FC<{dispatch: any}> = ({ dispatch }) => {
 	return (
@@ -27,6 +28,7 @@ export const ComponentRouting: React.FC<{dispatch: any}> = ({ dispatch }) => {
 				<Route path="/project/:id" element={<IndividualProject dispatch={dispatch} />} />
 				<Route path="/edit-ticket/:id" element={<EditTicket dispatch={dispatch} />} />
 				<Route path="/edit-project/:id" element={<EditProject dispatch={dispatch} />} />
+				<Route path="*" element={<NotFound />} />
 			</Routes>
 		</div>
 	);
