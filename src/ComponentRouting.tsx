@@ -8,6 +8,7 @@ import { CreateProject } from './Pages/CreateProject/CreateProject';
 import { Login } from './Pages/Login/Login';
 import { IndividualTicket } from './Pages/IndividualTicket/IndividualTicket';
 import { EditTicket } from './Pages/EditTicket/EditTicket';
+import { EditProject } from './Pages/EditProject/EditProject';
 
 export const ComponentRouting: React.FC<{dispatch: any}> = ({ dispatch }) => {
 	return (
@@ -21,6 +22,7 @@ export const ComponentRouting: React.FC<{dispatch: any}> = ({ dispatch }) => {
 				<Route path="/login" element={<Login dispatch={dispatch} />} />
 				<Route path="/ticket/:id" element={<IndividualTicket dispatch={dispatch} />} />
 				<Route path="/edit-ticket/:id" element={<EditTicket dispatch={dispatch} />} />
+				<Route path="edit-project/:id" element={<EditProject dispatch={dispatch} />} />
 			</Routes>
 		</div>
 	);
