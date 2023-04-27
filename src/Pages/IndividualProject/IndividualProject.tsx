@@ -145,8 +145,8 @@ const useStyles = createUseStyles({
   containerProjectExtended: {
     display: 'flex',
     flexDirection: 'row',
-    margin: '10px 15px',
-    columnGap: 20,
+    margin: '5px 10px',
+    columnGap: 10,
     "& > *:first-child": {
       width: '33%',
       height: '100%',
