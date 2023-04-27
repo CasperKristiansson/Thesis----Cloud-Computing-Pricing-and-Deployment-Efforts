@@ -1,4 +1,4 @@
-import { Button, InputBase, Paper, Typography, Avatar, Box, MenuItem, FormControl, InputLabel, Select } from "@mui/material";
+import { Button, InputBase, Paper, Typography, Avatar, Box } from "@mui/material";
 import { createUseStyles } from "react-jss";
 import { AppDispatch } from "../../store";
 import { RefObject, useEffect, useRef, useState } from "react";
@@ -124,7 +124,7 @@ const useStyles = createUseStyles({
   authorComment: {
     alignSelf: 'flex-end',
   },
-  ticketManageButtons: {
+  projectManageButtons: {
     position: "absolute",
     right: 0,
     top: 0,
@@ -143,7 +143,7 @@ const useStyles = createUseStyles({
     overflowWrap: 'anywhere',
     fontWeight: 'bold',
   },
-  containerTicketExtended: {
+  containerProjectExtended: {
     display: 'flex',
     flexDirection: 'row',
     margin: '10px 15px',
@@ -159,7 +159,7 @@ const useStyles = createUseStyles({
       overflowY: 'scroll',
     },
   },
-  ticketAttachmentHeader: {
+  projectAttachmentHeader: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -244,35 +244,77 @@ const comments = [
 ];
 
 const columns = [
-  "File Name", "File Size", "Date Uploaded", "Uploaded By"
+	'Subject', 
+	'Last Updated',
+	'Status',
+	'Priority',
+	'Assigned',
 ];
 
-const data = [
-  {
-    name: "File 1.pdf",
-    size: "1.5 MB",
-    date: "2021-09-01",
-    uploadedBy: "John Doe",
+const rows_d = [
+  { 
+    subject: 'Forgot password',
+    lastUpdated: '2022-04-01T12:15:00.000Z',
+		status: <span style={{color: 'green'}}>Open</span>,
+		priority: <span style={{color: 'orange'}}>Medium</span>,
+    assigned: 'Samantha Lee',
   },
-  {
-    name: "File 2.pdf",
-    size: "1.5 MB",
-    date: "2021-09-01",
-    uploadedBy: "John Doe",
+  { 
+    subject: 'Error message when trying to checkout',
+    lastUpdated: '2022-04-02T14:20:00.000Z',
+		status: <span style={{color: 'blue'}}>In Progress</span>,
+		priority: <span style={{color: 'red'}}>High</span>,
+    assigned: 'David Kim',
   },
-  {
-    name: "Image 1.png",
-    size: "115 MB",
-    date: "2021-09-01",
-    uploadedBy: "John Doe",
+  { 
+    subject: 'Missing order confirmation email',
+    lastUpdated: '2022-04-03T09:55:00.000Z',
+		status: <span style={{color: 'green'}}>Open</span>,
+		priority: <span style={{color: 'green'}}>Low</span>,
+    assigned: 'Michael Chen',
+  },
+  { 
+    subject: 'Product not delivered on time',
+    lastUpdated: '2022-04-04T17:30:00.000Z',
+		status: <span style={{color: 'blue'}}>In Progress</span>,
+		priority: <span style={{color: 'orange'}}>Medium</span>,
+    assigned: 'Jessica Lee',
+  },
+  { 
+    subject: 'Wrong item received',
+    lastUpdated: '2022-04-05T11:10:00.000Z',
+		status: <span style={{color: 'red'}}>Closed</span>,
+		priority: <span style={{color: 'green'}}>Low</span>,
+    assigned: 'Kevin Chen',
+  },
+	{ 
+    subject: 'Wrong item received',
+    lastUpdated: '2022-04-05T11:10:00.000Z',
+		status: <span style={{color: 'red'}}>Closed</span>,
+		priority: <span style={{color: 'green'}}>Low</span>,
+    assigned: 'Kevin Chen',
+  },
+	{ 
+    subject: 'Wrong item received',
+    lastUpdated: '2022-04-05T11:10:00.000Z',
+		status: <span style={{color: 'red'}}>Closed</span>,
+		priority: <span style={{color: 'green'}}>Low</span>,
+    assigned: 'Kevin Chen',
+  },
+	{ 
+    subject: 'Wrong item received',
+    lastUpdated: '2022-04-05T11:10:00.000Z',
+		status: <span style={{color: 'red'}}>Closed</span>,
+		priority: <span style={{color: 'green'}}>Low</span>,
+    assigned: 'Kevin Chen',
   },
 ];
 
-export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
+export const IndividualProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
   const classes = useStyles();
 
   const divRef: RefObject<HTMLDivElement> = useRef(null);
-  const divTicketInformationRef: RefObject<HTMLDivElement> = useRef(null);
+  const divProjectInformationRef: RefObject<HTMLDivElement> = useRef(null);
 
   const [height, setHeight] = useState<number | null>(null);
   const [deviceWidthUpdate, setDeviceWidthUpdate] = useState<number | null>(null);
@@ -286,8 +328,8 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
   }, []);
 
   useEffect(() => {
-    if (divTicketInformationRef.current) {
-      const elementHeight = divTicketInformationRef.current.offsetHeight;
+    if (divProjectInformationRef.current) {
+      const elementHeight = divProjectInformationRef.current.offsetHeight;
       setHeight(elementHeight);
     }
   }, [deviceWidthUpdate]);
@@ -298,7 +340,7 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
 
   return (
     <div className={classes.root}>
-      <Typography variant="h2">Ticket</Typography>
+      <Typography variant="h2">Project</Typography>
       <div className={classes.paperContainer}>
         <Paper className={classes.paper}>
           <div className={classes.chatContainer}>
@@ -364,39 +406,22 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
           </div>
         </Paper>
         <Paper className={classes.paper}>
-          <div ref={divTicketInformationRef}>
-            <Typography variant="h5" sx={{ padding: "10px" }}>Ticket Details</Typography>
-            <div className={classes.ticketManageButtons}>
+          <div ref={divProjectInformationRef}>
+            <Typography variant="h5" sx={{ padding: "10px" }}>Project Details</Typography>
+            <div className={classes.projectManageButtons}>
               <Button variant="contained" color="primary"
                 endIcon={<FontAwesomeIcon icon={faEdit} style={{ "marginTop": -4 }}/>}
-                sx={{ color: "white", marginTop: "8px", width: 150 }}
-                onClick={() => navigate('/edit-ticket/1')}
-              >Edit Ticket</Button>
-              <FormControl sx={{ m: 1, width: 150}}>
-                <InputLabel id="demo-simple-select-label">Status</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={"open"}
-                  label="Status"
-                  sx={{ height: 38}}
-                >
-                  <MenuItem value={"open"}>Open</MenuItem>
-                  <MenuItem value={"inProgress"}>In Progress</MenuItem>
-                  <MenuItem value={"closed"}>Closed</MenuItem>
-                </Select>
-              </FormControl>
+                sx={{ color: "white", marginTop: "8px", width: 160 }}
+              >Edit Project</Button>
             </div>
             <div className={classes.containerInformation}>
-              <Info label="Name" data="Issue Regarding Project #5" />
+              <Info label="Name" data="New Interface for Ticket System" />
               <Info label="Creator" data="John Doe" />
-              <Info label="Assignee" data="Jane Smith" />
-              <Info label="Project" data="My Project" />
-              <Info label="Priority" data="High" color="red" />
-              <Info label="Status" data="In Progress" color="blue" />
+              <Info label="Contact Person" data="Jane Smith" />
+              <Info label="Associated Company" data="Saab" />
             </div>
           </div>
-          <div className={classes.containerTicketExtended} style={{ height: `calc(100% - ${height}px - 15px)`}}>
+          <div className={classes.containerProjectExtended} style={{ height: `calc(100% - ${height}px - 15px)`}}>
             <Paper>
               <Typography variant="h6" sx={{ padding: "10px" }}>Description</Typography>
               <Typography variant="body1" sx={{ padding: "10px" }}>
@@ -404,15 +429,15 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
               </Typography>
             </Paper>
             <Paper>
-              <div className={classes.ticketAttachmentHeader}>
-                <Typography variant="h6" sx={{ padding: "10px" }}>Attachments</Typography>
+              <div className={classes.projectAttachmentHeader}>
+                <Typography variant="h6" sx={{ padding: "10px" }}>Tickets</Typography>
                 <Button variant="contained" color="primary"
                   endIcon={<FontAwesomeIcon icon={faPlus}/>}
-                  sx={{ color: "white", marginTop: "8px", width: 190 }}
-                  onClick={() => dispatch({ type: UPLOAD_FILE_OPEN, payload: true })}
-                >Add Attachment</Button>
+                  sx={{ color: "white", marginTop: "8px", width: 160 }}
+                  onClick={() => navigate('/create-ticket')}
+                >Create Ticket</Button>
               </div>
-              <CustomTableIndividual rows={data} columns={columns} maxHeight='calc(100% - 55px)'/>
+              <CustomTableIndividual rows={rows_d} columns={columns} maxHeight='calc(100% - 55px)'/>
             </Paper>
           </div>
         </Paper>

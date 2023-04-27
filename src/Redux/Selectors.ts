@@ -3,6 +3,8 @@ import { State } from "./Reducer";
 export const getOperationInProgress = (state: State) => state.operationInProgress;
 export const getInLineOperationInProgress = (state: State) => state.inLineOperationInProgress;
 
+export const getUploadFile = (state: State) => state.uploadFile;
+
 export const getCreateProject = (state: State) => state.createProject;
 export const getCreateProjectName = (state: State) => state.createProject.name;
 export const getCreateProjectDescription = (state: State) => state.createProject.description;
