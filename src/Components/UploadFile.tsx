@@ -9,7 +9,7 @@ import { UPLOAD_FILE_OPEN } from '../Redux/Actions';
 const useStyles = createUseStyles((theme: Theme) => ({
 	downloadBox: {
 		borderColor: theme.backgroundSecondary,
-		border: '1px solid',
+		border: '2px solid',
 		borderStyle: 'dashed',
 		borderRadius: '5px',
 		height: '50%',
