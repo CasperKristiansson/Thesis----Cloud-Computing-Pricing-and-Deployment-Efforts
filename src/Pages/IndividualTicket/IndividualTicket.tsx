@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { CustomTableIndividual } from "../../Components/CustomTableIndividual";
 import { UPLOAD_FILE_OPEN } from "../../Redux/Actions";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = createUseStyles({
   root: {
@@ -276,6 +277,8 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
   const [height, setHeight] = useState<number | null>(null);
   const [deviceWidthUpdate, setDeviceWidthUpdate] = useState<number | null>(null);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     window.addEventListener('resize', () => {
       setDeviceWidthUpdate(window.innerWidth);
@@ -367,6 +370,7 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
               <Button variant="contained" color="primary"
                 endIcon={<FontAwesomeIcon icon={faEdit} style={{ "marginTop": -4 }}/>}
                 sx={{ color: "white", marginTop: "8px", width: 150 }}
+                onClick={() => navigate('/edit-ticket/1')}
               >Edit Ticket</Button>
               <FormControl sx={{ m: 1, width: 150}}>
                 <InputLabel id="demo-simple-select-label">Status</InputLabel>
