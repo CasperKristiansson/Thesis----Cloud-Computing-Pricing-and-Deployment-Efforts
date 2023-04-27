@@ -5,6 +5,7 @@ import { RefObject, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { CustomTableIndividual } from "../../Components/CustomTableIndividual";
+import { UPLOAD_FILE_OPEN } from "../../Redux/Actions";
 
 const useStyles = createUseStyles({
   root: {
@@ -216,7 +217,7 @@ const comments = [
     image: 'https://i.pravatar.cc/300?img=4',
   },
   {
-    id: 6,
+    id: 7,
     name: "Jane Doe",
     date: "2021-09-01",
     comment: "This is a comment",
@@ -224,7 +225,7 @@ const comments = [
     image: 'https://i.pravatar.cc/300?img=4',
   },
   {
-    id: 6,
+    id: 8,
     name: "Jane Doe",
     date: "2021-09-01",
     comment: "This is a comment",
@@ -232,7 +233,7 @@ const comments = [
     image: 'https://i.pravatar.cc/300?img=4',
   },
   {
-    id: 6,
+    id: 9,
     name: "Jane Doe",
     date: "2021-09-01",
     comment: "This is a comment. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc.",
@@ -404,6 +405,7 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
                 <Button variant="contained" color="primary"
                   endIcon={<FontAwesomeIcon icon={faPlus}/>}
                   sx={{ color: "white", marginTop: "8px", width: 190 }}
+                  onClick={() => dispatch({ type: UPLOAD_FILE_OPEN, payload: true })}
                 >Add Attachment</Button>
               </div>
               <CustomTableIndividual rows={data} columns={columns} maxHeight='calc(100% - 55px)'/>

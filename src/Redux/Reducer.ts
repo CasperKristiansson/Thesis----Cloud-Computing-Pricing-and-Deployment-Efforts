@@ -1,6 +1,6 @@
 import { CreateProject } from "../Models/CreateProject";
 import { CreateTicket } from "../Models/CreateTicket";
-import { RESET_CREATE_PROJECT, RESET_CREATE_TICKET, SET_CREATE_PROJECT_ASSOCIATED_COMPANY, SET_CREATE_PROJECT_DESCRIPTION, SET_CREATE_PROJECT_NAME, SET_CREATE_TICKET_ASSIGNEE, SET_CREATE_TICKET_DESCRIPTION, SET_CREATE_TICKET_NAME, SET_CREATE_TICKET_PRIORITY, SET_CREATE_TICKET_PROJECT, SET_IN_LINE_OPERATION_IN_PROGRESS, SET_OPERATION_IN_PROGRESS, SET_TOKEN } from "./Actions";
+import { RESET_CREATE_PROJECT, RESET_CREATE_TICKET, SET_CREATE_PROJECT_ASSOCIATED_COMPANY, SET_CREATE_PROJECT_DESCRIPTION, SET_CREATE_PROJECT_NAME, SET_CREATE_TICKET_ASSIGNEE, SET_CREATE_TICKET_DESCRIPTION, SET_CREATE_TICKET_NAME, SET_CREATE_TICKET_PRIORITY, SET_CREATE_TICKET_PROJECT, SET_IN_LINE_OPERATION_IN_PROGRESS, SET_OPERATION_IN_PROGRESS, SET_TOKEN, UPLOAD_FILE_OPEN } from "./Actions";
 
 export interface State {
     operationInProgress: boolean;
@@ -8,6 +8,7 @@ export interface State {
     createProject: CreateProject;
     createTicket: CreateTicket;
     token: string;
+    uploadFile: boolean;
 }
 
 export const initialState: State = {
@@ -16,6 +17,7 @@ export const initialState: State = {
     createProject: {} as CreateProject,
     createTicket: {} as CreateTicket,
     token: localStorage.getItem('ats-token') || '',
+    uploadFile: false,
 };
 
 export default function Reducer(state = initialState, { type, payload }: { type: string; payload?: any }) {
@@ -109,6 +111,11 @@ export default function Reducer(state = initialState, { type, payload }: { type:
             return {
                 ...state,
                 createTicket: {} as CreateTicket,
+            };
+        case UPLOAD_FILE_OPEN:
+            return {
+                ...state,
+                uploadFile: payload,
             };
         default:
             return state;
