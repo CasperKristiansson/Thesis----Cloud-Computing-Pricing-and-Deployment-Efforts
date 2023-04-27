@@ -5,7 +5,6 @@ import { RefObject, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { CustomTableIndividual } from "../../Components/CustomTableIndividual";
-import { UPLOAD_FILE_OPEN } from "../../Redux/Actions";
 import { useNavigate } from "react-router-dom";
 
 const useStyles = createUseStyles({
@@ -13,7 +12,7 @@ const useStyles = createUseStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: "2px 20px",
+    padding: "4px 10px",
     marginBottom: "10px",
     height: "calc(100% - 10px)",
   },
@@ -340,7 +339,7 @@ export const IndividualProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch 
 
   return (
     <div className={classes.root}>
-      <Typography variant="h2">Project</Typography>
+      {/* <Typography variant="h2">Project</Typography> */}
       <div className={classes.paperContainer}>
         <Paper className={classes.paper}>
           <div className={classes.chatContainer}>

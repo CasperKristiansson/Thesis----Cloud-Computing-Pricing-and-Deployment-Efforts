@@ -13,7 +13,7 @@ const useStyles = createUseStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: "2px 20px",
+    padding: "4px 10px",
     marginBottom: "10px",
     height: "calc(100% - 10px)",
   },
@@ -298,7 +298,7 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
 
   return (
     <div className={classes.root}>
-      <Typography variant="h2">Ticket</Typography>
+      {/* <Typography variant="h2">Ticket</Typography> */}
       <div className={classes.paperContainer}>
         <Paper className={classes.paper}>
           <div className={classes.chatContainer}>
@@ -365,7 +365,7 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
         </Paper>
         <Paper className={classes.paper}>
           <div ref={divTicketInformationRef}>
-            <Typography variant="h5" sx={{ padding: "10px" }}>Ticket Details</Typography>
+            <Typography variant="h4" sx={{ padding: "10px" }}>Ticket Details</Typography>
             <div className={classes.ticketManageButtons}>
               <Button variant="contained" color="primary"
                 endIcon={<FontAwesomeIcon icon={faEdit} style={{ "marginTop": -4 }}/>}
