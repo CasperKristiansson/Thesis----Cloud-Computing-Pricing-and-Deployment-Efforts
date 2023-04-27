@@ -3,7 +3,7 @@ import { createUseStyles } from "react-jss";
 import { AppDispatch } from "../../store";
 import { RefObject, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { CustomTableIndividual } from "../../Components/CustomTableIndividual";
 
 const useStyles = createUseStyles({
@@ -156,6 +156,13 @@ const useStyles = createUseStyles({
       height: '100%',
       overflowY: 'scroll',
     },
+  },
+  ticketAttachmentHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    columnGap: 20,
   },
 });
 
@@ -392,7 +399,13 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
               </Typography>
             </Paper>
             <Paper>
-              <Typography variant="h6" sx={{ padding: "10px" }}>Attachments</Typography>
+              <div className={classes.ticketAttachmentHeader}>
+                <Typography variant="h6" sx={{ padding: "10px" }}>Attachments</Typography>
+                <Button variant="contained" color="primary"
+                  endIcon={<FontAwesomeIcon icon={faPlus}/>}
+                  sx={{ color: "white", marginTop: "8px", width: 190 }}
+                >Add Attachment</Button>
+              </div>
               <CustomTableIndividual rows={data} columns={columns} maxHeight='calc(100% - 55px)'/>
             </Paper>
           </div>
