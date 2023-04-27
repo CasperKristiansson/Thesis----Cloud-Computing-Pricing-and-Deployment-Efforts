@@ -1,4 +1,4 @@
-import { Button, InputBase, Paper, Typography, Avatar, Box, MenuItem, FormControl, InputLabel, Select } from "@mui/material";
+import { Button, InputBase, Paper, Typography, Avatar, Box } from "@mui/material";
 import { createUseStyles } from "react-jss";
 import { AppDispatch } from "../../store";
 import { RefObject, useEffect, useRef, useState } from "react";
@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { CustomTableIndividual } from "../../Components/CustomTableIndividual";
 import { UPLOAD_FILE_OPEN } from "../../Redux/Actions";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = createUseStyles({
   root: {
@@ -243,27 +244,69 @@ const comments = [
 ];
 
 const columns = [
-  "File Name", "File Size", "Date Uploaded", "Uploaded By"
+	'Subject', 
+	'Last Updated',
+	'Status',
+	'Priority',
+	'Assigned',
 ];
 
-const data = [
-  {
-    name: "File 1.pdf",
-    size: "1.5 MB",
-    date: "2021-09-01",
-    uploadedBy: "John Doe",
+const rows_d = [
+  { 
+    subject: 'Forgot password',
+    lastUpdated: '2022-04-01T12:15:00.000Z',
+		status: <span style={{color: 'green'}}>Open</span>,
+		priority: <span style={{color: 'orange'}}>Medium</span>,
+    assigned: 'Samantha Lee',
   },
-  {
-    name: "File 2.pdf",
-    size: "1.5 MB",
-    date: "2021-09-01",
-    uploadedBy: "John Doe",
+  { 
+    subject: 'Error message when trying to checkout',
+    lastUpdated: '2022-04-02T14:20:00.000Z',
+		status: <span style={{color: 'blue'}}>In Progress</span>,
+		priority: <span style={{color: 'red'}}>High</span>,
+    assigned: 'David Kim',
   },
-  {
-    name: "Image 1.png",
-    size: "115 MB",
-    date: "2021-09-01",
-    uploadedBy: "John Doe",
+  { 
+    subject: 'Missing order confirmation email',
+    lastUpdated: '2022-04-03T09:55:00.000Z',
+		status: <span style={{color: 'green'}}>Open</span>,
+		priority: <span style={{color: 'green'}}>Low</span>,
+    assigned: 'Michael Chen',
+  },
+  { 
+    subject: 'Product not delivered on time',
+    lastUpdated: '2022-04-04T17:30:00.000Z',
+		status: <span style={{color: 'blue'}}>In Progress</span>,
+		priority: <span style={{color: 'orange'}}>Medium</span>,
+    assigned: 'Jessica Lee',
+  },
+  { 
+    subject: 'Wrong item received',
+    lastUpdated: '2022-04-05T11:10:00.000Z',
+		status: <span style={{color: 'red'}}>Closed</span>,
+		priority: <span style={{color: 'green'}}>Low</span>,
+    assigned: 'Kevin Chen',
+  },
+	{ 
+    subject: 'Wrong item received',
+    lastUpdated: '2022-04-05T11:10:00.000Z',
+		status: <span style={{color: 'red'}}>Closed</span>,
+		priority: <span style={{color: 'green'}}>Low</span>,
+    assigned: 'Kevin Chen',
+  },
+	{ 
+    subject: 'Wrong item received',
+    lastUpdated: '2022-04-05T11:10:00.000Z',
+		status: <span style={{color: 'red'}}>Closed</span>,
+		priority: <span style={{color: 'green'}}>Low</span>,
+    assigned: 'Kevin Chen',
+  },
+	{ 
+    subject: 'Wrong item received',
+    lastUpdated: '2022-04-05T11:10:00.000Z',
+		status: <span style={{color: 'red'}}>Closed</span>,
+		priority: <span style={{color: 'green'}}>Low</span>,
+    assigned: 'Kevin Chen',
   },
 ];
 
@@ -275,6 +318,8 @@ export const IndividualProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch 
 
   const [height, setHeight] = useState<number | null>(null);
   const [deviceWidthUpdate, setDeviceWidthUpdate] = useState<number | null>(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.addEventListener('resize', () => {
@@ -385,14 +430,14 @@ export const IndividualProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch 
             </Paper>
             <Paper>
               <div className={classes.projectAttachmentHeader}>
-                <Typography variant="h6" sx={{ padding: "10px" }}>Attachments</Typography>
+                <Typography variant="h6" sx={{ padding: "10px" }}>Tickets</Typography>
                 <Button variant="contained" color="primary"
                   endIcon={<FontAwesomeIcon icon={faPlus}/>}
-                  sx={{ color: "white", marginTop: "8px", width: 190 }}
-                  onClick={() => dispatch({ type: UPLOAD_FILE_OPEN, payload: true })}
-                >Add Attachment</Button>
+                  sx={{ color: "white", marginTop: "8px", width: 160 }}
+                  onClick={() => navigate('/create-ticket')}
+                >Create Ticket</Button>
               </div>
-              <CustomTableIndividual rows={data} columns={columns} maxHeight='calc(100% - 55px)'/>
+              <CustomTableIndividual rows={rows_d} columns={columns} maxHeight='calc(100% - 55px)'/>
             </Paper>
           </div>
         </Paper>
