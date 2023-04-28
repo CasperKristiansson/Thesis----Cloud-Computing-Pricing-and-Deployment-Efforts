@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
-import { Paper, Typography, TextField, Checkbox, Button, Link } from '@mui/material';
+import { Paper, Typography, TextField, Button, Link } from '@mui/material';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrosoft } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
