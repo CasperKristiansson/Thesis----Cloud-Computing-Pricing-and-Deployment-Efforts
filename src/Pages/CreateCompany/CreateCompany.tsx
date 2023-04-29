@@ -14,7 +14,7 @@ import { Theme } from '../../Styling/Theme';
 import { useSelector } from 'react-redux';
 import { getCreateCompany } from '../../Redux/Selectors';
 import { StepTwo } from './ChildComponents/StepTwo';
-import { RESET_CREATE_PROJECT } from '../../Redux/Actions';
+import { RESET_CREATE_COMPANY } from '../../Redux/Actions';
 
 const useStyles = createUseStyles((theme: Theme) => {
 	return {
@@ -54,7 +54,7 @@ export const CreateCompany: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) =
 
 	useEffect(() => {
 		return () => {
-			dispatch({ type: RESET_CREATE_PROJECT });
+			dispatch({ type: RESET_CREATE_COMPANY });
 		}
 	}, [dispatch]);
 
