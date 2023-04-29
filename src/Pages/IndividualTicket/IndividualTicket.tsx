@@ -9,11 +9,22 @@ import { UPLOAD_FILE_OPEN } from "../../Redux/Actions";
 import { useNavigate } from "react-router-dom";
 
 const useStyles = createUseStyles({
+  containerWrapper: {
+		transformOrigin: 'top left',
+    transition: 'transform 0.3s ease-in-out',
+		height: "calc(100vh - 70px)",
+		'@media (max-width: 1200px)': {
+			height: "calc(145vh)",
+			marginBottom: "-23vh",
+			transform: 'scale(0.6)',
+			width: '167%',
+		},
+	},
   root: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: "2px 20px",
+    padding: "4px 10px",
     marginBottom: "10px",
     height: "calc(100% - 10px)",
   },
@@ -146,8 +157,8 @@ const useStyles = createUseStyles({
   containerTicketExtended: {
     display: 'flex',
     flexDirection: 'row',
-    margin: '10px 15px',
-    columnGap: 20,
+    margin: '5px 10px',
+    columnGap: 10,
     "& > *:first-child": {
       width: '33%',
       height: '100%',
@@ -297,125 +308,127 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
   }, []);
 
   return (
-    <div className={classes.root}>
-      <Typography variant="h2">Ticket</Typography>
-      <div className={classes.paperContainer}>
-        <Paper className={classes.paper}>
-          <div className={classes.chatContainer}>
-            <Typography variant="h5"
-              sx={{ padding: "10px" }}
-            >
-              Discussion
-            </Typography>
-            <div className={classes.chatMessages}>
-              <Box className={classes.chatBox} ref={divRef}>
-                {comments.map((comment) => (
-                  <Box key={comment.id} className={`${classes.commentContainer} ${comment.isAuthor ? classes.authorComment : ''}`}>
-                    {comment.isAuthor ? (
-                      <>
-                        <Box className={classes.commentContent}>
-                          <Typography variant="subtitle2" className={classes.commentNameAuthor}>
-                            {comment.name}
-                          </Typography>
-                          <Typography variant="body2" className={classes.commentDateAuthor}>
-                            {comment.date}
-                          </Typography>
-                          <Box className={`${classes.commentBubble} ${classes.authorCommentBubble}`}>
-                            <Typography variant="body1">{comment.comment}</Typography>
-                          </Box>
-                        </Box>
-                        <Avatar src={comment.image} alt={comment.name} className={classes.commentImage} />
-                      </>
-                    ) : (
-                      <>
-                        <Avatar src={comment.image} alt={comment.name} className={classes.commentImage} />
-                        <Box className={classes.commentContent}>
-                          <Typography variant="subtitle2" className={classes.commentName}>
-                            {comment.name}
-                          </Typography>
-                          <Typography variant="body2" className={classes.commentDate}>
-                            {comment.date}
-                          </Typography>
-                          <Box className={`${classes.commentBubble}`}>
-                            <Typography variant="body1">{comment.comment}</Typography>
-                          </Box>
-                        </Box>
-                      </>
-                    )}
-                  </Box>
-                ))}
-              </Box>
-            </div>
-            <div className={classes.inputBoxContainer}>
-              <Paper
-                component="form"
-                sx={{ display: 'flex', alignItems: 'center' }}
+    <div className={classes.containerWrapper}>
+      <div className={classes.root}>
+        {/* <Typography variant="h2">Ticket</Typography> */}
+        <div className={classes.paperContainer}>
+          <Paper className={classes.paper}>
+            <div className={classes.chatContainer}>
+              <Typography variant="h5"
+                sx={{ padding: "10px" }}
               >
-                <InputBase
-                  sx={{ ml: 1, flex: 1 }}
-                  placeholder="Add a comment"
-                  inputProps={{ 'aria-label': 'Add a comment' }}
-                />
+                Discussion
+              </Typography>
+              <div className={classes.chatMessages}>
+                <Box className={classes.chatBox} ref={divRef}>
+                  {comments.map((comment) => (
+                    <Box key={comment.id} className={`${classes.commentContainer} ${comment.isAuthor ? classes.authorComment : ''}`}>
+                      {comment.isAuthor ? (
+                        <>
+                          <Box className={classes.commentContent}>
+                            <Typography variant="subtitle2" className={classes.commentNameAuthor}>
+                              {comment.name}
+                            </Typography>
+                            <Typography variant="body2" className={classes.commentDateAuthor}>
+                              {comment.date}
+                            </Typography>
+                            <Box className={`${classes.commentBubble} ${classes.authorCommentBubble}`}>
+                              <Typography variant="body1">{comment.comment}</Typography>
+                            </Box>
+                          </Box>
+                          <Avatar src={comment.image} alt={comment.name} className={classes.commentImage} />
+                        </>
+                      ) : (
+                        <>
+                          <Avatar src={comment.image} alt={comment.name} className={classes.commentImage} />
+                          <Box className={classes.commentContent}>
+                            <Typography variant="subtitle2" className={classes.commentName}>
+                              {comment.name}
+                            </Typography>
+                            <Typography variant="body2" className={classes.commentDate}>
+                              {comment.date}
+                            </Typography>
+                            <Box className={`${classes.commentBubble}`}>
+                              <Typography variant="body1">{comment.comment}</Typography>
+                            </Box>
+                          </Box>
+                        </>
+                      )}
+                    </Box>
+                  ))}
+                </Box>
+              </div>
+              <div className={classes.inputBoxContainer}>
+                <Paper
+                  component="form"
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <InputBase
+                    sx={{ ml: 1, flex: 1 }}
+                    placeholder="Add a comment"
+                    inputProps={{ 'aria-label': 'Add a comment' }}
+                  />
+                  <Button variant="contained" color="primary"
+                    sx={{ color: "white" }}
+                  >Send</Button>
+                </Paper>
+              </div>
+            </div>
+          </Paper>
+          <Paper className={classes.paper}>
+            <div ref={divTicketInformationRef}>
+              <Typography variant="h4" sx={{ padding: "10px" }}>Ticket Details</Typography>
+              <div className={classes.ticketManageButtons}>
                 <Button variant="contained" color="primary"
-                  sx={{ color: "white" }}
-                >Send</Button>
+                  endIcon={<FontAwesomeIcon icon={faEdit} style={{ "marginTop": -4 }}/>}
+                  sx={{ color: "white", marginTop: "8px", width: 150 }}
+                  onClick={() => navigate('/edit-ticket/1')}
+                >Edit Ticket</Button>
+                <FormControl sx={{ m: 1, width: 150}}>
+                  <InputLabel id="demo-simple-select-label">Status</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={"open"}
+                    label="Status"
+                    sx={{ height: 38}}
+                  >
+                    <MenuItem value={"open"}>Open</MenuItem>
+                    <MenuItem value={"inProgress"}>In Progress</MenuItem>
+                    <MenuItem value={"closed"}>Closed</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+              <div className={classes.containerInformation}>
+                <Info label="Name" data="Issue Regarding Project #5" />
+                <Info label="Creator" data="John Doe" />
+                <Info label="Assignee" data="Jane Smith" />
+                <Info label="Project" data="My Project" />
+                <Info label="Priority" data="High" color="red" />
+                <Info label="Status" data="In Progress" color="blue" />
+              </div>
+            </div>
+            <div className={classes.containerTicketExtended} style={{ height: `calc(100% - ${height}px - 15px)`}}>
+              <Paper>
+                <Typography variant="h6" sx={{ padding: "10px" }}>Description</Typography>
+                <Typography variant="body1" sx={{ padding: "10px" }}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc. Donec euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc. Donec euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc. Donec euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc.
+                </Typography>
+              </Paper>
+              <Paper>
+                <div className={classes.ticketAttachmentHeader}>
+                  <Typography variant="h6" sx={{ padding: "10px" }}>Attachments</Typography>
+                  <Button variant="contained" color="primary"
+                    endIcon={<FontAwesomeIcon icon={faPlus}/>}
+                    sx={{ color: "white", marginTop: "8px", width: 190 }}
+                    onClick={() => dispatch({ type: UPLOAD_FILE_OPEN, payload: true })}
+                  >Add Attachment</Button>
+                </div>
+                <CustomTableIndividual rows={data} columns={columns} maxHeight='calc(100% - 55px)'/>
               </Paper>
             </div>
-          </div>
-        </Paper>
-        <Paper className={classes.paper}>
-          <div ref={divTicketInformationRef}>
-            <Typography variant="h5" sx={{ padding: "10px" }}>Ticket Details</Typography>
-            <div className={classes.ticketManageButtons}>
-              <Button variant="contained" color="primary"
-                endIcon={<FontAwesomeIcon icon={faEdit} style={{ "marginTop": -4 }}/>}
-                sx={{ color: "white", marginTop: "8px", width: 150 }}
-                onClick={() => navigate('/edit-ticket/1')}
-              >Edit Ticket</Button>
-              <FormControl sx={{ m: 1, width: 150}}>
-                <InputLabel id="demo-simple-select-label">Status</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={"open"}
-                  label="Status"
-                  sx={{ height: 38}}
-                >
-                  <MenuItem value={"open"}>Open</MenuItem>
-                  <MenuItem value={"inProgress"}>In Progress</MenuItem>
-                  <MenuItem value={"closed"}>Closed</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-            <div className={classes.containerInformation}>
-              <Info label="Name" data="Issue Regarding Project #5" />
-              <Info label="Creator" data="John Doe" />
-              <Info label="Assignee" data="Jane Smith" />
-              <Info label="Project" data="My Project" />
-              <Info label="Priority" data="High" color="red" />
-              <Info label="Status" data="In Progress" color="blue" />
-            </div>
-          </div>
-          <div className={classes.containerTicketExtended} style={{ height: `calc(100% - ${height}px - 15px)`}}>
-            <Paper>
-              <Typography variant="h6" sx={{ padding: "10px" }}>Description</Typography>
-              <Typography variant="body1" sx={{ padding: "10px" }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc. Donec euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc. Donec euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc. Donec euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc.
-              </Typography>
-            </Paper>
-            <Paper>
-              <div className={classes.ticketAttachmentHeader}>
-                <Typography variant="h6" sx={{ padding: "10px" }}>Attachments</Typography>
-                <Button variant="contained" color="primary"
-                  endIcon={<FontAwesomeIcon icon={faPlus}/>}
-                  sx={{ color: "white", marginTop: "8px", width: 190 }}
-                  onClick={() => dispatch({ type: UPLOAD_FILE_OPEN, payload: true })}
-                >Add Attachment</Button>
-              </div>
-              <CustomTableIndividual rows={data} columns={columns} maxHeight='calc(100% - 55px)'/>
-            </Paper>
-          </div>
-        </Paper>
+          </Paper>
+        </div>
       </div>
     </div>
   );

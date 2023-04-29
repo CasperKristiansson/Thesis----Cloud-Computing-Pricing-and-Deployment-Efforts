@@ -11,10 +11,21 @@ import { IndividualTicket } from './Pages/IndividualTicket/IndividualTicket';
 import { EditTicket } from './Pages/EditTicket/EditTicket';
 import { EditProject } from './Pages/EditProject/EditProject';
 import { IndividualProject } from './Pages/IndividualProject/IndividualProject';
+import { NotFound } from './Pages/NotFound/NotFound';
+import { createUseStyles } from 'react-jss';
+
+const useStyles = createUseStyles({
+	container: {
+		height: "calc(100vh - 70px)",
+	}
+});
+
 
 export const ComponentRouting: React.FC<{dispatch: any}> = ({ dispatch }) => {
+	const classes = useStyles();
+
 	return (
-		<div style={{ height: "calc(100vh - 70px)" }}>
+		<div className={classes.container}>
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/tickets" element={<Tickets />} />
@@ -27,6 +38,7 @@ export const ComponentRouting: React.FC<{dispatch: any}> = ({ dispatch }) => {
 				<Route path="/project/:id" element={<IndividualProject dispatch={dispatch} />} />
 				<Route path="/edit-ticket/:id" element={<EditTicket dispatch={dispatch} />} />
 				<Route path="/edit-project/:id" element={<EditProject dispatch={dispatch} />} />
+				<Route path="*" element={<NotFound />} />
 			</Routes>
 		</div>
 	);
