@@ -15,6 +15,7 @@ import { NotFound } from './Pages/NotFound/NotFound';
 import { createUseStyles } from 'react-jss';
 import { ManageUsers } from './Pages/Admin/ManageUsers/ManageUser';
 import { ManageCompanies } from './Pages/Admin/ManageCompanies/ManageCompanies';
+import { CreateCompany } from './Pages/CreateCompany/CreateCompany';
 
 const useStyles = createUseStyles({
 	container: {
@@ -34,6 +35,7 @@ export const ComponentRouting: React.FC<{dispatch: any}> = ({ dispatch }) => {
 				<Route path="/projects" element={<Projects />} />
 				<Route path="/create-ticket" element={<CreateTicket dispatch={dispatch} />} />
 				<Route path="/create-project" element={<CreateProject dispatch={dispatch} />} />
+				<Route path="/create-company" element={<CreateCompany dispatch={dispatch} />} />
 				<Route path="/login" element={<Login dispatch={dispatch} />} />
 				<Route path="/register" element={<Register dispatch={dispatch} />} />
 				<Route path="/ticket/:id" element={<IndividualTicket dispatch={dispatch} />} />
