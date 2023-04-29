@@ -3,6 +3,7 @@ import { CustomTableAdmin } from "../../../Components/CustomTableAdmin";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { Link, useNavigate } from 'react-router-dom';
 
 const columns = [
 	'Company Name',
@@ -14,6 +15,7 @@ const columns = [
 
 export const ManageCompanies: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 	const [isOpen, setIsOpen] = useState(false);
+	const navigate = useNavigate();
 
   const handleOpenDialog = () => {
     setIsOpen(true);
@@ -73,6 +75,7 @@ export const ManageCompanies: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 						color="primary"
 						startIcon={<FontAwesomeIcon icon={faPlus} />}
 						sx={{ color: "white", marginRight: 1 }}
+						onClick={() => navigate('/create-company')}
 					>
 						Create Company
 					</Button>
