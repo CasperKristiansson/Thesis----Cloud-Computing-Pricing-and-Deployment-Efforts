@@ -9,6 +9,17 @@ import { UPLOAD_FILE_OPEN } from "../../Redux/Actions";
 import { useNavigate } from "react-router-dom";
 
 const useStyles = createUseStyles({
+  containerWrapper: {
+		transformOrigin: 'top left',
+    transition: 'transform 0.3s ease-in-out',
+		height: "calc(100vh - 70px)",
+		'@media (max-width: 1200px)': {
+			height: "calc(145vh)",
+			marginBottom: "-23vh",
+			transform: 'scale(0.6)',
+			width: '167%',
+		},
+	},
   root: {
     display: "flex",
     flexDirection: "column",
@@ -297,6 +308,7 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
   }, []);
 
   return (
+    <div className={classes.containerWrapper}>
     <div className={classes.root}>
       {/* <Typography variant="h2">Ticket</Typography> */}
       <div className={classes.paperContainer}>
@@ -417,6 +429,7 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
           </div>
         </Paper>
       </div>
+    </div>
     </div>
   );
 };
