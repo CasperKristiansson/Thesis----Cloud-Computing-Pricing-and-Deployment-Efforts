@@ -2,7 +2,7 @@ import { createUseStyles } from "react-jss";
 import { Theme } from "../../../Styling/Theme";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Grid, Box, Typography, Button, FormControl, InputLabel, MenuItem, Select, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { Grid, Box, Typography, Button, FormControl, InputLabel, MenuItem, Select, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { CustomTableAdmin } from "../../../Components/CustomTableAdmin";
 import { useState } from "react";
 
@@ -114,14 +114,22 @@ export const ManageUsers: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 				<Typography variant="h4" component="h1" mb={1} sx={{ marginLeft: -3 }}>
 					My Tickets
 				</Typography>
-				<Button
-					variant="contained"
-					color="primary"
-					startIcon={<FontAwesomeIcon icon={faPlus} />}
-					sx={{ color: "white", marginBottom: 1 }}
-				>
-					Create Ticket
-				</Button>
+				<Box display="flex" alignItems="center">
+					<TextField
+						label="Search Email"
+						variant="outlined"
+						size="small"
+						margin="dense"
+						sx={{ marginBottom: 1, marginRight: 1 }}
+					/>
+					<TextField
+						label="Search Name"
+						variant="outlined"
+						size="small"
+						margin="dense"
+						sx={{ marginBottom: 1, marginRight: 1 }}
+					/>
+				</Box>
 			</Box>
 			<Box>
 				<CustomTableAdmin rows={rows} columns={columns} maxHeight='calc(100vh - 175px)'/>
