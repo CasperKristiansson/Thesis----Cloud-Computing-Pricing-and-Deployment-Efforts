@@ -13,6 +13,8 @@ import { EditProject } from './Pages/EditProject/EditProject';
 import { IndividualProject } from './Pages/IndividualProject/IndividualProject';
 import { NotFound } from './Pages/NotFound/NotFound';
 import { createUseStyles } from 'react-jss';
+import { ManageUsers } from './Pages/Admin/ManageUsers/ManageUser';
+import { ManageCompanies } from './Pages/Admin/ManageCompanies/ManageCompanies';
 
 const useStyles = createUseStyles({
 	container: {
@@ -38,8 +40,8 @@ export const ComponentRouting: React.FC<{dispatch: any}> = ({ dispatch }) => {
 				<Route path="/project/:id" element={<IndividualProject dispatch={dispatch} />} />
 				<Route path="/edit-ticket/:id" element={<EditTicket dispatch={dispatch} />} />
 				<Route path="/edit-project/:id" element={<EditProject dispatch={dispatch} />} />
-				<Route path="/admin/manage-users" element={<></>} />
-				<Route path ="/admin/manage-companies" element={<></>} />
+				<Route path="/admin/manage-users" element={<ManageUsers dispatch={dispatch} />} />
+				<Route path ="/admin/manage-companies" element={<ManageCompanies dispatch={dispatch} />} />
 				<Route path="*" element={<NotFound />} />
 			</Routes>
 		</div>

@@ -113,9 +113,9 @@ export const Navigation: React.FC<{}> = (): JSX.Element => {
 
 	const checkIfAdminAction = () => {
 		switch (window.location.pathname) {
-			case "/manage-users":
+			case "/admin/manage-users":
 				return true;
-			case "/manage-projects":
+			case "/admin/manage-companies":
 				return true;
 			default:
 				return false;
@@ -152,11 +152,11 @@ export const Navigation: React.FC<{}> = (): JSX.Element => {
 					open={Boolean(adminPanelMenuAnchorEl)}
 					onClose={handleAdminPanelClose}
 				>
-					<MenuItem component={NavLink} to="/manage-users" onClick={handleAdminPanelClose}>
+					<MenuItem component={NavLink} to="/admin/manage-users" onClick={handleAdminPanelClose}>
 						Manage Users
 					</MenuItem>
-					<MenuItem component={NavLink} to="/manage-projects" onClick={handleAdminPanelClose}>
-						Manage Projects
+					<MenuItem component={NavLink} to="/admin/manage-companies" onClick={handleAdminPanelClose}>
+						Manage Companies
 					</MenuItem>
 				</Menu>
 				<Button className={classes.profileButton} onClick={handleProfileMenuClick}>
