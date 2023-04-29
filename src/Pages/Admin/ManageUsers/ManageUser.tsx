@@ -1,15 +1,6 @@
-import { createUseStyles } from "react-jss";
-import { Theme } from "../../../Styling/Theme";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Grid, Box, Typography, Button, FormControl, InputLabel, MenuItem, Select, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { CustomTableAdmin } from "../../../Components/CustomTableAdmin";
 import { useState } from "react";
-
-const useStyles = createUseStyles((theme: Theme) => {
-	return {
-	};
-});
 
 const columns = [
 	'User Name',
@@ -22,8 +13,6 @@ const columns = [
 ];
 
 export const ManageUsers: React.FC<{ dispatch: any }> = ({ dispatch }) => {
-	const classes = useStyles();
-
 	const [isOpen, setIsOpen] = useState(false);
 
   const handleOpenDialog = () => {
