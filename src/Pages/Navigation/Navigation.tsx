@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
@@ -85,7 +85,8 @@ const useStyles = createUseStyles((theme: Theme) => {
 export const Navigation: React.FC<{}> = (): JSX.Element => {
 	const classes = useStyles();
 	const [profileMenuAnchorEl, setProfileMenuAnchorEl] = useState(null);
-	
+	const [adminPanelMenuAnchorEl, setAdminPanelMenuAnchorEl] = useState(null);
+
 	const navigate = useNavigate();
 
 	const handleProfileMenuClick = (event: any) => {
@@ -96,10 +97,29 @@ export const Navigation: React.FC<{}> = (): JSX.Element => {
 		setProfileMenuAnchorEl(null);
 	};
 
+	const handleAdminPanelClick = (event: any) => {
+		setAdminPanelMenuAnchorEl(event.currentTarget);
+	};
+
+	const handleAdminPanelClose = () => {
+		setAdminPanelMenuAnchorEl(null);
+	};
+
 	const handleLogoutClick = () => {
 		localStorage.removeItem("ats-token");
 		navigate("/");
 		window.location.reload();
+	};
+
+	const checkIfAdminAction = () => {
+		switch (window.location.pathname) {
+			case "/manage-users":
+				return true;
+			case "/manage-projects":
+				return true;
+			default:
+				return false;
+		}
 	};
 
 	return (
@@ -124,9 +144,21 @@ export const Navigation: React.FC<{}> = (): JSX.Element => {
 				<NavLink to="/create-project" className={classes.navLink}>
 					Create Project
 				</NavLink>
-				<NavLink to="/admin" className={classes.navLink}>
+				<div onClick={handleAdminPanelClick} style={{ color: checkIfAdminAction() ? "#75BC5B" : "white", cursor: "pointer" }}>
 					Admin Panel
-				</NavLink>
+				</div>
+				<Menu
+					anchorEl={adminPanelMenuAnchorEl}
+					open={Boolean(adminPanelMenuAnchorEl)}
+					onClose={handleAdminPanelClose}
+				>
+					<MenuItem component={NavLink} to="/manage-users" onClick={handleAdminPanelClose}>
+						Manage Users
+					</MenuItem>
+					<MenuItem component={NavLink} to="/manage-projects" onClick={handleAdminPanelClose}>
+						Manage Projects
+					</MenuItem>
+				</Menu>
 				<Button className={classes.profileButton} onClick={handleProfileMenuClick}>
 					<Avatar alt="Profile picture" src="/profile.jpg" className={classes.profileAvatar} />
 				</Button>

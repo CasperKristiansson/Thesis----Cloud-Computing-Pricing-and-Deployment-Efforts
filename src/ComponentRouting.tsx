@@ -38,6 +38,8 @@ export const ComponentRouting: React.FC<{dispatch: any}> = ({ dispatch }) => {
 				<Route path="/project/:id" element={<IndividualProject dispatch={dispatch} />} />
 				<Route path="/edit-ticket/:id" element={<EditTicket dispatch={dispatch} />} />
 				<Route path="/edit-project/:id" element={<EditProject dispatch={dispatch} />} />
+				<Route path="/admin/manage-users" element={<></>} />
+				<Route path ="/admin/manage-companies" element={<></>} />
 				<Route path="*" element={<NotFound />} />
 			</Routes>
 		</div>
