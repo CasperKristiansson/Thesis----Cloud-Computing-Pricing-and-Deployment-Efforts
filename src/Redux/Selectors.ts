@@ -10,6 +10,11 @@ export const getCreateProjectName = (state: State) => state.createProject.name;
 export const getCreateProjectDescription = (state: State) => state.createProject.description;
 export const getCreateProjectAssociatedCompany = (state: State) => state.createProject.associatedCompany;
 
+export const getCreateCompany = (state: State) => state.createCompany;
+export const getCreateCompanyName = (state: State) => state.createCompany.name;
+export const getCreateCompanyPrimaryContact = (state: State) => state.createCompany.primaryContact;
+export const getCreateCompanyEmail = (state: State) => state.createCompany.email;
+
 export const getCreateTicket = (state: State) => state.createTicket;
 export const getCreateTicketName = (state: State) => state.createTicket.name;
 export const getCreateTicketPriority = (state: State) => state.createTicket.priority;
