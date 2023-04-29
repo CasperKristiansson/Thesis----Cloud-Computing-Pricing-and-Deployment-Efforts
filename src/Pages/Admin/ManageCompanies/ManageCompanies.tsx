@@ -1,6 +1,8 @@
 import { Grid, Box, Typography, Button, FormControl, InputLabel, MenuItem, Select, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { CustomTableAdmin } from "../../../Components/CustomTableAdmin";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const columns = [
 	'Company Name',
@@ -66,6 +68,14 @@ export const ManageCompanies: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 					Ticket System Companies
 				</Typography>
 				<Box display="flex" alignItems="center">
+					<Button
+						variant="contained"
+						color="primary"
+						startIcon={<FontAwesomeIcon icon={faPlus} />}
+						sx={{ color: "white", marginRight: 1 }}
+					>
+						Create Company
+					</Button>
 					<TextField
 						label="Search Company"
 						variant="outlined"
