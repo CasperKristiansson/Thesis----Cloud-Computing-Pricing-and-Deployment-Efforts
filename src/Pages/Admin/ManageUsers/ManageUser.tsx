@@ -112,7 +112,7 @@ export const ManageUsers: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 				sx={{ margin: "0 auto" }}
 			>
 				<Typography variant="h4" component="h1" mb={1} sx={{ marginLeft: -3 }}>
-					My Tickets
+					Ticket System Users
 				</Typography>
 				<Box display="flex" alignItems="center">
 					<TextField
