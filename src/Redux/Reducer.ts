@@ -1,7 +1,8 @@
+import { User } from "../Models/BackendModels/User";
 import { createCompany } from "../Models/CreateCompany";
 import { CreateProject } from "../Models/CreateProject";
 import { CreateTicket } from "../Models/CreateTicket";
-import { RESET_CREATE_COMPANY, RESET_CREATE_PROJECT, RESET_CREATE_TICKET, SET_CREATE_COMPANY_EMAIL, SET_CREATE_COMPANY_NAME, SET_CREATE_COMPANY_PRIMARY_CONTACT, SET_CREATE_PROJECT_ASSOCIATED_COMPANY, SET_CREATE_PROJECT_DESCRIPTION, SET_CREATE_PROJECT_NAME, SET_CREATE_TICKET_ASSIGNEE, SET_CREATE_TICKET_DESCRIPTION, SET_CREATE_TICKET_NAME, SET_CREATE_TICKET_PRIORITY, SET_CREATE_TICKET_PROJECT, SET_IN_LINE_OPERATION_IN_PROGRESS, SET_OPERATION_IN_PROGRESS, SET_TOKEN, UPLOAD_FILE_OPEN } from "./Actions";
+import { CLEAR_TOKEN, RESET_CREATE_COMPANY, RESET_CREATE_PROJECT, RESET_CREATE_TICKET, SET_CREATE_COMPANY_EMAIL, SET_CREATE_COMPANY_NAME, SET_CREATE_COMPANY_PRIMARY_CONTACT, SET_CREATE_PROJECT_ASSOCIATED_COMPANY, SET_CREATE_PROJECT_DESCRIPTION, SET_CREATE_PROJECT_NAME, SET_CREATE_TICKET_ASSIGNEE, SET_CREATE_TICKET_DESCRIPTION, SET_CREATE_TICKET_NAME, SET_CREATE_TICKET_PRIORITY, SET_CREATE_TICKET_PROJECT, SET_IN_LINE_OPERATION_IN_PROGRESS, SET_OPERATION_IN_PROGRESS, SET_TOKEN, SET_USER, UPLOAD_FILE_OPEN } from "./Actions";
 
 export interface State {
     operationInProgress: boolean;
@@ -11,6 +12,7 @@ export interface State {
     token: string;
     uploadFile: boolean;
     createCompany: createCompany;
+    user: User;
 }
 
 export const initialState: State = {
@@ -21,6 +23,7 @@ export const initialState: State = {
     token: localStorage.getItem('ats-token') || '',
     uploadFile: false,
     createCompany: {} as createCompany,
+    user: {} as User,
 };
 
 export default function Reducer(state = initialState, { type, payload }: { type: string; payload?: any }) {
@@ -105,6 +108,12 @@ export default function Reducer(state = initialState, { type, payload }: { type:
                 ...state,
                 token: payload,
             };
+        case CLEAR_TOKEN:
+            localStorage.removeItem('ats-token');
+            return {
+                ...state,
+                token: '',
+            };
         case RESET_CREATE_PROJECT:
             return {
                 ...state,
@@ -148,6 +157,11 @@ export default function Reducer(state = initialState, { type, payload }: { type:
             return {
                 ...state,
                 createCompany: {} as createCompany,
+            };
+        case SET_USER:
+            return {
+                ...state,
+                user: payload,
             };
         default:
             return state;

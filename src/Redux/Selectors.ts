@@ -23,3 +23,4 @@ export const getCreateTicketProject = (state: State) => state.createTicket.proje
 export const getCreateTicketDescription = (state: State) => state.createTicket.description;
 
 export const getToken = (state: State) => state.token;
+export const getUser = (state: State) => state.user;
