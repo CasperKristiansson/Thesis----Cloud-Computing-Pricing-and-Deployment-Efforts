@@ -7,3 +7,5 @@ python-dotenv
 pymssql
 flask
 flask-session
+requests
+msal

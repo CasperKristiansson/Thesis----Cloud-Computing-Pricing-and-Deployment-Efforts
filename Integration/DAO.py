@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 class DAO:
     connection = None
+    cursor = None
     
     def __init__(self):
         load_dotenv()
@@ -17,5 +18,7 @@ class DAO:
         if(server == None or username == None or password == None or database == None):
             raise Exception("Environment Variables not set or could not be loaded.")
         
-        self.connection = pymssql.connect(server, username, password, database)
+        connection = pymssql.connect(server, username, password, database)
+        self.connection = connection
+        self.cursor = connection.cursor()
     
