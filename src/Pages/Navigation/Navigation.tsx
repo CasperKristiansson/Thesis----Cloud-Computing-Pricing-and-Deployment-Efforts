@@ -135,7 +135,7 @@ export const Navigation: React.FC<{}> = (): JSX.Element => {
 		async function getImage() {
 			if (token !== '') {
 				try {
-					const response = await fetch("https://graph.microsoft.com/v1.0/me/photo/$value", {
+					const response = await fetch("https://graph.microsoft.com/v1.0/me/photos/64x64/$value", {
 						headers: {
 							"Authorization": `Bearer ${token}`
 						}
@@ -151,7 +151,7 @@ export const Navigation: React.FC<{}> = (): JSX.Element => {
 
 		}
 		getImage();
-	}, [token])
+	}, [token]);
 
 	return (
 		<div className={classes.navbar}>
