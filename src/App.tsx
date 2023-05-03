@@ -39,6 +39,7 @@ export const App = (): JSX.Element => {
   const [selectCompanyDialogOpen, setSelectCompanyDialogOpen] = React.useState(false);
   const [companies, setCompanies] = React.useState<Company[]>([]);
   const [selectedCompany, setSelectedCompany] = React.useState<string>('');
+  const [selectCompanySaveLoading, setSelectCompanySaveLoading] = React.useState<boolean>(false);
 
   const dispatch: AppDispatch = useDispatch();
   const classes = useStyles();
@@ -93,10 +94,13 @@ export const App = (): JSX.Element => {
   const handleSelectCompany = () => {
     if(selectedCompany === '') return;
 
+    setSelectCompanySaveLoading(true);
+
     requestApi('setCompany', "PUT", token, { companyId: selectedCompany }).then(response => {
       if (response) {
         setSelectCompanyDialogOpen(false);
       }
+      setSelectCompanySaveLoading(false);
     });
   }
 
@@ -125,7 +129,7 @@ export const App = (): JSX.Element => {
     </DialogContent>
 
     <DialogActions>
-      <Button onClick={handleSelectCompany}>Save</Button>
+      {!selectCompanySaveLoading ? <Button onClick={handleSelectCompany}>Save</Button> : <CircularProgress />}
     </DialogActions>
   </Dialog>
 
