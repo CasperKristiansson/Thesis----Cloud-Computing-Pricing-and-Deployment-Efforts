@@ -4,7 +4,6 @@ import logging
 import azure.functions as func
 from Integration.ProjectDAO import ProjectDAO
 
-from Integration.ProjectUserDAO import ProjectUserDAO
 from validation import get_user_from_token
 
 # Get all projects user has access to

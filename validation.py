@@ -54,11 +54,13 @@ def get_user_from_token(token):
         raise Exception("User not found")
     
     role = user[1]
+    companyId = user[2]
     
     if role != 'USER' and role != 'ADMIN':
         raise Exception("User does not have role 'USER' or 'ADMIN'")
     
     response_user['role'] = role
+    response_user['companyId'] = companyId
     return response_user
     
 

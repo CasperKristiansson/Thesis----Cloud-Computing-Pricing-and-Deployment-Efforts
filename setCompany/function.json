@@ -7,9 +7,8 @@
       "direction": "in",
       "name": "req",
       "methods": [
-        "get"
-      ],
-      "crossOrigin": "true"
+        "put"
+      ]
     },
     {
       "type": "http",

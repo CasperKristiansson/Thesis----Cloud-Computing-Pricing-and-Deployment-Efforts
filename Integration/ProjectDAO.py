@@ -15,7 +15,8 @@ class ProjectDAO(DAO):
                 'id': p[0],
                 'name': p[1],
                 'description': p[2],
-                'companyName': p[3],
+                'companyId': p[3],
+                'creatorId': p[4]
             })
 
         return projects
@@ -33,7 +34,8 @@ class ProjectDAO(DAO):
             'id': result[0],
             'name': result[1],
             'description': result[2],
-            'companyName': result[3]
+            'companyId': result[3],
+            'creatorId': result[4]
         }
 
         return project

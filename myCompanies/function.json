@@ -8,8 +8,7 @@
       "name": "req",
       "methods": [
         "get"
-      ],
-      "crossOrigin": "true"
+      ]
     },
     {
       "type": "http",
