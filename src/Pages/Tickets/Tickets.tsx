@@ -3,6 +3,7 @@ import { CustomTable } from '../../Components/CustomTable';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
 const rows = [
   { 
@@ -108,6 +109,8 @@ const columns = [
 ];
 
 export const Tickets: React.FC<{}> = () => {
+  const navigate = useNavigate();
+
   return (
     <Grid container spacing={2} direction="column" pt={2} sx={{ height: "100%" }}>
       <Grid item sx={{ height: "45%" }}>
@@ -127,6 +130,7 @@ export const Tickets: React.FC<{}> = () => {
             color="primary"
             startIcon={<FontAwesomeIcon icon={faPlus} />}
 						sx={{ color: "white", marginBottom: 1 }}
+            onClick={() => navigate("/create-ticket")}
           >
             Create Ticket
           </Button>

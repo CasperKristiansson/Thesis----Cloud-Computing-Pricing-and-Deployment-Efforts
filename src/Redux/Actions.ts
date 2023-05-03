@@ -21,4 +21,6 @@ export const SET_CREATE_TICKET_DESCRIPTION = 'SET_CREATE_TICKET_DESCRIPTION';
 export const RESET_CREATE_TICKET = 'RESET_CREATE_TICKET';
 
 export const SET_TOKEN = 'SET_TOKEN';
+export const CLEAR_TOKEN = 'CLEAR_TOKEN';
+export const SET_USER = 'SET_USER';
 export const LOGIN = 'LOGIN';
