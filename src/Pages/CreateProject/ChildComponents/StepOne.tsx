@@ -1,10 +1,9 @@
 import { Theme } from '../../../Styling/Theme';
 import { createUseStyles } from 'react-jss';
 import { FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
-import { useSelector } from 'react-redux';
 import { AppDispatch } from '../../../store';
-import { SET_CREATE_PROJECT_ASSOCIATED_COMPANY, SET_CREATE_PROJECT_DESCRIPTION, SET_CREATE_PROJECT_NAME } from '../../../Redux/Actions';
-import { getCreateProjectAssociatedCompany, getCreateProjectDescription, getCreateProjectName } from '../../../Redux/Selectors';
+import { Company } from '../../../Models/BackendModels/Company';
+import { CreateProjectRequest } from '../../../Models/RequestModels/CreateProjectRequest';
 
 const useStyles = createUseStyles((theme: Theme) => {
   return {
@@ -14,10 +13,7 @@ const useStyles = createUseStyles((theme: Theme) => {
   };
 });
 
-export const StepOne: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
-  const projectName = useSelector(getCreateProjectName);
-  const associatedCompany = useSelector(getCreateProjectAssociatedCompany);
-  const companyDescription = useSelector(getCreateProjectDescription);
+export const StepOne: React.FC<{dispatch: AppDispatch, companies: Company[], createProjectRequest: CreateProjectRequest, setCreateProjectRequest: (val: CreateProjectRequest) => void}> = ({ dispatch, companies, createProjectRequest, setCreateProjectRequest }) => {
   const classes = useStyles();
 
   return (
@@ -29,25 +25,22 @@ export const StepOne: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
       <TextField
         id="project-name-input"
         label="Project Name"
-        value={projectName ? projectName : ''}
-        onChange={(e) => {
-          dispatch({ type: SET_CREATE_PROJECT_NAME, payload: e.target.value });
-        }}
+        value={createProjectRequest.name}
+        onChange={(e) => setCreateProjectRequest({ ...createProjectRequest, name: e.target.value })}
       />
       <FormControl>
         <InputLabel id="company-dropdown-label">Company</InputLabel>
         <Select
           labelId="company-dropdown-label"
           id="company-dropdown"
-          value={associatedCompany ? associatedCompany : ''}
-          onChange={(e) => {
-            dispatch({ type: SET_CREATE_PROJECT_ASSOCIATED_COMPANY, payload: e.target.value });
-          }}
+          value={createProjectRequest.companyId}
+          onChange={(e) => setCreateProjectRequest({ ...createProjectRequest, companyId: e.target.value as string})}
           label="Company"
         >
-          <MenuItem value={1}>Company 1</MenuItem>
-          <MenuItem value={2}>Company 2</MenuItem>
-          <MenuItem value={3}>Company 3</MenuItem>
+          {companies.map((company) => {
+            return <MenuItem key={company.id} value={company.id}>{company.name}</MenuItem>
+          })
+          }
         </Select>
       </FormControl>
       <TextField
@@ -55,10 +48,8 @@ export const StepOne: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
         label="Company Description"
         multiline
         rows={4}
-        value={companyDescription ? companyDescription : ''}
-        onChange={(e) => {
-          dispatch({ type: SET_CREATE_PROJECT_DESCRIPTION, payload: e.target.value });
-        }}
+        value={createProjectRequest.description}
+        onChange={(e) => setCreateProjectRequest({ ...createProjectRequest, description: e.target.value })}
       />
     </div>
     </>
