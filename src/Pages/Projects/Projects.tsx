@@ -3,6 +3,13 @@ import { CustomTable } from '../../Components/CustomTable';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { Project } from '../../Models/BackendModels/Project';
+import { requestApi } from '../../Utils/Fetch';
+import { useDispatch, useSelector } from 'react-redux';
+import { getToken, getUser } from '../../Redux/Selectors';
+import { SET_OPERATION_IN_PROGRESS } from '../../Redux/Actions';
+import { useNavigate } from 'react-router-dom';
+import { ProjectResponse } from '../../Models/ResponseModels/ProjectResponse';
 
 const rows = [
   {
@@ -44,7 +51,7 @@ const rows_d = [
     customer: "GHI Corp",
     projectID: "PRJ-2468123",
   },
-	{
+  {
     projectName: "Project B",
     lastUpdated: "2023-04-08T15:45:00.000Z",
     customer: "XYZ Corp",
@@ -61,6 +68,62 @@ const rows_d = [
 const columns = ["Project Name", "Last Updated", "Customer", "Project ID"];
 
 export const Projects: React.FC<{}> = () => {
+  const [myProjects, setMyProjects] = React.useState([]);
+
+  const [allProjects, setAllProjects] = React.useState([]);
+
+  const token = useSelector(getToken);
+
+  const user = useSelector(getUser);
+
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: true });
+
+    async function getProjects() {
+      // Get myProjects
+        requestApi("/myProjects", "GET", token).then((response) => {
+          if (response) {
+            const projects = response.map((p: ProjectResponse) => {
+              return {
+                projectName: p.name,
+                lastUpdated: p.lastEdited,
+                customer: p.companyName,
+                projectID: p.id.substring(0, 8) + "...",
+              }
+            })
+            setMyProjects(projects);
+            if(user?.role !== 'ADMIN'){
+              dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: false });
+            }
+          }
+        });
+
+      // Get allProjects if admin
+      if (user?.role === 'ADMIN') {
+        requestApi("/allProjects", "GET", token).then((response) => {
+          if (response) {
+            const projects = response.map((p: ProjectResponse) => {
+              return {
+                projectName: p.name,
+                lastUpdated: p.lastEdited,
+                customer: p.companyName,
+                projectID: p.id.substring(0, 8) + "...",
+              }
+            })
+            setAllProjects(projects);
+            dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: false });
+          }
+        });
+      }
+    }
+
+    getProjects();
+  }, [token, user]);
+
   return (
     <Grid container spacing={2} direction="column" pt={2} sx={{ height: "100%" }}>
       <Grid item sx={{ height: "45%" }}>
@@ -79,16 +142,18 @@ export const Projects: React.FC<{}> = () => {
             variant="contained"
             color="primary"
             startIcon={<FontAwesomeIcon icon={faPlus} />}
-						sx={{ color: "white", marginBottom: 1 }}
+            sx={{ color: "white", marginBottom: 1 }}
+            onClick={() => navigate("/create-project")}
           >
             Create Project
           </Button>
         </Box>
         <Box>
-          <CustomTable rows={rows} columns={columns} maxHeight='calc(46vh - 90px)' columnSpacing='45px'/>
+          <CustomTable rows={myProjects} columns={columns} maxHeight='calc(46vh - 90px)' columnSpacing='45px' />
         </Box>
       </Grid>
-      <Grid item sx={{ height: "55%" }}>
+
+      {user?.role === 'ADMIN' && <Grid item sx={{ height: "55%" }}>
         <Box
           display="flex"
           alignItems="center"
@@ -97,30 +162,33 @@ export const Projects: React.FC<{}> = () => {
           width={"80%"}
           sx={{ margin: "0 auto" }}
         >
-          <Typography variant="h4" component="h1"  mb={1} sx={{ marginLeft: -3 }}>
+          <Typography variant="h4" component="h1" mb={1} sx={{ marginLeft: -3 }}>
             All Projects
           </Typography>
+
           <Box display="flex" alignItems="center">
             <TextField
               label="Search Project"
               variant="outlined"
               size="small"
               margin="dense"
-							sx={{ marginBottom: 1, marginRight: 1 }}
+              sx={{ marginBottom: 1, marginRight: 1 }}
             />
+
             <TextField
               label="Search Customer"
               variant="outlined"
               size="small"
               margin="dense"
-							sx={{ marginBottom: 1 }}
+              sx={{ marginBottom: 1 }}
             />
           </Box>
         </Box>
+
         <Box flexGrow={1}>
-          <CustomTable rows={rows_d} columns={columns} maxHeight='calc(53vh - 90px)' columnSpacing='45px'/>
+          <CustomTable rows={allProjects} columns={columns} maxHeight='calc(53vh - 90px)' columnSpacing='45px' />
         </Box>
-      </Grid>
+      </Grid>}
     </Grid>
   );
 };

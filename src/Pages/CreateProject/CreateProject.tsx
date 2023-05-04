@@ -12,9 +12,13 @@ import { AppDispatch } from '../../store';
 import { createUseStyles } from 'react-jss';
 import { Theme } from '../../Styling/Theme';
 import { useSelector } from 'react-redux';
-import { getCreateProject } from '../../Redux/Selectors';
+import { getToken } from '../../Redux/Selectors';
 import { StepTwo } from './ChildComponents/StepTwo';
-import { RESET_CREATE_PROJECT } from '../../Redux/Actions';
+import { RESET_CREATE_PROJECT, SET_OPERATION_IN_PROGRESS } from '../../Redux/Actions';
+import { requestApi } from '../../Utils/Fetch';
+import { Company } from '../../Models/BackendModels/Company';
+import { CreateProjectRequest } from '../../Models/RequestModels/CreateProjectRequest';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = createUseStyles((theme: Theme) => {
 	return {
@@ -28,25 +32,35 @@ const useStyles = createUseStyles((theme: Theme) => {
 	};
 });
 
-export const CreateProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
+export const CreateProject: React.FC<{ dispatch: AppDispatch }> = ({ dispatch }) => {
 	const [currentStep, setCurrentStep] = useState(0);
-	const createProject = useSelector(getCreateProject);
+	const [companies, setCompanies] = useState<Company[]>([]);
+	const [createProjectRequest, setCreateProjectRequest] = useState<CreateProjectRequest>({ name: '', companyId: '', description: '' });
+
+	const token = useSelector(getToken);
 
 	const classes = useStyles();
 
+	const navigate = useNavigate();
+
 	const getCurrentStep = () => {
-		switch(currentStep) {
+		switch (currentStep) {
 			case 0:
-				return <StepOne dispatch={dispatch} />
+				return <StepOne 
+					dispatch={dispatch} 
+					companies={companies} 
+					createProjectRequest={createProjectRequest} 
+					setCreateProjectRequest={setCreateProjectRequest} 
+				/>
 			case 1:
-				return <StepTwo dispatch={dispatch} />
+				return <StepTwo createProjectRequest={createProjectRequest} companies={companies} />
 		}
 	}
 
 	const getCondition = () => {
-		switch(currentStep) {
+		switch (currentStep) {
 			case 0:
-				return createProject.name && createProject.associatedCompany && createProject.description;
+				return createProjectRequest.name && createProjectRequest.companyId && createProjectRequest.description;
 			case 1:
 				return true;
 		}
@@ -58,14 +72,39 @@ export const CreateProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) =
 		}
 	}, [dispatch]);
 
-  return (
+	useEffect(() => {
+		dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: true })
+		requestApi('/myCompanies', 'GET', token).then((response) => {
+			if(response){
+				setCompanies(response as Company[]);
+				dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: false })
+			} else {
+				navigate('/');
+				alert('Could not fetch companies');
+			}
+		})
+	}, [token]);
+
+	const handleCreateProject = () => {
+		dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: true })
+		requestApi('/createProject', 'POST', token, createProjectRequest).then((response) => {
+			if(response){
+				navigate('/projects');
+			} else {
+				alert('Could not create project');
+			}
+			dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: false });
+		})
+	}
+
+	return (
 		<Box sx={{ display: 'flex', justifyContent: 'center', paddingTop: "10px", overflowX: "hidden", height: "100%" }}>
 			<Box sx={{ width: '700px' }}>
 				<Typography variant="h2" textAlign={"center"}>
 					Create Project
 				</Typography>
 				<Stepper activeStep={currentStep} alternativeLabel sx={{ marginTop: "35px" }}>
-					{[1,2].map((label) => (
+					{[1, 2].map((label) => (
 						<Step key={label}>
 							<StepLabel StepIconComponent={StepperComponent} />
 						</Step>
@@ -80,7 +119,7 @@ export const CreateProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) =
 						variant='contained'
 						disabled={!currentStep}
 						onClick={() => {
-							setCurrentStep(currentStep-1)
+							setCurrentStep(currentStep - 1)
 						}}
 					>
 						<FontAwesomeIcon icon={faArrowLeft} />
@@ -90,7 +129,11 @@ export const CreateProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) =
 						sx={{ float: "right", color: "white" }}
 						variant='contained'
 						onClick={() => {
-							setCurrentStep(currentStep+1)
+							if(currentStep === 1){
+								handleCreateProject();
+							} else {
+								setCurrentStep(currentStep + 1)
+							}
 						}}
 						disabled={!getCondition()}
 					>
@@ -100,5 +143,5 @@ export const CreateProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) =
 				</div>
 			</Box>
 		</Box>
-  );
+	);
 }

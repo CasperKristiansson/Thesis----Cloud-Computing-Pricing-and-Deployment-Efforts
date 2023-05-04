@@ -5,4 +5,6 @@ export interface User {
     jobTitle: string;
     role: string;
     companyId: string;
+    created: string;
+    lastLogin: string;
 }
