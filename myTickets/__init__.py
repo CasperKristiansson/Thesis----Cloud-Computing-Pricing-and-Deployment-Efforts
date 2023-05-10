@@ -15,7 +15,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
         tickets = ticketDAO.find_all_by_creator_id_and_user_assignee(user['id'])
 
-        return func.HttpResponse(json.dumps(tickets), status_code = 200)
+        return func.HttpResponse(json.dumps(tickets, default=str), status_code = 200)
     except Exception as e:
         logging.info(f"Error from tickets: {e}")
         return func.HttpResponse(f"Error: {e}", status_code = 500)

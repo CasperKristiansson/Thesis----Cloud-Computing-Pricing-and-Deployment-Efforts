@@ -2,6 +2,7 @@ import json
 import logging
 
 import azure.functions as func
+from Integration.ProjectCommentDAO import ProjectCommentDAO
 from Integration.ProjectDAO import ProjectDAO
 from Integration.TicketDAO import TicketDAO
 
@@ -27,7 +28,14 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
         project['tickets'] = tickets
 
-        return func.HttpResponse(json.dumps(project), status_code = 200)
+        # Get project comments
+        projectCommentDAO = ProjectCommentDAO()
+
+        projectComments = projectCommentDAO.find_all_by_project_id(project_id)
+
+        project['comments'] = projectComments
+
+        return func.HttpResponse(json.dumps(project, default=str), status_code = 200)
     except Exception as e:
         logging.info(f"Error from projects: {e}")
         return func.HttpResponse(f"Error: {e}", status_code = 500)

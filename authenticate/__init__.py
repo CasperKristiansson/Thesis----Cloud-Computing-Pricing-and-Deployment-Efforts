@@ -32,14 +32,20 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             if(response_user['mail'].endswith('@amaceit.se')):
                 role = 'ADMIN'
 
-            userDAO.create(microsoft_user_id, role)
+            userDAO.create(microsoft_user_id, role, response_user['mail'], response_user['displayName'])
             response_user['role'] = role
         else:
             logging.info(f"User found: {user}")
             response_user['role'] = user[1]
             response_user['companyId'] = user[2]
+            response_user['lastLogin'] = user[3]
+            response_user['created'] = user[4]
+            response_user['email'] = user[5]
+            response_user['name'] = user[6]
 
-        return func.HttpResponse(json.dumps(response_user), status_code = 200)
+        userDAO.update_last_login(microsoft_user_id)
+
+        return func.HttpResponse(json.dumps(response_user, default=str), status_code = 200)
     except Exception as e:
         logging.info(f"Error from initializeProfile: {e}")
         return func.HttpResponse(f"Error: {e}", status_code = 500)

@@ -2,13 +2,14 @@ import json
 import logging
 
 import azure.functions as func
-from Integration.TicketDAO import TicketDAO
+from Integration.CompanyDAO import CompanyDAO
+from Integration.ProjectDAO import ProjectDAO
 
 from validation import get_user_from_token
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info('api/allProjects function processed a request.')
+    logging.info('api/allCompanies function processed a request.')
 
     try:
         user = get_user_from_token(req.headers['Authorization'])
@@ -16,11 +17,11 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         if(user['role'] != 'ADMIN'):
             raise Exception("User does not have role 'ADMIN'")
 
-        ticketDAO = TicketDAO()
+        companyDAO = CompanyDAO()
 
-        tickets = ticketDAO.find_all()
+        companies = companyDAO.find_all()
 
-        return func.HttpResponse(json.dumps(tickets, default=str), status_code = 200)
+        return func.HttpResponse(json.dumps(companies, default=str), status_code = 200)
     except Exception as e:
-        logging.info(f"Error from tickets: {e}")
+        logging.info(f"Error from allCompanies: {e}")
         return func.HttpResponse(f"Error: {e}", status_code = 500)

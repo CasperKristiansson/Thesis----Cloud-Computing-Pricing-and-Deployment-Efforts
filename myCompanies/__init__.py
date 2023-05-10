@@ -25,4 +25,3 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     except Exception as e:
         logging.info(f"Error from companies: {e}")
         return func.HttpResponse(f"Error: {e}", status_code = 500)
-    

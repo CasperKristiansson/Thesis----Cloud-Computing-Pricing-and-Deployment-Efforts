@@ -15,9 +15,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
         projectDAO = ProjectDAO()
 
-        projects = projectDAO.find_all_by_user_access(user['id'])
+        if(user['companyId'] is None):
+            raise Exception("User does not belong to a company")
 
-        return func.HttpResponse(json.dumps(projects), status_code = 200)
+        projects = projectDAO.find_all_by_creator_id_or_company_id(user['id'], user['companyId'])
+
+        return func.HttpResponse(json.dumps(projects, default=str), status_code = 200)
     except Exception as e:
         logging.info(f"Error from projects: {e}")
         return func.HttpResponse(f"Error: {e}", status_code = 500)
