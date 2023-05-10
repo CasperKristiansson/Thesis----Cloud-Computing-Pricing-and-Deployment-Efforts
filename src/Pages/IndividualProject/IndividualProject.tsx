@@ -1,24 +1,32 @@
-import { Button, InputBase, Paper, Typography, Avatar, Box } from "@mui/material";
+import { Button, InputBase, Paper, Typography, Avatar, Box, CircularProgress, LinearProgress } from "@mui/material";
 import { createUseStyles } from "react-jss";
 import { AppDispatch } from "../../store";
 import { RefObject, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { CustomTableIndividual } from "../../Components/CustomTableIndividual";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { requestApi } from "../../Utils/Fetch";
+import { useSelector } from "react-redux";
+import { getOperationInProgress, getToken, getUser } from "../../Redux/Selectors";
+import { SET_OPERATION_IN_PROGRESS } from "../../Redux/Actions";
+import { ProjectResponse } from "../../Models/ResponseModels/ProjectResponse";
+import { TicketResponse } from "../../Models/ResponseModels/TicketResponse";
+import { Status } from "../../Components/Status";
+import { Priority } from "../../Components/Priority";
 
 const useStyles = createUseStyles({
   containerWrapper: {
-		transformOrigin: 'top left',
+    transformOrigin: 'top left',
     transition: 'transform 0.3s ease-in-out',
-		height: "calc(100vh - 70px)",
-		'@media (max-width: 1200px)': {
-			height: "calc(145vh)",
-			marginBottom: "-23vh",
-			transform: 'scale(0.6)',
-			width: '167%',
-		},
-	},
+    height: "calc(100vh - 70px)",
+    '@media (max-width: 1200px)': {
+      height: "calc(145vh)",
+      marginBottom: "-23vh",
+      transform: 'scale(0.6)',
+      width: '167%',
+    },
+  },
   root: {
     display: "flex",
     flexDirection: "column",
@@ -56,6 +64,7 @@ const useStyles = createUseStyles({
     height: 'calc(100% - 93px)',
     position: "absolute",
     overflowY: "hidden",
+    width: "100%",
   },
   inputBoxContainer: {
     position: "absolute",
@@ -178,149 +187,16 @@ const useStyles = createUseStyles({
   },
 });
 
-const comments = [
-  {
-    id: 1,
-    name: "John Doe",
-    date: "2021-09-01",
-    comment: "This is a comment. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc.",
-    isAuthor: true,
-    image: 'https://i.pravatar.cc/300?img=1',
-  },
-  {
-    id: 2,
-    name: "Jane Doe",
-    date: "2021-09-01",
-    comment: "This is a comment",
-    isAuthor: true,
-    image: 'https://i.pravatar.cc/300?img=2',
-  },
-  {
-    id: 3,
-    name: "John Doe",
-    date: "2021-09-01",
-    comment: "This is a comment lorem ipsum dolor sit amet",
-    isAuthor: true,
-    image: 'https://i.pravatar.cc/300?img=3',
-  },
-  {
-    id: 4,
-    name: "Jane Doe",
-    date: "2021-09-01",
-    comment: "This is a comment",
-    isAuthor: false,
-    image: 'https://i.pravatar.cc/300?img=4',
-  },
-  {
-    id: 5,
-    name: "Jane Doe",
-    date: "2021-09-01",
-    comment: "This is a comment",
-    isAuthor: false,
-    image: 'https://i.pravatar.cc/300?img=4',
-  },
-  {
-    id: 6,
-    name: "Jane Doe",
-    date: "2021-09-01",
-    comment: "This is a comment",
-    isAuthor: false,
-    image: 'https://i.pravatar.cc/300?img=4',
-  },
-  {
-    id: 7,
-    name: "Jane Doe",
-    date: "2021-09-01",
-    comment: "This is a comment",
-    isAuthor: true,
-    image: 'https://i.pravatar.cc/300?img=4',
-  },
-  {
-    id: 8,
-    name: "Jane Doe",
-    date: "2021-09-01",
-    comment: "This is a comment",
-    isAuthor: true,
-    image: 'https://i.pravatar.cc/300?img=4',
-  },
-  {
-    id: 9,
-    name: "Jane Doe",
-    date: "2021-09-01",
-    comment: "This is a comment. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc.",
-    isAuthor: true,
-    image: 'https://i.pravatar.cc/300?img=4',
-  },
-];
-
 const columns = [
-	'Subject', 
-	'Last Updated',
-	'Status',
-	'Priority',
-	'Assigned',
+  'Subject',
+  'Last Updated',
+  'Status',
+  'Priority',
+  'Assigned',
+  'ID'
 ];
 
-const rows_d = [
-  { 
-    subject: 'Forgot password',
-    lastUpdated: '2022-04-01T12:15:00.000Z',
-		status: <span style={{color: 'green'}}>Open</span>,
-		priority: <span style={{color: 'orange'}}>Medium</span>,
-    assigned: 'Samantha Lee',
-  },
-  { 
-    subject: 'Error message when trying to checkout',
-    lastUpdated: '2022-04-02T14:20:00.000Z',
-		status: <span style={{color: 'blue'}}>In Progress</span>,
-		priority: <span style={{color: 'red'}}>High</span>,
-    assigned: 'David Kim',
-  },
-  { 
-    subject: 'Missing order confirmation email',
-    lastUpdated: '2022-04-03T09:55:00.000Z',
-		status: <span style={{color: 'green'}}>Open</span>,
-		priority: <span style={{color: 'green'}}>Low</span>,
-    assigned: 'Michael Chen',
-  },
-  { 
-    subject: 'Product not delivered on time',
-    lastUpdated: '2022-04-04T17:30:00.000Z',
-		status: <span style={{color: 'blue'}}>In Progress</span>,
-		priority: <span style={{color: 'orange'}}>Medium</span>,
-    assigned: 'Jessica Lee',
-  },
-  { 
-    subject: 'Wrong item received',
-    lastUpdated: '2022-04-05T11:10:00.000Z',
-		status: <span style={{color: 'red'}}>Closed</span>,
-		priority: <span style={{color: 'green'}}>Low</span>,
-    assigned: 'Kevin Chen',
-  },
-	{ 
-    subject: 'Wrong item received',
-    lastUpdated: '2022-04-05T11:10:00.000Z',
-		status: <span style={{color: 'red'}}>Closed</span>,
-		priority: <span style={{color: 'green'}}>Low</span>,
-    assigned: 'Kevin Chen',
-  },
-	{ 
-    subject: 'Wrong item received',
-    lastUpdated: '2022-04-05T11:10:00.000Z',
-		status: <span style={{color: 'red'}}>Closed</span>,
-		priority: <span style={{color: 'green'}}>Low</span>,
-    assigned: 'Kevin Chen',
-  },
-	{ 
-    subject: 'Wrong item received',
-    lastUpdated: '2022-04-05T11:10:00.000Z',
-		status: <span style={{color: 'red'}}>Closed</span>,
-		priority: <span style={{color: 'green'}}>Low</span>,
-    assigned: 'Kevin Chen',
-  },
-];
-
-export const IndividualProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
+export const IndividualProject: React.FC<{ dispatch: AppDispatch }> = ({ dispatch }) => {
   const classes = useStyles();
 
   const divRef: RefObject<HTMLDivElement> = useRef(null);
@@ -328,6 +204,15 @@ export const IndividualProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch 
 
   const [height, setHeight] = useState<number | null>(null);
   const [deviceWidthUpdate, setDeviceWidthUpdate] = useState<number | null>(null);
+  const [project, setProject] = useState<ProjectResponse | null>(null);
+  const [commentText, setCommentText] = useState<string>("");
+  const [tickets, setTickets] = useState([]);
+
+  const { id } = useParams();
+
+  const token = useSelector(getToken);
+  const operationInProgress = useSelector(getOperationInProgress);
+  const user = useSelector(getUser);
 
   const navigate = useNavigate();
 
@@ -336,6 +221,58 @@ export const IndividualProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch 
       setDeviceWidthUpdate(window.innerWidth);
     });
   }, []);
+
+  useEffect(() => {
+    dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: true })
+    requestApi(`/project/${id}`, "GET", token).then((response) => {
+      if (response) {
+        console.log(response);
+
+        setProject(response as ProjectResponse);
+
+        const customTableTickets = response.tickets.map((ticket: TicketResponse) => {
+          return {
+            subject: ticket.title,
+            lastUpdated: ticket.lastUpdated,
+            status: <Status value={ticket.status} />,
+            priority: <Priority value={ticket.priority} />,
+            assigned: ticket.assignedName,
+            ID: ticket.id,
+          }
+        }) ?? [];
+
+        console.log("customTableTickets", customTableTickets);
+
+        setTickets(customTableTickets);
+      } else {
+        alert("Error, could not get project");
+      }
+      dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: false });
+    });
+  }, [id, token]);
+
+  const handleAddComment = () => {
+    requestApi("/createProjectComment", "POST", token, { projectId: id, comment: commentText }).then((response) => {
+      if (response && project) {
+        console.log(response);
+        setProject({
+          ...project,
+          comments: project.comments?.concat({
+            id: "newcomment",
+            projectId: id ?? "",
+            userId: user.id,
+            name: user?.name || "",
+            time: new Date().toISOString(),
+            comment: commentText,
+          })
+        });
+        setCommentText("");
+      } else {
+        alert("Error, could not add comment");
+        window.location.reload();
+      }
+    });
+  }
 
   useEffect(() => {
     if (divProjectInformationRef.current) {
@@ -350,8 +287,7 @@ export const IndividualProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch 
 
   return (
     <div className={classes.containerWrapper}>
-      <div className={classes.root}>
-        {/* <Typography variant="h2">Project</Typography> */}
+      {!operationInProgress && project && <div className={classes.root}>
         <div className={classes.paperContainer}>
           <Paper className={classes.paper}>
             <div className={classes.chatContainer}>
@@ -360,34 +296,37 @@ export const IndividualProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch 
               >
                 Discussion
               </Typography>
+
               <div className={classes.chatMessages}>
                 <Box className={classes.chatBox} ref={divRef}>
-                  {comments.map((comment) => (
-                    <Box key={comment.id} className={`${classes.commentContainer} ${comment.isAuthor ? classes.authorComment : ''}`}>
-                      {comment.isAuthor ? (
+                  {project.comments && project.comments.length > 0 ? project.comments?.sort((a, b) => a.time > b.time ? 1 : -1).map((comment) => {
+                    const isAuthor = user.id === comment.userId;
+
+                    return <Box key={comment.id} className={`${classes.commentContainer} ${isAuthor ? classes.authorComment : ''}`}>
+                      {isAuthor ? (
                         <>
                           <Box className={classes.commentContent}>
                             <Typography variant="subtitle2" className={classes.commentNameAuthor}>
                               {comment.name}
                             </Typography>
                             <Typography variant="body2" className={classes.commentDateAuthor}>
-                              {comment.date}
+                              {comment.time}
                             </Typography>
                             <Box className={`${classes.commentBubble} ${classes.authorCommentBubble}`}>
                               <Typography variant="body1">{comment.comment}</Typography>
                             </Box>
                           </Box>
-                          <Avatar src={comment.image} alt={comment.name} className={classes.commentImage} />
+                          <Avatar src={"/profile.jpg"} alt={comment.name} className={classes.commentImage} />
                         </>
                       ) : (
                         <>
-                          <Avatar src={comment.image} alt={comment.name} className={classes.commentImage} />
+                          <Avatar src={"/profile.jpg"} alt={comment.name} className={classes.commentImage} />
                           <Box className={classes.commentContent}>
                             <Typography variant="subtitle2" className={classes.commentName}>
                               {comment.name}
                             </Typography>
                             <Typography variant="body2" className={classes.commentDate}>
-                              {comment.date}
+                              {comment.time}
                             </Typography>
                             <Box className={`${classes.commentBubble}`}>
                               <Typography variant="body1">{comment.comment}</Typography>
@@ -396,7 +335,9 @@ export const IndividualProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch 
                         </>
                       )}
                     </Box>
-                  ))}
+                  }) : (
+                    <Typography variant="body1" sx={{ textAlign: "center" }}>No comments yet</Typography>
+                  )}
                 </Box>
               </div>
               <div className={classes.inputBoxContainer}>
@@ -408,9 +349,14 @@ export const IndividualProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch 
                     sx={{ ml: 1, flex: 1 }}
                     placeholder="Add a comment"
                     inputProps={{ 'aria-label': 'Add a comment' }}
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
                   />
-                  <Button variant="contained" color="primary"
+                  <Button
+                    variant="contained"
+                    color="primary"
                     sx={{ color: "white" }}
+                    onClick={() => commentText.length > 0 ? handleAddComment() : null}
                   >Send</Button>
                 </Paper>
               </div>
@@ -419,41 +365,61 @@ export const IndividualProject: React.FC<{dispatch: AppDispatch}> = ({ dispatch 
           <Paper className={classes.paper}>
             <div ref={divProjectInformationRef}>
               <Typography variant="h5" sx={{ padding: "10px" }}>Project Details</Typography>
+
               <div className={classes.projectManageButtons}>
-                <Button variant="contained" color="primary"
-                  endIcon={<FontAwesomeIcon icon={faEdit} style={{ "marginTop": -4 }}/>}
+                <Button
+                  variant="contained"
+                  color="primary"
+                  endIcon={<FontAwesomeIcon icon={faEdit} style={{ "marginTop": -4 }} />}
                   sx={{ color: "white", marginTop: "8px", width: 160 }}
-                >Edit Project</Button>
+                  onClick={() => navigate(`/project/${id}/edit`)}
+                >
+                  Edit Project
+                </Button>
               </div>
+
               <div className={classes.containerInformation}>
-                <Info label="Name" data="New Interface for Ticket System" />
-                <Info label="Creator" data="John Doe" />
-                <Info label="Contact Person" data="Jane Smith" />
-                <Info label="Associated Company" data="Saab" />
+                <Info label="Name" data={project.name} />
+                <Info label="Creator" data={project.creatorName} />
+                <Info label="Contact Person" data={project.contactPersonName} />
+                <Info label="Associated Company" data={project.companyName} />
+                <Info label="Last Edited" data={project.lastEdited} />
               </div>
             </div>
-            <div className={classes.containerProjectExtended} style={{ height: `calc(100% - ${height}px - 15px)`}}>
+
+            <div className={classes.containerProjectExtended} style={{ height: `calc(100% - ${height}px - 15px)` }}>
               <Paper>
                 <Typography variant="h6" sx={{ padding: "10px" }}>Description</Typography>
+
                 <Typography variant="body1" sx={{ padding: "10px" }}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc. Donec euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc. Donec euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc. Donec euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc.
+                  {project.description}
                 </Typography>
               </Paper>
+
               <Paper>
                 <div className={classes.projectAttachmentHeader}>
                   <Typography variant="h6" sx={{ padding: "10px" }}>Tickets</Typography>
+
                   <Button variant="contained" color="primary"
-                    endIcon={<FontAwesomeIcon icon={faPlus}/>}
+                    endIcon={<FontAwesomeIcon icon={faPlus} />}
                     sx={{ color: "white", marginTop: "8px", width: 160 }}
-                    onClick={() => navigate('/create-ticket')}
-                  >Create Ticket</Button>
+                    onClick={() => navigate(`/ticket/create?pid=${id}`)}
+                  >
+                    Create Ticket
+                  </Button>
                 </div>
-                <CustomTableIndividual rows={rows_d} columns={columns} maxHeight='calc(100% - 55px)'/>
+
+                <CustomTableIndividual 
+                  rows={tickets} 
+                  columns={columns} 
+                  maxHeight='calc(100% - 55px)' 
+                  rowOnClickDestination="/ticket/"
+                />
               </Paper>
             </div>
           </Paper>
         </div>
-      </div>
+      </div>}
     </div>
   );
 };
@@ -466,7 +432,7 @@ const Info: React.FC<{ label: string, data: string, color?: string }> = ({ label
       <Typography variant="subtitle1" className={classes.label}>
         {label}
       </Typography>
-      <Typography variant="body1" className={classes.data} sx={{ color: color ? color: ""}}>
+      <Typography variant="body1" className={classes.data} sx={{ color: color ? color : "" }}>
         {data}
       </Typography>
     </Box>

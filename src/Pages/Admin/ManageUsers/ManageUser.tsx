@@ -1,7 +1,7 @@
 import { Grid, Box, Typography, Button, FormControl, InputLabel, MenuItem, Select, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { CustomTableAdmin } from "../../../Components/CustomTableAdmin";
-import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { getToken } from "../../../Redux/Selectors";
 import { SET_OPERATION_IN_PROGRESS } from "../../../Redux/Actions";
 import { requestApi } from "../../../Utils/Fetch";
@@ -10,7 +10,7 @@ import { User } from "../../../Models/BackendModels/User";
 const columns = [
 	'User Name',
 	'Email',
-	'CurrentRole',
+	'Current Role',
 	'Created',
 	'Last Login',
 	'Change Role',
@@ -34,11 +34,11 @@ export const ManageUsers: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 	};
 
 	const handleDelete = () => {
-		deleteUser(currentId);
+		deleteUser();
 		handleCloseDialog();
 	};
 	
-	function deleteUser(id: string) {
+	function deleteUser() {
 		dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: true });
 
 		requestApi(`/deleteUser/${currentId}`, 'DELETE', token).then(response => {
@@ -68,7 +68,6 @@ export const ManageUsers: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 		dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: true });
 		
 		requestApi('/allUsers', 'GET', token).then(response => {
-			console.log("hej")
 			if (response) {
 				const users = response.map((user: User) => {
 					return {

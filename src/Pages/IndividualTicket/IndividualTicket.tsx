@@ -1,25 +1,34 @@
-import { Button, InputBase, Paper, Typography, Avatar, Box, MenuItem, FormControl, InputLabel, Select } from "@mui/material";
+import { Button, InputBase, Paper, Typography, Avatar, Box, MenuItem, FormControl, InputLabel, Select, Link } from "@mui/material";
 import { createUseStyles } from "react-jss";
 import { AppDispatch } from "../../store";
 import { RefObject, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { CustomTableIndividual } from "../../Components/CustomTableIndividual";
-import { UPLOAD_FILE_OPEN } from "../../Redux/Actions";
-import { useNavigate } from "react-router-dom";
+import { SET_OPERATION_IN_PROGRESS, UPLOAD_FILE_OPEN } from "../../Redux/Actions";
+import { useNavigate, useParams } from "react-router-dom";
+import { requestApi } from "../../Utils/Fetch";
+import { useSelector } from "react-redux";
+import { getToken, getUser } from "../../Redux/Selectors";
+import { TicketResponse } from "../../Models/ResponseModels/TicketResponse";
+import { Status } from "../../Components/Status";
+import { JsxElement } from "typescript";
+import { Priority } from "../../Components/Priority";
+import { TicketCommentResponse } from "../../Models/ResponseModels/TicketCommentResponse";
+import { Link as RouterLink } from "react-router-dom";
 
 const useStyles = createUseStyles({
   containerWrapper: {
-		transformOrigin: 'top left',
+    transformOrigin: 'top left',
     transition: 'transform 0.3s ease-in-out',
-		height: "calc(100vh - 70px)",
-		'@media (max-width: 1200px)': {
-			height: "calc(145vh)",
-			marginBottom: "-23vh",
-			transform: 'scale(0.6)',
-			width: '167%',
-		},
-	},
+    height: "calc(100vh - 70px)",
+    '@media (max-width: 1200px)': {
+      height: "calc(145vh)",
+      marginBottom: "-23vh",
+      transform: 'scale(0.6)',
+      width: '167%',
+    },
+  },
   root: {
     display: "flex",
     flexDirection: "column",
@@ -57,6 +66,7 @@ const useStyles = createUseStyles({
     height: 'calc(100% - 93px)',
     position: "absolute",
     overflowY: "hidden",
+    width: "100%",
   },
   inputBoxContainer: {
     position: "absolute",
@@ -179,81 +189,6 @@ const useStyles = createUseStyles({
   },
 });
 
-const comments = [
-  {
-    id: 1,
-    name: "John Doe",
-    date: "2021-09-01",
-    comment: "This is a comment. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc.",
-    isAuthor: true,
-    image: 'https://i.pravatar.cc/300?img=1',
-  },
-  {
-    id: 2,
-    name: "Jane Doe",
-    date: "2021-09-01",
-    comment: "This is a comment",
-    isAuthor: true,
-    image: 'https://i.pravatar.cc/300?img=2',
-  },
-  {
-    id: 3,
-    name: "John Doe",
-    date: "2021-09-01",
-    comment: "This is a comment lorem ipsum dolor sit amet",
-    isAuthor: true,
-    image: 'https://i.pravatar.cc/300?img=3',
-  },
-  {
-    id: 4,
-    name: "Jane Doe",
-    date: "2021-09-01",
-    comment: "This is a comment",
-    isAuthor: false,
-    image: 'https://i.pravatar.cc/300?img=4',
-  },
-  {
-    id: 5,
-    name: "Jane Doe",
-    date: "2021-09-01",
-    comment: "This is a comment",
-    isAuthor: false,
-    image: 'https://i.pravatar.cc/300?img=4',
-  },
-  {
-    id: 6,
-    name: "Jane Doe",
-    date: "2021-09-01",
-    comment: "This is a comment",
-    isAuthor: false,
-    image: 'https://i.pravatar.cc/300?img=4',
-  },
-  {
-    id: 7,
-    name: "Jane Doe",
-    date: "2021-09-01",
-    comment: "This is a comment",
-    isAuthor: true,
-    image: 'https://i.pravatar.cc/300?img=4',
-  },
-  {
-    id: 8,
-    name: "Jane Doe",
-    date: "2021-09-01",
-    comment: "This is a comment",
-    isAuthor: true,
-    image: 'https://i.pravatar.cc/300?img=4',
-  },
-  {
-    id: 9,
-    name: "Jane Doe",
-    date: "2021-09-01",
-    comment: "This is a comment. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc.",
-    isAuthor: true,
-    image: 'https://i.pravatar.cc/300?img=4',
-  },
-];
-
 const columns = [
   "File Name", "File Size", "Date Uploaded", "Uploaded By"
 ];
@@ -279,7 +214,7 @@ const data = [
   },
 ];
 
-export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
+export const IndividualTicket: React.FC<{ dispatch: AppDispatch }> = ({ dispatch }) => {
   const classes = useStyles();
 
   const divRef: RefObject<HTMLDivElement> = useRef(null);
@@ -287,6 +222,14 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
 
   const [height, setHeight] = useState<number | null>(null);
   const [deviceWidthUpdate, setDeviceWidthUpdate] = useState<number | null>(null);
+
+  const [ticket, setTicket] = useState<TicketResponse | null>(null);
+  const [commentText, setCommentText] = useState<string>("");
+
+  const { id } = useParams();
+
+  const token = useSelector(getToken);
+  const user = useSelector(getUser);
 
   const navigate = useNavigate();
 
@@ -307,10 +250,62 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
     if (divRef.current) divRef.current.scrollTop = divRef.current.scrollHeight;
   }, []);
 
+  useEffect(() => {
+    dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: true })
+    requestApi(`/ticket/${id}`, "GET", token).then((response) => {
+      if (response) {
+        console.log("Ticket", response);
+
+        setTicket(response as TicketResponse);
+      } else {
+        alert("Error, could not get ticket");
+      }
+      dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: false });
+    });
+  }, [id, token]);
+
+  const handleEditStatus = (status: string) => {
+    dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: true })
+    requestApi('/editTicketStatus', "PUT", token, { id, status }).then((response) => {
+      if (response) {
+        setTicket({
+          ...ticket,
+          status: status
+        } as TicketResponse);
+      } else {
+        alert("Error, could not edit ticket status");
+      }
+      dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: false });
+    });
+  }
+
+  const handleAddComment = () => {
+    dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: true })
+
+    requestApi('/createTicketComment', "POST", token, { id, comment: commentText }).then((response) => {
+      if (response && ticket) {
+        setTicket({
+          ...ticket,
+          comments: ticket.comments?.concat({
+            id: "newcomment",
+            ticketId: id ?? "",
+            userId: user.id,
+            name: user?.name || "",
+            time: new Date().toISOString(),
+            comment: commentText,
+          })
+        } as TicketResponse);
+        setCommentText("");
+      } else {
+        alert("Error, could not add comment");
+      }
+      dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: false });
+    });
+  }
+
   return (
     <div className={classes.containerWrapper}>
-      <div className={classes.root}>
-        {/* <Typography variant="h2">Ticket</Typography> */}
+      {ticket && <div className={classes.root}>
         <div className={classes.paperContainer}>
           <Paper className={classes.paper}>
             <div className={classes.chatContainer}>
@@ -321,41 +316,46 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
               </Typography>
               <div className={classes.chatMessages}>
                 <Box className={classes.chatBox} ref={divRef}>
-                  {comments.map((comment) => (
-                    <Box key={comment.id} className={`${classes.commentContainer} ${comment.isAuthor ? classes.authorComment : ''}`}>
-                      {comment.isAuthor ? (
-                        <>
-                          <Box className={classes.commentContent}>
-                            <Typography variant="subtitle2" className={classes.commentNameAuthor}>
-                              {comment.name}
-                            </Typography>
-                            <Typography variant="body2" className={classes.commentDateAuthor}>
-                              {comment.date}
-                            </Typography>
-                            <Box className={`${classes.commentBubble} ${classes.authorCommentBubble}`}>
-                              <Typography variant="body1">{comment.comment}</Typography>
+                  {ticket.comments.length > 0 ? ticket.comments.sort((a, b) => a.time > b.time ? 1 : -1).map((comment) => {
+                    const isAuthor = comment.userId === user.id;
+                    return (
+                      <Box key={comment.id} className={`${classes.commentContainer} ${isAuthor ? classes.authorComment : ''}`}>
+                        {isAuthor ? (
+                          <>
+                            <Box className={classes.commentContent}>
+                              <Typography variant="subtitle2" className={classes.commentNameAuthor}>
+                                {comment.name}
+                              </Typography>
+                              <Typography variant="body2" className={classes.commentDateAuthor}>
+                                {comment.time}
+                              </Typography>
+                              <Box className={`${classes.commentBubble} ${classes.authorCommentBubble}`}>
+                                <Typography variant="body1">{comment.comment}</Typography>
+                              </Box>
                             </Box>
-                          </Box>
-                          <Avatar src={comment.image} alt={comment.name} className={classes.commentImage} />
-                        </>
-                      ) : (
-                        <>
-                          <Avatar src={comment.image} alt={comment.name} className={classes.commentImage} />
-                          <Box className={classes.commentContent}>
-                            <Typography variant="subtitle2" className={classes.commentName}>
-                              {comment.name}
-                            </Typography>
-                            <Typography variant="body2" className={classes.commentDate}>
-                              {comment.date}
-                            </Typography>
-                            <Box className={`${classes.commentBubble}`}>
-                              <Typography variant="body1">{comment.comment}</Typography>
+                            <Avatar src={"/profile.jpg"} alt={comment.name} className={classes.commentImage} />
+                          </>
+                        ) : (
+                          <>
+                            <Avatar src={"/profile.jpg"} alt={comment.name} className={classes.commentImage} />
+                            <Box className={classes.commentContent}>
+                              <Typography variant="subtitle2" className={classes.commentName}>
+                                {comment.name}
+                              </Typography>
+                              <Typography variant="body2" className={classes.commentDate}>
+                                {comment.time}
+                              </Typography>
+                              <Box className={`${classes.commentBubble}`}>
+                                <Typography variant="body1">{comment.comment}</Typography>
+                              </Box>
                             </Box>
-                          </Box>
-                        </>
-                      )}
-                    </Box>
-                  ))}
+                          </>
+                        )}
+                      </Box>
+                    )
+                  }) : (
+                    <Typography variant="body1" sx={{ textAlign: "center" }}>No comments yet</Typography>
+                  )}
                 </Box>
               </div>
               <div className={classes.inputBoxContainer}>
@@ -367,9 +367,15 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
                     sx={{ ml: 1, flex: 1 }}
                     placeholder="Add a comment"
                     inputProps={{ 'aria-label': 'Add a comment' }}
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
                   />
-                  <Button variant="contained" color="primary"
+
+                  <Button
+                    variant="contained"
+                    color="primary"
                     sx={{ color: "white" }}
+                    onClick={handleAddComment}
                   >Send</Button>
                 </Paper>
               </div>
@@ -379,71 +385,88 @@ export const IndividualTicket: React.FC<{dispatch: AppDispatch}> = ({ dispatch }
             <div ref={divTicketInformationRef}>
               <Typography variant="h4" sx={{ padding: "10px" }}>Ticket Details</Typography>
               <div className={classes.ticketManageButtons}>
-                <Button variant="contained" color="primary"
-                  endIcon={<FontAwesomeIcon icon={faEdit} style={{ "marginTop": -4 }}/>}
+                <Button
+                  variant="contained"
+                  color="primary"
+                  endIcon={<FontAwesomeIcon icon={faEdit} style={{ "marginTop": -4 }} />}
                   sx={{ color: "white", marginTop: "8px", width: 150 }}
-                  onClick={() => navigate('/edit-ticket/1')}
-                >Edit Ticket</Button>
-                <FormControl sx={{ m: 1, width: 150}}>
+                  onClick={() => navigate(`/ticket/${id}/edit`)}
+                >
+                  Edit Ticket
+                </Button>
+
+                <FormControl sx={{ m: 1, width: 150 }}>
                   <InputLabel id="demo-simple-select-label">Status</InputLabel>
+
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={"open"}
+                    value={ticket.status}
                     label="Status"
-                    sx={{ height: 38}}
+                    sx={{ height: 38 }}
+                    onChange={(event) => handleEditStatus(event.target.value as string)}
                   >
-                    <MenuItem value={"open"}>Open</MenuItem>
-                    <MenuItem value={"inProgress"}>In Progress</MenuItem>
-                    <MenuItem value={"closed"}>Closed</MenuItem>
+                    <MenuItem value={"Open"}>Open</MenuItem>
+                    <MenuItem value={"In Progress"}>In Progress</MenuItem>
+                    <MenuItem value={"Closed"}>Closed</MenuItem>
                   </Select>
                 </FormControl>
               </div>
               <div className={classes.containerInformation}>
-                <Info label="Name" data="Issue Regarding Project #5" />
-                <Info label="Creator" data="John Doe" />
-                <Info label="Assignee" data="Jane Smith" />
-                <Info label="Project" data="My Project" />
-                <Info label="Priority" data="High" color="red" />
-                <Info label="Status" data="In Progress" color="blue" />
+                <Info label="Name" data={ticket.title} />
+                <Info label="Project" data={<Link to={`/project/${ticket.projectId}`} component={RouterLink} >{ticket.projectName}</Link>} />
+                <Info label="Creator" data={ticket.creatorName ?? ""} />
+                <Info label="Assignee" data={ticket.assignedName} />
+                <Info label="Last Updated" data={ticket.lastUpdated} />
+                <Info label="Priority" data={ticket.priority} priority />
+                <Info label="Status" data={ticket.status} status />
               </div>
             </div>
-            <div className={classes.containerTicketExtended} style={{ height: `calc(100% - ${height}px - 15px)`}}>
+            <div className={classes.containerTicketExtended} style={{ height: `calc(100% - ${height}px - 15px)` }}>
               <Paper>
                 <Typography variant="h6" sx={{ padding: "10px" }}>Description</Typography>
                 <Typography variant="body1" sx={{ padding: "10px" }}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc. Donec euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc. Donec euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc. Donec euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, quis ultricies nisl nunc eget nunc.
+                  {ticket.description}
                 </Typography>
               </Paper>
               <Paper>
                 <div className={classes.ticketAttachmentHeader}>
                   <Typography variant="h6" sx={{ padding: "10px" }}>Attachments</Typography>
                   <Button variant="contained" color="primary"
-                    endIcon={<FontAwesomeIcon icon={faPlus}/>}
+                    endIcon={<FontAwesomeIcon icon={faPlus} />}
                     sx={{ color: "white", marginTop: "8px", width: 190 }}
                     onClick={() => dispatch({ type: UPLOAD_FILE_OPEN, payload: true })}
                   >Add Attachment</Button>
                 </div>
-                <CustomTableIndividual rows={data} columns={columns} maxHeight='calc(100% - 55px)'/>
+                <CustomTableIndividual rows={data} columns={columns} maxHeight='calc(100% - 55px)' />
               </Paper>
             </div>
           </Paper>
         </div>
-      </div>
+      </div>}
     </div>
   );
 };
 
-const Info: React.FC<{ label: string, data: string, color?: string }> = ({ label, data, color }) => {
+const Info: React.FC<{ label: string, data: string | JSX.Element, status?: boolean, priority?: boolean }> = ({ label, data, status, priority }) => {
   const classes = useStyles();
+  let finalData: string | JSX.Element = data;
+
+  if (status === true && typeof data === "string") {
+    finalData = <Status value={data} />
+  }
+
+  if (priority === true && typeof data === "string") {
+    finalData = <Priority value={data} />
+  }
 
   return (
     <Box>
       <Typography variant="subtitle1" className={classes.label}>
         {label}
       </Typography>
-      <Typography variant="body1" className={classes.data} sx={{ color: color ? color: ""}}>
-        {data}
+      <Typography variant="body1" className={classes.data}>
+        {finalData}
       </Typography>
     </Box>
   );

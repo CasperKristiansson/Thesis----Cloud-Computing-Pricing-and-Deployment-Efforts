@@ -1,115 +1,85 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CustomTable } from '../../Components/CustomTable';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-
-const rows = [
-  { 
-    subject: 'Issue with payment processing',
-    lastUpdated: '2022-03-28T15:00:00.000Z',
-		status: <span style={{color: 'blue'}}>In Progress</span>,
-		priority: <span style={{color: 'red'}}>High</span>,
-    ticketNr: 'TCKT-12345',
-    assigned: 'John Doe',
-  },
-  { 
-    subject: 'Login page not working',
-    lastUpdated: '2022-03-29T10:30:00.000Z',
-		status: <span style={{color: 'green'}}>Open</span>,
-		priority: <span style={{color: 'orange'}}>Medium</span>,
-    ticketNr: 'TCKT-12346',
-    assigned: 'Jane Smith',
-  },
-  { 
-    subject: 'Unable to access account',
-    lastUpdated: '2022-03-30T16:45:00.000Z',
-		status: <span style={{color: 'red'}}>Closed</span>,
-		priority: <span style={{color: 'green'}}>Low</span>,
-    ticketNr: 'TCKT-12347',
-    assigned: 'Bob Johnson',
-  },
-];
-
-const rows_d = [
-  { 
-    subject: 'Forgot password',
-    lastUpdated: '2022-04-01T12:15:00.000Z',
-		status: <span style={{color: 'green'}}>Open</span>,
-		priority: <span style={{color: 'orange'}}>Medium</span>,
-    ticketNr: 'TCKT-12348',
-    assigned: 'Samantha Lee',
-  },
-  { 
-    subject: 'Error message when trying to checkout',
-    lastUpdated: '2022-04-02T14:20:00.000Z',
-		status: <span style={{color: 'blue'}}>In Progress</span>,
-		priority: <span style={{color: 'red'}}>High</span>,
-    ticketNr: 'TCKT-12349',
-    assigned: 'David Kim',
-  },
-  { 
-    subject: 'Missing order confirmation email',
-    lastUpdated: '2022-04-03T09:55:00.000Z',
-		status: <span style={{color: 'green'}}>Open</span>,
-		priority: <span style={{color: 'green'}}>Low</span>,
-    ticketNr: 'TCKT-12350',
-    assigned: 'Michael Chen',
-  },
-  { 
-    subject: 'Product not delivered on time',
-    lastUpdated: '2022-04-04T17:30:00.000Z',
-		status: <span style={{color: 'blue'}}>In Progress</span>,
-		priority: <span style={{color: 'orange'}}>Medium</span>,
-    ticketNr: 'TCKT-12351',
-    assigned: 'Jessica Lee',
-  },
-  { 
-    subject: 'Wrong item received',
-    lastUpdated: '2022-04-05T11:10:00.000Z',
-		status: <span style={{color: 'red'}}>Closed</span>,
-		priority: <span style={{color: 'green'}}>Low</span>,
-    ticketNr: 'TCKT-12352',
-    assigned: 'Kevin Chen',
-  },
-	{ 
-    subject: 'Wrong item received',
-    lastUpdated: '2022-04-05T11:10:00.000Z',
-		status: <span style={{color: 'red'}}>Closed</span>,
-		priority: <span style={{color: 'green'}}>Low</span>,
-    ticketNr: 'TCKT-12352',
-    assigned: 'Kevin Chen',
-  },
-	{ 
-    subject: 'Wrong item received',
-    lastUpdated: '2022-04-05T11:10:00.000Z',
-		status: <span style={{color: 'red'}}>Closed</span>,
-		priority: <span style={{color: 'green'}}>Low</span>,
-    ticketNr: 'TCKT-12352',
-    assigned: 'Kevin Chen',
-  },
-	{ 
-    subject: 'Wrong item received',
-    lastUpdated: '2022-04-05T11:10:00.000Z',
-		status: <span style={{color: 'red'}}>Closed</span>,
-		priority: <span style={{color: 'green'}}>Low</span>,
-    ticketNr: 'TCKT-12352',
-    assigned: 'Kevin Chen',
-  },
-];
+import { useDispatch, useSelector } from 'react-redux';
+import { requestApi } from '../../Utils/Fetch';
+import { getToken, getUser } from '../../Redux/Selectors';
+import { SET_OPERATION_IN_PROGRESS } from '../../Redux/Actions';
+import { TicketResponse } from '../../Models/ResponseModels/TicketResponse';
+import { Status } from '../../Components/Status';
+import { Priority } from '../../Components/Priority';
 
 const columns = [
-	'Subject', 
+	'Ticket Name', 
 	'Last Updated',
 	'Status',
 	'Priority',
-	'Ticket Nr.',
+	'ID',
 	'Assigned',
 ];
 
 export const Tickets: React.FC<{}> = () => {
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const token = useSelector(getToken);
+  const user = useSelector(getUser);
+
+  const [myTickets, setMyTickets] = useState<any[]>([]);
+  const [allTickets, setAllTickets] = useState<any[]>([]);
+
+  // Fetch
+  useEffect(() => {
+    dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: true });
+
+    async function getTickets() {
+      // Get myProjects
+        requestApi("/myTickets", "GET", token).then((response) => {
+          if (response) {
+            const myTickets = response.map((t: TicketResponse) => {
+              return {
+                ticketname: t.title,
+                lastUpdated: t.lastUpdated,
+                status: <Status value={t.status} />,
+                priority: <Priority value={t.priority} />,
+                ID: t.id,
+                assigned: t.assignedName
+              }
+            })
+            setMyTickets(myTickets);
+            if(user?.role !== 'ADMIN'){
+              dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: false });
+            }
+          }
+        });
+
+      // Get allProjects if admin
+      if (user?.role === 'ADMIN') {
+        requestApi("/allTickets", "GET", token).then((response) => {
+          if (response) {
+            const allTickets = response.map((t: TicketResponse) => {
+              return {
+                ticketname: t.title,
+                lastUpdated: t.lastUpdated,
+                status: <Status value={t.status} />,
+                priority: <Priority value={t.priority} />,
+                ID: t.id,
+                assigned: t.assignedName
+              }
+            })
+            setAllTickets(allTickets);
+            dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: false });
+          }
+        });
+      }
+    }
+
+    getTickets();
+  }, [token, user]);
 
   return (
     <Grid container spacing={2} direction="column" pt={2} sx={{ height: "100%" }}>
@@ -125,18 +95,19 @@ export const Tickets: React.FC<{}> = () => {
           <Typography variant="h4" component="h1" mb={1} sx={{ marginLeft: -3 }}>
             My Tickets
           </Typography>
+
           <Button
             variant="contained"
             color="primary"
             startIcon={<FontAwesomeIcon icon={faPlus} />}
 						sx={{ color: "white", marginBottom: 1 }}
-            onClick={() => navigate("/create-ticket")}
+            onClick={() => navigate("/ticket/create")}
           >
             Create Ticket
           </Button>
         </Box>
         <Box>
-          <CustomTable rows={rows} columns={columns} maxHeight='calc(46vh - 90px)'/>
+          <CustomTable rowOnClickDestination='/ticket/' rows={myTickets} columns={columns} maxHeight='calc(46vh - 90px)'/>
         </Box>
       </Grid>
       <Grid item sx={{ height: "55%" }}>
@@ -176,7 +147,7 @@ export const Tickets: React.FC<{}> = () => {
           </Box>
         </Box>
         <Box flexGrow={1}>
-          <CustomTable rows={rows_d} columns={columns} maxHeight='calc(53vh - 90px)'/>
+          <CustomTable rowOnClickDestination='/ticket/' rows={allTickets} columns={columns} maxHeight='calc(53vh - 90px)'/>
         </Box>
       </Grid>
     </Grid>
