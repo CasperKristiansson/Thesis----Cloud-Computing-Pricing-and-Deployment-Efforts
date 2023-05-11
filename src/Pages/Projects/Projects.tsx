@@ -65,7 +65,7 @@ const rows_d = [
   },
 ];
 
-const columns = ["Project Name", "Last Updated", "Customer", "Project ID"];
+const columns = ["Project Name", "Last Updated", "Customer", "ID"];
 
 export const Projects: React.FC<{}> = () => {
   const [myProjects, setMyProjects] = React.useState([]);
@@ -92,7 +92,7 @@ export const Projects: React.FC<{}> = () => {
                 projectName: p.name,
                 lastUpdated: p.lastEdited,
                 customer: p.companyName,
-                projectID: p.id.substring(0, 8) + "...",
+                ID: p.id,
               }
             })
             setMyProjects(projects);
@@ -111,7 +111,7 @@ export const Projects: React.FC<{}> = () => {
                 projectName: p.name,
                 lastUpdated: p.lastEdited,
                 customer: p.companyName,
-                projectID: p.id.substring(0, 8) + "...",
+                ID: p.id
               }
             })
             setAllProjects(projects);
@@ -143,13 +143,19 @@ export const Projects: React.FC<{}> = () => {
             color="primary"
             startIcon={<FontAwesomeIcon icon={faPlus} />}
             sx={{ color: "white", marginBottom: 1 }}
-            onClick={() => navigate("/create-project")}
+            onClick={() => navigate("/project/create")}
           >
             Create Project
           </Button>
         </Box>
         <Box>
-          <CustomTable rows={myProjects} columns={columns} maxHeight='calc(46vh - 90px)' columnSpacing='45px' />
+          <CustomTable 
+            rows={myProjects} 
+            columns={columns} 
+            maxHeight='calc(46vh - 90px)' 
+            columnSpacing='45px' 
+            rowOnClickDestination='/project/'
+          />
         </Box>
       </Grid>
 
@@ -186,7 +192,13 @@ export const Projects: React.FC<{}> = () => {
         </Box>
 
         <Box flexGrow={1}>
-          <CustomTable rows={allProjects} columns={columns} maxHeight='calc(53vh - 90px)' columnSpacing='45px' />
+          <CustomTable 
+            rows={allProjects} 
+            columns={columns} 
+            maxHeight='calc(53vh - 90px)' 
+            columnSpacing='45px' 
+            rowOnClickDestination='/project/'
+          />
         </Box>
       </Grid>}
     </Grid>

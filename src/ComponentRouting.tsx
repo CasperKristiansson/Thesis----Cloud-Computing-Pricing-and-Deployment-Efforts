@@ -33,15 +33,19 @@ export const ComponentRouting: React.FC<{dispatch: any}> = ({ dispatch }) => {
 				<Route path="/" element={<Home />} />
 				<Route path="/tickets" element={<Tickets />} />
 				<Route path="/projects" element={<Projects />} />
-				<Route path="/create-ticket" element={<CreateTicket dispatch={dispatch} />} />
-				<Route path="/create-project" element={<CreateProject dispatch={dispatch} />} />
-				<Route path="/create-company" element={<CreateCompany dispatch={dispatch} />} />
+
 				<Route path="/login" element={<Login dispatch={dispatch} />} />
 				<Route path="/register" element={<Register dispatch={dispatch} />} />
+				
 				<Route path="/ticket/:id" element={<IndividualTicket dispatch={dispatch} />} />
+				<Route path="/ticket/:id/edit" element={<EditTicket dispatch={dispatch} />} />
+				<Route path="/ticket/create" element={<CreateTicket dispatch={dispatch} />} />
+
 				<Route path="/project/:id" element={<IndividualProject dispatch={dispatch} />} />
-				<Route path="/edit-ticket/:id" element={<EditTicket dispatch={dispatch} />} />
-				<Route path="/edit-project/:id" element={<EditProject dispatch={dispatch} />} />
+				<Route path="/project/:id/edit" element={<EditProject dispatch={dispatch} />} />
+				<Route path="/project/create" element={<CreateProject dispatch={dispatch} />} />
+
+				<Route path="/admin/create-company" element={<CreateCompany dispatch={dispatch} />} />
 				<Route path="/admin/manage-users" element={<ManageUsers dispatch={dispatch} />} />
 				<Route path ="/admin/manage-companies" element={<ManageCompanies dispatch={dispatch} />} />
 				<Route path="*" element={<NotFound />} />

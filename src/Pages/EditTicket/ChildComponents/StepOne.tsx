@@ -1,10 +1,9 @@
 import { Theme } from '../../../Styling/Theme';
 import { createUseStyles } from 'react-jss';
-import { FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { AppDispatch } from '../../../store';
-import { SET_CREATE_TICKET_ASSIGNEE, SET_CREATE_TICKET_NAME, SET_CREATE_TICKET_PRIORITY, SET_CREATE_TICKET_PROJECT } from '../../../Redux/Actions';
-import { getCreateTicketAssignee, getCreateTicketName, getCreateTicketPriority, getCreateTicketProject } from '../../../Redux/Selectors';
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { TicketResponse } from '../../../Models/ResponseModels/TicketResponse';
+import { ProjectResponse } from '../../../Models/ResponseModels/ProjectResponse';
+import { User } from '../../../Models/BackendModels/User';
 
 const useStyles = createUseStyles((theme: Theme) => {
   return {
@@ -14,12 +13,7 @@ const useStyles = createUseStyles((theme: Theme) => {
   };
 });
 
-export const StepOne: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
-  const ticketName = useSelector(getCreateTicketName);
-  const ticketPriority = useSelector(getCreateTicketPriority);
-  const ticketAssignee = useSelector(getCreateTicketAssignee);
-  const ticketProject = useSelector(getCreateTicketProject);
-
+export const StepOne: React.FC<{ ticket: TicketResponse, setTicket: (val: TicketResponse) => void, projects: ProjectResponse[], users: User[], handleOpenDialog: () => void }> = ({ ticket, setTicket, projects, users, handleOpenDialog }) => {
   const classes = useStyles();
 
   return (
@@ -28,56 +22,62 @@ export const StepOne: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
       <Typography variant="h5" textAlign={"center"}>
 				Project Information
 			</Typography>
+
       <TextField
         label="Ticket Name"
-        value={ticketName ? ticketName : ''}
-        onChange={(e) => {
-          dispatch({ type: SET_CREATE_TICKET_NAME, payload: e.target.value });
-        }}
+        value={ticket.title}
+        onChange={(e) => setTicket({ ...ticket, title: e.target.value })}
       />
+
       <FormControl>
         <InputLabel id="company-dropdown-label">Ticket Priority</InputLabel>
         <Select
-          value={ticketPriority ? ticketPriority : ''}
-          onChange={(e) => {
-            dispatch({ type: SET_CREATE_TICKET_PRIORITY, payload: e.target.value });
-          }}
+          value={ticket.priority}
+          onChange={(e) => setTicket({ ...ticket, priority: e.target.value })}
           label="Ticket Priority"
         >
-          <MenuItem value={1}>Low</MenuItem>
-          <MenuItem value={2}>Medium</MenuItem>
-          <MenuItem value={3}>High</MenuItem>
+          <MenuItem value={"Low"}>Low</MenuItem>
+          <MenuItem value={"Medium"}>Medium</MenuItem>
+          <MenuItem value={"High"}>High</MenuItem>
         </Select>
       </FormControl>
-      {/* Do the same for assignne, project */}
+
       <FormControl>
         <InputLabel id="company-dropdown-label">Ticket Assignee</InputLabel>
+
         <Select
-          value={ticketAssignee ? ticketAssignee : ''}
-          onChange={(e) => {
-            dispatch({ type: SET_CREATE_TICKET_ASSIGNEE, payload: e.target.value });
-          }}
+          value={users.find((user) => user.id === ticket.assignedId)?.id}
+          onChange={(e) => setTicket({ ...ticket, assignedId: e.target.value })}
           label="Ticket Assignee"
         >
-          <MenuItem value={1}>Low</MenuItem>
-          <MenuItem value={2}>Medium</MenuItem>
-          <MenuItem value={3}>High</MenuItem>
+          {users.map((user) => {
+            return <MenuItem value={user.id}>{user.name}</MenuItem>
+          })}
         </Select>
       </FormControl>
+
       <FormControl>
         <InputLabel id="company-dropdown-label">Ticket Project</InputLabel>
+
         <Select
-          value={ticketProject ? ticketProject : ''}
-          onChange={(e) => {
-            dispatch({ type: SET_CREATE_TICKET_PROJECT, payload: e.target.value });
-          }}
+          value={projects.find((project) => project.id === ticket.projectId)?.id}
+          onChange={(e) => setTicket({ ...ticket, projectId: e.target.value })}
           label="Ticket Project"
         >
-          <MenuItem value={1}>Low</MenuItem>
-          <MenuItem value={2}>Medium</MenuItem>
-          <MenuItem value={3}>High</MenuItem>
+          {projects.map((project) => {
+            return <MenuItem value={project.id}>{project.name} ({project.companyName})</MenuItem>
+          })}
         </Select>
       </FormControl>
+
+      <Button
+        variant="contained"
+        color="error"
+        style={{width: "200px", margin: "0 auto", display: "block", marginTop: "25px"}}
+        onClick={handleOpenDialog}
+      >
+        Delete Ticket
+      </Button>
     </div>
     </>
   );

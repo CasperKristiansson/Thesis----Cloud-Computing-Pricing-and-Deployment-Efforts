@@ -171,13 +171,13 @@ export const Navigation: React.FC<{}> = (): JSX.Element => {
 					<NavLink to="/tickets" className={classes.navLink}>
 						Tickets
 					</NavLink>
-					<NavLink to="/create-ticket" className={classes.navLink}>
+					<NavLink to="/ticket/create" className={classes.navLink}>
 						Create Ticket
 					</NavLink>
 					<NavLink to="/projects" className={classes.navLink}>
 						Projects
 					</NavLink>
-					<NavLink to="/create-project" className={classes.navLink}>
+					<NavLink to="/project/create" className={classes.navLink}>
 						Create Project
 					</NavLink>
 				</>}

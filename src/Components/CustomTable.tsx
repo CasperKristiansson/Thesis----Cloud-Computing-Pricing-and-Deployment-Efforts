@@ -2,12 +2,19 @@ import React from 'react';
 import { Avatar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { createUseStyles } from 'react-jss';
 import { Theme } from '../Styling/Theme';
+import { useNavigate } from 'react-router-dom';
 
 interface TableProps {
   rows: Record<string, string | number | JSX.Element>[];
   columns: string[];
   maxHeight?: string;
   columnSpacing?: string;
+  /**
+   * The destination to navigate to when a row is clicked.
+   * The destination is then followed with the 'ID' field.
+   * For example the columns should be: ["Name", "ID"]
+   */
+  rowOnClickDestination?: string;
 }
 
 const useStyles = createUseStyles((theme: Theme) => ({
@@ -40,11 +47,17 @@ const useStyles = createUseStyles((theme: Theme) => ({
     border: 'none',
     color: theme.textDark,
   },
+  tableRow: {
+    '&:hover': {
+      cursor: 'pointer',
+      backgroundColor: '#f5f5f5',
+    }
+  }
 }));
 
-export const CustomTable: React.FC<TableProps> = ({ rows, columns, maxHeight="100%", columnSpacing="px" }) => {
+export const CustomTable: React.FC<TableProps> = ({ rows, columns, maxHeight="100%", columnSpacing="px", rowOnClickDestination = undefined }) => {
   const classes = useStyles();
-
+  const navigate = useNavigate();
   return (
     <TableContainer className={classes.root} style={{maxHeight: maxHeight}}>
       <Table>
@@ -58,14 +71,18 @@ export const CustomTable: React.FC<TableProps> = ({ rows, columns, maxHeight="10
         </TableHead>
         <TableBody>
           {rows.map((row, index) => (
-            <TableRow key={`outter-${index}`}>
+            <TableRow 
+              key={`outter-${index}`} 
+              className={rowOnClickDestination ? classes.tableRow : undefined}
+              onClick={() => rowOnClickDestination ? navigate(rowOnClickDestination + row['ID']) : null}
+            >
               <TableCell component="th" scope="row" className={classes.tableCell}>
                 <Avatar />
               </TableCell>
               {Object.values(row).map((value, index) => (
                 <TableCell key={index} className={classes.tableCell} sx={{ paddingLeft: index ? columnSpacing : 0 }}>
                   <>
-                  {value}
+                  {value === row['ID'] ? String(value).substring(0, 15) + "..." : value}
                   </>
                 </TableCell>
               ))}

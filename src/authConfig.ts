@@ -5,10 +5,11 @@ export const msalConfig: Configuration = {
     auth: {
         clientId: "0a74a678-aba6-4b17-957d-98fd60b7fe5e",
         authority: "https://login.microsoftonline.com/5cb1f273-8ffe-4f6e-ad5a-02dbc3e19e3e",
-        redirectUri: "http://localhost:3000/"
+        redirectUri: "http://localhost:3000/",
     },
     system: {
-        allowNativeBroker: false // Disables WAM Broker
+        allowNativeBroker: false, // Disables WAM Broker
+        tokenRenewalOffsetSeconds: 300, // token renewal offset in seconds (default: 300)
     }
 };
 

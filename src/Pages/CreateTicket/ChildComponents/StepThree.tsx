@@ -1,9 +1,10 @@
 import { Theme } from '../../../Styling/Theme';
 import { createUseStyles } from 'react-jss';
 import { Typography, Grid, Paper } from '@mui/material';
-import { useSelector } from 'react-redux';
 import { AppDispatch } from '../../../store';
-import { getCreateTicket } from '../../../Redux/Selectors';
+import { CreateTicketRequest } from '../../../Models/RequestModels/CreateTicketRequest';
+import { User } from '../../../Models/BackendModels/User';
+import { ProjectResponse } from '../../../Models/ResponseModels/ProjectResponse';
 
 const useStyles = createUseStyles((theme: Theme) => {
   return {
@@ -25,8 +26,7 @@ const useStyles = createUseStyles((theme: Theme) => {
   };
 });
 
-export const StepThree: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
-	const createTicket = useSelector(getCreateTicket);
+export const StepThree: React.FC<{dispatch: AppDispatch, createTicketRequest: CreateTicketRequest, users: User[], projects: ProjectResponse[]}> = ({ dispatch, createTicketRequest, users, projects }) => {
   const classes = useStyles();
 
   return (
@@ -42,31 +42,31 @@ export const StepThree: React.FC<{dispatch: AppDispatch}> = ({ dispatch }) => {
               <Typography variant="h6">
                 Name
               </Typography>
-              <Typography variant="body1">{createTicket.name}</Typography>
+              <Typography variant="body1">{createTicketRequest.name}</Typography>
             </Grid>
             <Grid item xs={12} sm={6} className={classes.row}>
               <Typography variant="h6">
                 Priority
               </Typography>
-              <Typography variant="body1">{createTicket.priority}</Typography>
+              <Typography variant="body1">{createTicketRequest.priority}</Typography>
             </Grid>
             <Grid item xs={12} sm={6} className={classes.row}>
               <Typography variant="h6">
                 Assignee
               </Typography>
-              <Typography variant="body1">{createTicket.assignee}</Typography>
+              <Typography variant="body1">{users.find(user => user.id === createTicketRequest.assignedId)?.name}</Typography>
             </Grid>
             <Grid item xs={12} sm={6} className={classes.row}>
               <Typography variant="h6">
                 Project
               </Typography>
-              <Typography variant="body1">{createTicket.project}</Typography>
+              <Typography variant="body1">{projects.find(project => project.id === createTicketRequest.projectId)?.name}</Typography>
             </Grid>
             <Grid item xs={12} className={classes.row}>
               <Typography variant="h6">
                 Description
               </Typography>
-              <Typography variant="body1">{createTicket.description}</Typography>
+              <Typography variant="body1">{createTicketRequest.description}</Typography>
             </Grid>
           </Grid>
         </div>
