@@ -10,6 +10,7 @@ import { getToken, getUser } from '../../Redux/Selectors';
 import { SET_OPERATION_IN_PROGRESS } from '../../Redux/Actions';
 import { useNavigate } from 'react-router-dom';
 import { ProjectResponse } from '../../Models/ResponseModels/ProjectResponse';
+import { formatTime } from '../../Utils/Other';
 
 const rows = [
   {
@@ -90,7 +91,7 @@ export const Projects: React.FC<{}> = () => {
             const projects = response.map((p: ProjectResponse) => {
               return {
                 projectName: p.name,
-                lastUpdated: p.lastEdited,
+                lastUpdated: formatTime(p.lastEdited),
                 customer: p.companyName,
                 ID: p.id,
               }
@@ -109,7 +110,7 @@ export const Projects: React.FC<{}> = () => {
             const projects = response.map((p: ProjectResponse) => {
               return {
                 projectName: p.name,
-                lastUpdated: p.lastEdited,
+                lastUpdated: formatTime(p.lastEdited),
                 customer: p.companyName,
                 ID: p.id
               }

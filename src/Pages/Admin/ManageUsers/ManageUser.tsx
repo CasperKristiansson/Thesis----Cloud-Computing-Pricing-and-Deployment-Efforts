@@ -6,6 +6,7 @@ import { getToken } from "../../../Redux/Selectors";
 import { SET_OPERATION_IN_PROGRESS } from "../../../Redux/Actions";
 import { requestApi } from "../../../Utils/Fetch";
 import { User } from "../../../Models/BackendModels/User";
+import { formatTime } from "../../../Utils/Other";
 
 const columns = [
 	'User Name',
@@ -74,7 +75,7 @@ export const ManageUsers: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 						'User Name': user.name,
 						'Email': user.email,
 						'CurrentRole': user.role,
-						'Created': user.created,
+						'Created': formatTime(user.created),
 						'Last Login': user.lastLogin,
 						'Change Role': (
 							<Box sx={{ minWidth: 120 }}>

@@ -1,4 +1,4 @@
-import { Button, InputBase, Paper, Typography, Avatar, Box, CircularProgress, LinearProgress } from "@mui/material";
+import { Button, InputBase, Paper, Typography, Avatar, Box } from "@mui/material";
 import { createUseStyles } from "react-jss";
 import { AppDispatch } from "../../store";
 import { RefObject, useEffect, useRef, useState } from "react";
@@ -14,6 +14,7 @@ import { ProjectResponse } from "../../Models/ResponseModels/ProjectResponse";
 import { TicketResponse } from "../../Models/ResponseModels/TicketResponse";
 import { Status } from "../../Components/Status";
 import { Priority } from "../../Components/Priority";
+import { formatTime } from "../../Utils/Other";
 
 const useStyles = createUseStyles({
   containerWrapper: {
@@ -233,7 +234,7 @@ export const IndividualProject: React.FC<{ dispatch: AppDispatch }> = ({ dispatc
         const customTableTickets = response.tickets.map((ticket: TicketResponse) => {
           return {
             subject: ticket.title,
-            lastUpdated: ticket.lastUpdated,
+            lastUpdated: formatTime(ticket.lastUpdated),
             status: <Status value={ticket.status} />,
             priority: <Priority value={ticket.priority} />,
             assigned: ticket.assignedName,
@@ -310,7 +311,7 @@ export const IndividualProject: React.FC<{ dispatch: AppDispatch }> = ({ dispatc
                               {comment.name}
                             </Typography>
                             <Typography variant="body2" className={classes.commentDateAuthor}>
-                              {comment.time}
+                              {formatTime(comment.time)}
                             </Typography>
                             <Box className={`${classes.commentBubble} ${classes.authorCommentBubble}`}>
                               <Typography variant="body1">{comment.comment}</Typography>
@@ -326,7 +327,7 @@ export const IndividualProject: React.FC<{ dispatch: AppDispatch }> = ({ dispatc
                               {comment.name}
                             </Typography>
                             <Typography variant="body2" className={classes.commentDate}>
-                              {comment.time}
+                              {formatTime(comment.time)}
                             </Typography>
                             <Box className={`${classes.commentBubble}`}>
                               <Typography variant="body1">{comment.comment}</Typography>

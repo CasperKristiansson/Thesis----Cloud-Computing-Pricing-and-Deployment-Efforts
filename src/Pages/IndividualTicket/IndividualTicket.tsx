@@ -12,10 +12,9 @@ import { useSelector } from "react-redux";
 import { getToken, getUser } from "../../Redux/Selectors";
 import { TicketResponse } from "../../Models/ResponseModels/TicketResponse";
 import { Status } from "../../Components/Status";
-import { JsxElement } from "typescript";
 import { Priority } from "../../Components/Priority";
-import { TicketCommentResponse } from "../../Models/ResponseModels/TicketCommentResponse";
 import { Link as RouterLink } from "react-router-dom";
+import { formatTime } from "../../Utils/Other";
 
 const useStyles = createUseStyles({
   containerWrapper: {
@@ -327,7 +326,7 @@ export const IndividualTicket: React.FC<{ dispatch: AppDispatch }> = ({ dispatch
                                 {comment.name}
                               </Typography>
                               <Typography variant="body2" className={classes.commentDateAuthor}>
-                                {comment.time}
+                                {formatTime(comment.time)}
                               </Typography>
                               <Box className={`${classes.commentBubble} ${classes.authorCommentBubble}`}>
                                 <Typography variant="body1">{comment.comment}</Typography>
@@ -343,7 +342,7 @@ export const IndividualTicket: React.FC<{ dispatch: AppDispatch }> = ({ dispatch
                                 {comment.name}
                               </Typography>
                               <Typography variant="body2" className={classes.commentDate}>
-                                {comment.time}
+                                {formatTime(comment.time)}
                               </Typography>
                               <Box className={`${classes.commentBubble}`}>
                                 <Typography variant="body1">{comment.comment}</Typography>
@@ -417,7 +416,7 @@ export const IndividualTicket: React.FC<{ dispatch: AppDispatch }> = ({ dispatch
                 <Info label="Project" data={<Link to={`/project/${ticket.projectId}`} component={RouterLink} >{ticket.projectName}</Link>} />
                 <Info label="Creator" data={ticket.creatorName ?? ""} />
                 <Info label="Assignee" data={ticket.assignedName} />
-                <Info label="Last Updated" data={ticket.lastUpdated} />
+                <Info label="Last Updated" data={formatTime(ticket.lastUpdated)} />
                 <Info label="Priority" data={ticket.priority} priority />
                 <Info label="Status" data={ticket.status} status />
               </div>

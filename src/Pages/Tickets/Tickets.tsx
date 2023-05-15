@@ -11,6 +11,7 @@ import { SET_OPERATION_IN_PROGRESS } from '../../Redux/Actions';
 import { TicketResponse } from '../../Models/ResponseModels/TicketResponse';
 import { Status } from '../../Components/Status';
 import { Priority } from '../../Components/Priority';
+import { formatTime } from '../../Utils/Other';
 
 const columns = [
 	'Ticket Name', 
@@ -43,7 +44,7 @@ export const Tickets: React.FC<{}> = () => {
             const myTickets = response.map((t: TicketResponse) => {
               return {
                 ticketname: t.title,
-                lastUpdated: t.lastUpdated,
+                lastUpdated: formatTime(t.lastUpdated),
                 status: <Status value={t.status} />,
                 priority: <Priority value={t.priority} />,
                 ID: t.id,
@@ -64,7 +65,7 @@ export const Tickets: React.FC<{}> = () => {
             const allTickets = response.map((t: TicketResponse) => {
               return {
                 ticketname: t.title,
-                lastUpdated: t.lastUpdated,
+                lastUpdated: formatTime(t.lastUpdated),
                 status: <Status value={t.status} />,
                 priority: <Priority value={t.priority} />,
                 ID: t.id,
