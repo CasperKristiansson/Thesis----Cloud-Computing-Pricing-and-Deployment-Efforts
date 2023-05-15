@@ -65,7 +65,7 @@ export const CustomTable: React.FC<TableProps> = ({ rows, columns, maxHeight="10
           <TableRow className={classes.tableHeader} >
             <TableCell />
             {columns.map((column, index) => (
-              <TableCell key={column} sx={{color: "#75BC5B", paddingLeft: index ? columnSpacing : 0, width: "100%" }}>{column}</TableCell>
+              <TableCell key={column} sx={{color: "#75BC5B", paddingLeft: index ? columnSpacing : 0, width: "100%", whiteSpace: "nowrap" }}>{column}</TableCell>
             ))}
           </TableRow>
         </TableHead>

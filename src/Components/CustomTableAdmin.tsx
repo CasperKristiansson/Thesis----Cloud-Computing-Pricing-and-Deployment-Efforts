@@ -45,7 +45,7 @@ export const CustomTableAdmin: React.FC<TableProps> = ({ rows, columns, maxHeigh
         <TableHead>
           <TableRow className={classes.tableHeader} >
             {columns.map((column, index) => (
-              <TableCell key={column} sx={{color: "#75BC5B"}} >{column}</TableCell>
+              <TableCell key={column} sx={{color: "#75BC5B", whiteSpace: "nowrap"}} >{column}</TableCell>
             ))}
           </TableRow>
         </TableHead>
