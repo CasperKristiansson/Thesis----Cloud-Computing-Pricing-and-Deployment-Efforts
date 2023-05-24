@@ -19,9 +19,10 @@ class TicketDAO(DAO):
             'status': result[6],
             'assignedId': result[7],
             'lastUpdated': result[8],
-            'assignedName': result[9],
-            'creatorName': result[10],
-            'projectName': result[11]
+            'timeCreated': result[9],
+            'assignedName': result[10],
+            'creatorName': result[11],
+            'projectName': result[12]
         }
 
     def find_all_by_project_id(self, project_id):
@@ -93,6 +94,7 @@ class TicketDAO(DAO):
                 'status': ticket[6],
                 'assignedId': ticket[7],
                 'lastUpdated': ticket[8],
-                'assignedName': ticket[9]
+                'timeCreated': ticket[9],
+                'assignedName': ticket[10]
             })
         return tickets
