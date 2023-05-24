@@ -23,7 +23,7 @@ class ProjectDAO(DAO):
     # Find project by id
     def find_by_id(self, id):
         self.cursor.execute(
-            'SELECT [Project].*, [Company].Name, [Company].ContactPersonName as CompanyName, [User].Name as CreatorName FROM [Project] INNER JOIN [Company] ON [Company].Id = [Project].CompanyId INNER JOIN [User] ON [User].Id = [Project].CreatorId WHERE [Project].Id = %s', id
+            'SELECT [Project].*, [Company].Name, [Company].ContactPersonName, [User].Name FROM [Project] INNER JOIN [Company] ON [Company].Id = [Project].CompanyId INNER JOIN [User] ON [User].Id = [Project].CreatorId WHERE [Project].Id = %s', id
         )
         result = self.cursor.fetchone()
 

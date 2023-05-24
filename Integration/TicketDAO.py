@@ -1,10 +1,11 @@
+import logging
 from Integration.DAO import DAO
 
 class TicketDAO(DAO):
 
     def find_by_id(self, id):
         self.cursor.execute(
-            'SELECT [Ticket].*, [User].Name, [User].Name as CreatorName, [Project].Name FROM [Ticket] INNER JOIN [User] ON [User].Id = [Ticket].AssignedId AND [User].Id = [Ticket].CreatorId INNER JOIN [Project] ON [Project].Id = [Ticket].ProjectId WHERE [Ticket].Id = %s', id
+            'SELECT [Ticket].*, Assigned.Name, Creator.Name, [Project].Name FROM [Ticket] LEFT OUTER JOIN [User] as Assigned ON Assigned.Id = [Ticket].AssignedId LEFT OUTER JOIN [User] as Creator ON Creator.Id = [Ticket].CreatorId INNER JOIN [Project] ON [Project].Id = [Ticket].ProjectId WHERE [Ticket].Id = %s', id
         )
         result = self.cursor.fetchone()
 
