@@ -128,12 +128,7 @@ export const Home: React.FC<{}> = (): JSX.Element => {
                   About the Ticket System
                 </Typography>
                 <Typography variant="body1" className={classes.aboutText}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  quis nisl euismod, aliquam nisl eu, aliquet nisl. Donec
-                  condimentum, nisl eget aliquam lacinia, nisl nisl aliquet
-                  ligula, eget aliquam nisl nisl eget nisl. Donec condimentum,
-                  nisl eget aliquam lacinia, nisl nisl aliquet ligula, eget
-                  aliquam nisl nisl eget nisl.
+                Amaceit Ticket System is a powerful and easy-to-use tool that helps to track and manage tickets. With Amaceit, you can easily create and assign tickets, track their progress, and communicate with customers. Amaceit is perfect for both internal and external use. You can use it to track tickets for your own team, as well as tickets from your customers.
                 </Typography>
               </Box>
             </Grid>
