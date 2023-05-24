@@ -14,7 +14,7 @@ import { TicketResponse } from "../../Models/ResponseModels/TicketResponse";
 import { Status } from "../../Components/Status";
 import { Priority } from "../../Components/Priority";
 import { Link as RouterLink } from "react-router-dom";
-import { formatTime } from "../../Utils/Other";
+import { formatTime, formatTimeAgo } from "../../Utils/Other";
 
 const useStyles = createUseStyles({
   containerWrapper: {
@@ -310,7 +310,7 @@ export const IndividualTicket: React.FC<{ dispatch: AppDispatch }> = ({ dispatch
                                 {comment.name}
                               </Typography>
                               <Typography variant="body2" className={classes.commentDateAuthor}>
-                                {formatTime(comment.time)}
+                                {formatTimeAgo(comment.time)}
                               </Typography>
                               <Box className={`${classes.commentBubble} ${classes.authorCommentBubble}`}>
                                 <Typography variant="body1">{comment.comment}</Typography>
@@ -326,7 +326,7 @@ export const IndividualTicket: React.FC<{ dispatch: AppDispatch }> = ({ dispatch
                                 {comment.name}
                               </Typography>
                               <Typography variant="body2" className={classes.commentDate}>
-                                {formatTime(comment.time)}
+                                {formatTimeAgo(comment.time)}
                               </Typography>
                               <Box className={`${classes.commentBubble}`}>
                                 <Typography variant="body1">{comment.comment}</Typography>
@@ -400,7 +400,8 @@ export const IndividualTicket: React.FC<{ dispatch: AppDispatch }> = ({ dispatch
                 <Info label="Project" data={<Link to={`/project/${ticket.projectId}`} component={RouterLink} >{ticket.projectName}</Link>} />
                 <Info label="Creator" data={ticket.creatorName ?? ""} />
                 <Info label="Assignee" data={ticket.assignedName} />
-                <Info label="Last Updated" data={formatTime(ticket.lastUpdated)} />
+                <Info label="Last Updated" data={formatTimeAgo(ticket.lastUpdated)} />
+                <Info label="Time Created" data={formatTimeAgo(ticket.timeCreated)} />
                 <Info label="Priority" data={ticket.priority} priority />
                 <Info label="Status" data={ticket.status} status />
               </div>
