@@ -41,7 +41,8 @@ const useStyles = createUseStyles({
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
-    height: "100%",
+    height: "inherit",
+    maxHeight: "inherit",
     overflowX: "hidden",
     "& > *": {
       margin: "0 2px",
@@ -170,12 +171,12 @@ const useStyles = createUseStyles({
     columnGap: 10,
     "& > *:first-child": {
       width: '33%',
-      height: '100%',
+      height: "inherit",
       overflowY: 'scroll',
     },
     "& > *:last-child": {
       width: '66%',
-      height: '100%',
+      height: "inherit",
       overflowY: 'scroll',
     },
   },
@@ -217,10 +218,6 @@ export const IndividualTicket: React.FC<{ dispatch: AppDispatch }> = ({ dispatch
   const classes = useStyles();
 
   const divRef: RefObject<HTMLDivElement> = useRef(null);
-  const divTicketInformationRef: RefObject<HTMLDivElement> = useRef(null);
-
-  const [height, setHeight] = useState<number | null>(null);
-  const [deviceWidthUpdate, setDeviceWidthUpdate] = useState<number | null>(null);
 
   const [ticket, setTicket] = useState<TicketResponse | null>(null);
   const [commentText, setCommentText] = useState<string>("");
@@ -231,19 +228,6 @@ export const IndividualTicket: React.FC<{ dispatch: AppDispatch }> = ({ dispatch
   const user = useSelector(getUser);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    window.addEventListener('resize', () => {
-      setDeviceWidthUpdate(window.innerWidth);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (divTicketInformationRef.current) {
-      const elementHeight = divTicketInformationRef.current.offsetHeight;
-      setHeight(elementHeight);
-    }
-  }, [deviceWidthUpdate]);
 
   useEffect(() => {
     if (divRef.current) divRef.current.scrollTop = divRef.current.scrollHeight;
@@ -380,8 +364,8 @@ export const IndividualTicket: React.FC<{ dispatch: AppDispatch }> = ({ dispatch
               </div>
             </div>
           </Paper>
-          <Paper className={classes.paper}>
-            <div ref={divTicketInformationRef}>
+          <Paper className={classes.paper} style={{display: "flex", flexFlow: "column", height: "100%"}}>
+            <div>
               <Typography variant="h4" sx={{ padding: "10px" }}>Ticket Details</Typography>
               <div className={classes.ticketManageButtons}>
                 <Button
@@ -421,7 +405,7 @@ export const IndividualTicket: React.FC<{ dispatch: AppDispatch }> = ({ dispatch
                 <Info label="Status" data={ticket.status} status />
               </div>
             </div>
-            <div className={classes.containerTicketExtended} style={{ height: `calc(100% - ${height}px - 15px)` }}>
+            <div className={classes.containerTicketExtended} style={{ flexGrow: 1 }}>
               <Paper>
                 <Typography variant="h6" sx={{ padding: "10px" }}>Description</Typography>
                 <Typography variant="body1" sx={{ padding: "10px" }}>

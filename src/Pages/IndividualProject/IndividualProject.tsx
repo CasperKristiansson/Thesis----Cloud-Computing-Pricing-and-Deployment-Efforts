@@ -201,10 +201,7 @@ export const IndividualProject: React.FC<{ dispatch: AppDispatch }> = ({ dispatc
   const classes = useStyles();
 
   const divRef: RefObject<HTMLDivElement> = useRef(null);
-  const divProjectInformationRef: RefObject<HTMLDivElement> = useRef(null);
 
-  const [height, setHeight] = useState<number | null>(null);
-  const [deviceWidthUpdate, setDeviceWidthUpdate] = useState<number | null>(null);
   const [project, setProject] = useState<ProjectResponse | null>(null);
   const [commentText, setCommentText] = useState<string>("");
   const [tickets, setTickets] = useState([]);
@@ -216,12 +213,6 @@ export const IndividualProject: React.FC<{ dispatch: AppDispatch }> = ({ dispatc
   const user = useSelector(getUser);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    window.addEventListener('resize', () => {
-      setDeviceWidthUpdate(window.innerWidth);
-    });
-  }, []);
 
   useEffect(() => {
     dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: true })
@@ -274,13 +265,6 @@ export const IndividualProject: React.FC<{ dispatch: AppDispatch }> = ({ dispatc
       }
     });
   }
-
-  useEffect(() => {
-    if (divProjectInformationRef.current) {
-      const elementHeight = divProjectInformationRef.current.offsetHeight;
-      setHeight(elementHeight);
-    }
-  }, [deviceWidthUpdate]);
 
   useEffect(() => {
     if (divRef.current) divRef.current.scrollTop = divRef.current.scrollHeight;
@@ -363,8 +347,8 @@ export const IndividualProject: React.FC<{ dispatch: AppDispatch }> = ({ dispatc
               </div>
             </div>
           </Paper>
-          <Paper className={classes.paper}>
-            <div ref={divProjectInformationRef}>
+          <Paper className={classes.paper} style={{display: "flex", flexFlow: "column", height: "100%"}}>
+            <div>
               <Typography variant="h5" sx={{ padding: "10px" }}>Project Details</Typography>
 
               <div className={classes.projectManageButtons}>
@@ -388,7 +372,7 @@ export const IndividualProject: React.FC<{ dispatch: AppDispatch }> = ({ dispatc
               </div>
             </div>
 
-            <div className={classes.containerProjectExtended} style={{ height: `calc(100% - ${height}px - 15px)` }}>
+            <div className={classes.containerProjectExtended} style={{ flexGrow: 1 }}>
               <Paper>
                 <Typography variant="h6" sx={{ padding: "10px" }}>Description</Typography>
 
