@@ -14,7 +14,7 @@ import { ProjectResponse } from "../../Models/ResponseModels/ProjectResponse";
 import { TicketResponse } from "../../Models/ResponseModels/TicketResponse";
 import { Status } from "../../Components/Status";
 import { Priority } from "../../Components/Priority";
-import { formatTime } from "../../Utils/Other";
+import { formatTime, formatTimeAgo } from "../../Utils/Other";
 
 const useStyles = createUseStyles({
   containerWrapper: {
@@ -222,10 +222,10 @@ export const IndividualProject: React.FC<{ dispatch: AppDispatch }> = ({ dispatc
 
         setProject(response as ProjectResponse);
 
-        const customTableTickets = response.tickets.map((ticket: TicketResponse) => {
+        const customTableTickets = response.tickets.sort((a: TicketResponse, b: TicketResponse) => a.lastUpdated > b.lastUpdated ? -1 : 1).map((ticket: TicketResponse) => {
           return {
             subject: ticket.title,
-            lastUpdated: formatTime(ticket.lastUpdated),
+            lastUpdated: formatTimeAgo(ticket.lastUpdated),
             status: <Status value={ticket.status} />,
             priority: <Priority value={ticket.priority} />,
             assigned: ticket.assignedName,
@@ -295,7 +295,7 @@ export const IndividualProject: React.FC<{ dispatch: AppDispatch }> = ({ dispatc
                               {comment.name}
                             </Typography>
                             <Typography variant="body2" className={classes.commentDateAuthor}>
-                              {formatTime(comment.time)}
+                              {formatTimeAgo(comment.time)}
                             </Typography>
                             <Box className={`${classes.commentBubble} ${classes.authorCommentBubble}`}>
                               <Typography variant="body1">{comment.comment}</Typography>
@@ -311,7 +311,7 @@ export const IndividualProject: React.FC<{ dispatch: AppDispatch }> = ({ dispatc
                               {comment.name}
                             </Typography>
                             <Typography variant="body2" className={classes.commentDate}>
-                              {formatTime(comment.time)}
+                              {formatTimeAgo(comment.time)}
                             </Typography>
                             <Box className={`${classes.commentBubble}`}>
                               <Typography variant="body1">{comment.comment}</Typography>
@@ -368,7 +368,7 @@ export const IndividualProject: React.FC<{ dispatch: AppDispatch }> = ({ dispatc
                 <Info label="Creator" data={project.creatorName} />
                 <Info label="Contact Person" data={project.contactPersonName} />
                 <Info label="Associated Company" data={project.companyName} />
-                <Info label="Last Edited" data={project.lastEdited} />
+                <Info label="Last Edited" data={formatTimeAgo(project.lastEdited)} />
               </div>
             </div>
 

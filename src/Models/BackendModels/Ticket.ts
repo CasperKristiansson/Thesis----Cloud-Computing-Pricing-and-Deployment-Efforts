@@ -8,4 +8,5 @@ export interface Ticket {
     status: string;
     title: string;
     lastUpdated: string;
+    timeCreated: string;
 }

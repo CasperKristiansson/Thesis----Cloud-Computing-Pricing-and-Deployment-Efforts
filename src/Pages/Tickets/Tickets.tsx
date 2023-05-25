@@ -11,7 +11,7 @@ import { SET_OPERATION_IN_PROGRESS } from '../../Redux/Actions';
 import { TicketResponse } from '../../Models/ResponseModels/TicketResponse';
 import { Status } from '../../Components/Status';
 import { Priority } from '../../Components/Priority';
-import { formatTime } from '../../Utils/Other';
+import { formatTime, formatTimeAgo } from '../../Utils/Other';
 
 const columns = [
 	'Ticket Name', 
@@ -41,10 +41,10 @@ export const Tickets: React.FC<{}> = () => {
       // Get myProjects
         requestApi("/myTickets", "GET", token).then((response) => {
           if (response) {
-            const myTickets = response.map((t: TicketResponse) => {
+            const myTickets = response.sort((a: TicketResponse, b: TicketResponse) => a.lastUpdated > b.lastUpdated ? -1 : 1).map((t: TicketResponse) => {
               return {
                 ticketname: t.title,
-                lastUpdated: formatTime(t.lastUpdated),
+                lastUpdated: formatTimeAgo(t.lastUpdated),
                 status: <Status value={t.status} />,
                 priority: <Priority value={t.priority} />,
                 ID: t.id,
@@ -62,10 +62,10 @@ export const Tickets: React.FC<{}> = () => {
       if (user?.role === 'ADMIN') {
         requestApi("/allTickets", "GET", token).then((response) => {
           if (response) {
-            const allTickets = response.map((t: TicketResponse) => {
+            const allTickets = response.sort((a: TicketResponse, b: TicketResponse) => a.lastUpdated > b.lastUpdated ? -1 : 1).map((t: TicketResponse) => {
               return {
                 ticketname: t.title,
-                lastUpdated: formatTime(t.lastUpdated),
+                lastUpdated: formatTimeAgo(t.lastUpdated),
                 status: <Status value={t.status} />,
                 priority: <Priority value={t.priority} />,
                 ID: t.id,
@@ -147,9 +147,9 @@ export const Tickets: React.FC<{}> = () => {
             />
           </Box>
         </Box>
-        <Box flexGrow={1}>
+        {user?.role === 'ADMIN' && <Box flexGrow={1}>
           <CustomTable rowOnClickDestination='/ticket/' rows={allTickets} columns={columns} maxHeight='calc(53vh - 90px)'/>
-        </Box>
+        </Box>}
       </Grid>
     </Grid>
   );
