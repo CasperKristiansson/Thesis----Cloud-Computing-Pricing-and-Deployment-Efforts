@@ -25,12 +25,13 @@ const useStyles = createUseStyles((theme: Theme) => {
 			alignItems: 'center',
 			color: '#333',
 			textDecoration: 'none',
+			width: "500px",
 			'&:hover': {
 				color: '#000',
 			},
 			'& span': {
 				color: theme.textWhite,
-				fontSize: '2.6rem',
+				fontSize: '2.5rem',
 				marginTop: 6,
 				marginLeft: 15,
 				fontFamily: "'Poppins', sans-serif",
