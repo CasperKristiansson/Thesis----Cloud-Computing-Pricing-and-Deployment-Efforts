@@ -15,6 +15,7 @@ import { Status } from "../../Components/Status";
 import { Priority } from "../../Components/Priority";
 import { Link as RouterLink } from "react-router-dom";
 import { formatTime, formatTimeAgo } from "../../Utils/Other";
+import uploadFileToBlob, { getBlobsInContainer } from "../../blobConfig";
 
 const useStyles = createUseStyles({
   containerWrapper: {
@@ -286,6 +287,42 @@ export const IndividualTicket: React.FC<{ dispatch: AppDispatch }> = ({ dispatch
     });
   }
 
+  // File upload
+  const [blobList, setBlobList] = useState<string[]>([]);
+
+  // current file to upload into container
+  const [fileSelected, setFileSelected] = useState<File | null>();
+  const [fileUploaded, setFileUploaded] = useState<string>('');
+
+  useEffect(() => {
+    getBlobsInContainer().then((list: any) => {
+      // prepare UI for results
+      setBlobList(list);
+    })
+  }, [fileUploaded]);
+
+  const onFileChange = (event: any) => {
+    // capture file into state
+    setFileSelected(event.target.files[0]);
+  };
+
+  const onFileUpload = async () => {
+
+    if (fileSelected && fileSelected?.name) {
+      dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: true });
+
+
+      // *** UPLOAD TO AZURE STORAGE ***
+      await uploadFileToBlob(fileSelected);
+
+      // reset state/form
+      setFileSelected(null);
+      setFileUploaded(fileSelected.name);
+      dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: false });
+    }
+
+  };
+
   return (
     <div className={classes.containerWrapper}>
       {ticket && <div className={classes.root}>
@@ -364,7 +401,7 @@ export const IndividualTicket: React.FC<{ dispatch: AppDispatch }> = ({ dispatch
               </div>
             </div>
           </Paper>
-          <Paper className={classes.paper} style={{display: "flex", flexFlow: "column", height: "100%"}}>
+          <Paper className={classes.paper} style={{ display: "flex", flexFlow: "column", height: "100%" }}>
             <div>
               <Typography variant="h4" sx={{ padding: "10px" }}>Ticket Details</Typography>
               <div className={classes.ticketManageButtons}>
@@ -421,6 +458,12 @@ export const IndividualTicket: React.FC<{ dispatch: AppDispatch }> = ({ dispatch
                     sx={{ color: "white", marginTop: "8px", width: 190 }}
                     onClick={() => dispatch({ type: UPLOAD_FILE_OPEN, payload: true })}
                   >Add Attachment</Button>
+                  <div>
+                    <input type="file" onChange={onFileChange} />
+                    <button type="submit" onClick={onFileUpload}>
+                      Upload!
+                    </button>
+                  </div>
                 </div>
                 <CustomTableIndividual rows={data} columns={columns} maxHeight='calc(100% - 55px)' />
               </Paper>
