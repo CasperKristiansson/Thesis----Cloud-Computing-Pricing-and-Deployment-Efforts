@@ -2,10 +2,10 @@
 
 // <snippet_package>
 // THIS IS SAMPLE CODE ONLY - NOT MEANT FOR PRODUCTION USE
-import { BlobServiceClient, ContainerClient } from "@azure/storage-blob";
+import { BlobServiceClient, BlockBlobParallelUploadOptions, ContainerClient } from "@azure/storage-blob";
 
 const containerName = `fileupload`;
-const sasToken = 'sp=rad&st=2023-06-04T14:57:34Z&se=2024-09-29T22:57:34Z&sip=0.0.0.0-255.255.255.255&spr=https&sv=2022-11-02&sr=c&sig=ONJNdfKuXxvr17%2BWDdVBdMMvjaQWGQIwz2jbfYye4mc%3D';
+const sasToken = 'sp=racwdli&st=2023-06-04T19:34:29Z&se=2024-12-17T16:34:29Z&sip=0.0.0.0-255.255.255.255&spr=https&sv=2022-11-02&sr=c&sig=MNQ%2BGAQepInyv%2BmLSAu1ZJfAGKJ5kAefORHZxFZcNVY%3D';
 const storageAccountName = 'amaceitticketsyste08d78c';
 // </snippet_package>
 
@@ -30,17 +30,27 @@ export const isStorageConfigured = () => {
 
 // <snippet_getBlobsInContainer>
 // return list of blobs in container to display
-export const getBlobsInContainer = async () => {
+export const getBlobsInContainer = async (id: string) => {
   const returnedBlobUrls = [];
 
   // get list of blobs in container
   // eslint-disable-next-line
-  for await (const blob of containerClient.listBlobsFlat()) {
-    console.log(`${blob.name}`);
+  for await (const blob of containerClient.listBlobsFlat({ prefix: id })) {
+    console.log(`${blob.properties.contentLength} - ${blob.name}`);
+
+    const size = blob.properties.contentLength ?? 0;
+    let sizeWithPrefix = "";
+    if (size > 1000000) {
+      sizeWithPrefix = `${(size / 1000000).toFixed(2)} MB`;
+    } else {
+      sizeWithPrefix = `${(size / 1000).toFixed(2)} KB`;
+    }
 
     const blobItem = {
+      name: blob.name.split("_")[1],
+      size: sizeWithPrefix,
+      createdOn: blob.properties.createdOn?.toDateString(),
       url: `https://${storageAccountName}.blob.core.windows.net/${containerName}/${blob.name}?${sasToken}`,
-      name: blob.name
     }
 
     // if image is public, just construct URL
@@ -52,12 +62,12 @@ export const getBlobsInContainer = async () => {
 // </snippet_getBlobsInContainer>
 
 // <snippet_createBlobInContainer>
-const createBlobInContainer = async (file: File) => {
+const createBlobInContainer = async (file: File, id: string) => {
   // create blobClient for container
-  const blobClient = containerClient.getBlockBlobClient(file.name);
+  const blobClient = containerClient.getBlockBlobClient(id + "_" + file.name);
 
   // set mimetype as determined from browser with file upload control
-  const options = { blobHTTPHeaders: { blobContentType: file.type } };
+  const options = { blobHTTPHeaders: { blobContentType: file.type } } as BlockBlobParallelUploadOptions;
 
   // upload file
   await blobClient.uploadData(file, options);
@@ -65,11 +75,11 @@ const createBlobInContainer = async (file: File) => {
 // </snippet_createBlobInContainer>
 
 // <snippet_uploadFileToBlob>
-const uploadFileToBlob = async (file: File | null): Promise<void> => {
+const uploadFileToBlob = async (file: File | null, id: string): Promise<void> => {
   if (!file) return;
 
   // upload file
-  await createBlobInContainer(file);
+  await createBlobInContainer(file, id);
 };
 // </snippet_uploadFileToBlob>
 

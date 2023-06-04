@@ -9,7 +9,7 @@ import { SET_OPERATION_IN_PROGRESS, UPLOAD_FILE_OPEN } from "../../Redux/Actions
 import { useNavigate, useParams } from "react-router-dom";
 import { requestApi } from "../../Utils/Fetch";
 import { useSelector } from "react-redux";
-import { getToken, getUser } from "../../Redux/Selectors";
+import { getToken, getUploadFile, getUser } from "../../Redux/Selectors";
 import { TicketResponse } from "../../Models/ResponseModels/TicketResponse";
 import { Status } from "../../Components/Status";
 import { Priority } from "../../Components/Priority";
@@ -191,7 +191,7 @@ const useStyles = createUseStyles({
 });
 
 const columns = [
-  "File Name", "File Size", "Date Uploaded", "Uploaded By"
+  "File Name", "File Size", "Date Uploaded", "Download"
 ];
 
 const data = [
@@ -288,40 +288,18 @@ export const IndividualTicket: React.FC<{ dispatch: AppDispatch }> = ({ dispatch
   }
 
   // File upload
-  const [blobList, setBlobList] = useState<string[]>([]);
-
-  // current file to upload into container
-  const [fileSelected, setFileSelected] = useState<File | null>();
-  const [fileUploaded, setFileUploaded] = useState<string>('');
+  const [blobList, setBlobList] = useState<[]>([]);
+  const uploadFile = useSelector(getUploadFile);
 
   useEffect(() => {
-    getBlobsInContainer().then((list: any) => {
-      // prepare UI for results
-      setBlobList(list);
-    })
-  }, [fileUploaded]);
-
-  const onFileChange = (event: any) => {
-    // capture file into state
-    setFileSelected(event.target.files[0]);
-  };
-
-  const onFileUpload = async () => {
-
-    if (fileSelected && fileSelected?.name) {
-      dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: true });
-
-
-      // *** UPLOAD TO AZURE STORAGE ***
-      await uploadFileToBlob(fileSelected);
-
-      // reset state/form
-      setFileSelected(null);
-      setFileUploaded(fileSelected.name);
-      dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: false });
+    if (id) {
+      getBlobsInContainer(id).then((list: any) => {
+        // prepare UI for results
+        setBlobList(list);
+        console.log("Blob list", list)
+      })
     }
-
-  };
+  }, [uploadFile]);
 
   return (
     <div className={classes.containerWrapper}>
@@ -456,16 +434,10 @@ export const IndividualTicket: React.FC<{ dispatch: AppDispatch }> = ({ dispatch
                   <Button variant="contained" color="primary"
                     endIcon={<FontAwesomeIcon icon={faPlus} />}
                     sx={{ color: "white", marginTop: "8px", width: 190 }}
-                    onClick={() => dispatch({ type: UPLOAD_FILE_OPEN, payload: true })}
+                    onClick={() => dispatch({ type: UPLOAD_FILE_OPEN, payload: {open: true, id: id ?? ""} })}
                   >Add Attachment</Button>
-                  <div>
-                    <input type="file" onChange={onFileChange} />
-                    <button type="submit" onClick={onFileUpload}>
-                      Upload!
-                    </button>
-                  </div>
                 </div>
-                <CustomTableIndividual rows={data} columns={columns} maxHeight='calc(100% - 55px)' />
+                <CustomTableIndividual rows={blobList} columns={columns} maxHeight='calc(100% - 55px)' />
               </Paper>
             </div>
           </Paper>

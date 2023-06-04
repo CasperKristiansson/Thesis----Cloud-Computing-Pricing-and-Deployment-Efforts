@@ -148,7 +148,7 @@ export const App = (): JSX.Element => {
         </Backdrop>
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1, cursor: 'pointer' }}
-          open={uploadFile}
+          open={uploadFile.open}
         >
           <UploadFile dispatch={dispatch} />
         </Backdrop>

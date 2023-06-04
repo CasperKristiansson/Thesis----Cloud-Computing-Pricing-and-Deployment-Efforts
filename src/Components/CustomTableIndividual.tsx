@@ -1,11 +1,12 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { createUseStyles } from 'react-jss';
 import { Theme } from '../Styling/Theme';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 interface TableProps {
-  rows: Record<string, string | number | JSX.Element>[];
+  rows: any[];
   columns: string[];
   maxHeight?: string;
   columnSpacing?: string;
@@ -37,31 +38,43 @@ const useStyles = createUseStyles((theme: Theme) => ({
   }
 }));
 
-export const CustomTableIndividual: React.FC<TableProps> = ({ rows, columns, maxHeight="100%", columnSpacing="px", rowOnClickDestination }) => {
+export const CustomTableIndividual: React.FC<TableProps> = ({ rows, columns, maxHeight = "100%", columnSpacing = "px", rowOnClickDestination }) => {
   const classes = useStyles();
   const navigate = useNavigate();
 
   return (
-    <TableContainer className={classes.root} style={{maxHeight: maxHeight}}>
+    <TableContainer className={classes.root} style={{ maxHeight: maxHeight }}>
       <Table>
         <TableHead>
           <TableRow className={classes.tableHeader} >
             {columns.map((column, index) => (
-              <TableCell key={column} sx={{color: "#75BC5B", whiteSpace: "nowrap"}} >{column}</TableCell>
+              <TableCell key={column} sx={{ color: "#75BC5B", whiteSpace: "nowrap" }} >{column}</TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row, index) => (
-            <TableRow 
-              key={`outter-${index}`}  
+            <TableRow
+              key={`outter-${index}`}
               className={rowOnClickDestination ? classes.tableRow : undefined}
               onClick={() => rowOnClickDestination ? navigate(rowOnClickDestination + row['ID']) : null}
             >
               {Object.values(row).map((value, index) => (
                 <TableCell key={index} className={classes.tableCell}>
                   <>
-                  {value === row['ID'] ? String(value).substring(0, 10) + "..." : value}
+                    {
+                      value === row['url'] ?
+                        <Button
+                          variant="contained"
+                          href={value as string}
+                          target="_blank"
+                          color="primary"
+                        >Download</Button>
+                        :
+                        (value === row['ID'] ? String(value).substring(0, 10) + "..."
+                          :
+                          value)
+                    }
                   </>
                 </TableCell>
               ))}
