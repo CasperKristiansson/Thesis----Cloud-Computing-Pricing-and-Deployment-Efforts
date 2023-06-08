@@ -10,7 +10,7 @@ export interface State {
     createProject: CreateProject;
     createTicket: CreateTicket;
     token: string;
-    uploadFile: boolean;
+    uploadFile: {open: boolean, id: string};
     createCompany: createCompany;
     user: User;
 }
@@ -21,7 +21,7 @@ export const initialState: State = {
     createProject: {} as CreateProject,
     createTicket: {} as CreateTicket,
     token: localStorage.getItem('ats-token') || '',
-    uploadFile: false,
+    uploadFile: {open: false, id: ''},
     createCompany: {} as createCompany,
     user: {} as User,
 };

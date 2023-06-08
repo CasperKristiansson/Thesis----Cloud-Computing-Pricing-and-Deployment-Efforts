@@ -9,12 +9,13 @@ import { SET_OPERATION_IN_PROGRESS, UPLOAD_FILE_OPEN } from "../../Redux/Actions
 import { useNavigate, useParams } from "react-router-dom";
 import { requestApi } from "../../Utils/Fetch";
 import { useSelector } from "react-redux";
-import { getToken, getUser } from "../../Redux/Selectors";
+import { getToken, getUploadFile, getUser } from "../../Redux/Selectors";
 import { TicketResponse } from "../../Models/ResponseModels/TicketResponse";
 import { Status } from "../../Components/Status";
 import { Priority } from "../../Components/Priority";
 import { Link as RouterLink } from "react-router-dom";
 import { formatTime, formatTimeAgo } from "../../Utils/Other";
+import uploadFileToBlob, { getBlobsInContainer } from "../../blobConfig";
 
 const useStyles = createUseStyles({
   containerWrapper: {
@@ -190,7 +191,7 @@ const useStyles = createUseStyles({
 });
 
 const columns = [
-  "File Name", "File Size", "Date Uploaded", "Uploaded By"
+  "File Name", "File Size", "Date Uploaded", "Download"
 ];
 
 const data = [
@@ -286,6 +287,20 @@ export const IndividualTicket: React.FC<{ dispatch: AppDispatch }> = ({ dispatch
     });
   }
 
+  // File upload
+  const [blobList, setBlobList] = useState<[]>([]);
+  const uploadFile = useSelector(getUploadFile);
+
+  useEffect(() => {
+    if (id) {
+      getBlobsInContainer(id).then((list: any) => {
+        // prepare UI for results
+        setBlobList(list);
+        console.log("Blob list", list)
+      })
+    }
+  }, [uploadFile]);
+
   return (
     <div className={classes.containerWrapper}>
       {ticket && <div className={classes.root}>
@@ -364,7 +379,7 @@ export const IndividualTicket: React.FC<{ dispatch: AppDispatch }> = ({ dispatch
               </div>
             </div>
           </Paper>
-          <Paper className={classes.paper} style={{display: "flex", flexFlow: "column", height: "100%"}}>
+          <Paper className={classes.paper} style={{ display: "flex", flexFlow: "column", height: "100%" }}>
             <div>
               <Typography variant="h4" sx={{ padding: "10px" }}>Ticket Details</Typography>
               <div className={classes.ticketManageButtons}>
@@ -419,10 +434,10 @@ export const IndividualTicket: React.FC<{ dispatch: AppDispatch }> = ({ dispatch
                   <Button variant="contained" color="primary"
                     endIcon={<FontAwesomeIcon icon={faPlus} />}
                     sx={{ color: "white", marginTop: "8px", width: 190 }}
-                    onClick={() => dispatch({ type: UPLOAD_FILE_OPEN, payload: true })}
+                    onClick={() => dispatch({ type: UPLOAD_FILE_OPEN, payload: {open: true, id: id ?? ""} })}
                   >Add Attachment</Button>
                 </div>
-                <CustomTableIndividual rows={data} columns={columns} maxHeight='calc(100% - 55px)' />
+                <CustomTableIndividual rows={blobList} columns={columns} maxHeight='calc(100% - 55px)' />
               </Paper>
             </div>
           </Paper>
