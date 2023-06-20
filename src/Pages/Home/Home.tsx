@@ -102,18 +102,9 @@ export const Home: React.FC<{}> = (): JSX.Element => {
                   variant="contained"
                   className={classes.registerButton}
                   component={Link}
-                  to="/register"
-                >
-                  Register
-                </Button>
-                <Button
-                  variant="outlined"
-                  className={classes.loginButton}
-                  sx={{ ml: 2 }}
-                  component={Link}
                   to="/login"
                 >
-                  Login
+                  login
                 </Button>
               </>
               }

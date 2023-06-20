@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
-import { Paper, Typography, TextField, Checkbox, Button, Link } from '@mui/material';
+import { Paper, Typography, TextField, Checkbox, Button, Link, Alert } from '@mui/material';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrosoft } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
@@ -127,11 +127,12 @@ export const Login: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 				<Typography variant="h3" align="left" className={classes.title}>
 						Welcome Back
 				</Typography>
-				<Typography variant="h5" align="left">
-						Welcome Back! Please enter your details
+				<Typography variant="h5" align="center">
+						Welcome back to the ticket system! Please sign in with your 
+						microsoft account.
 				</Typography>
 				<form onSubmit={handleSubmit} className={classes.formWrapper}>
-					<div className={classes.inputWrapper}>
+					{/*<div className={classes.inputWrapper}>
 						<TextField
 							label="Email"
 							variant="outlined"
@@ -187,26 +188,37 @@ export const Login: React.FC<{ dispatch: any }> = ({ dispatch }) => {
 						className={classes.signInButton}
 					>
 						Sign In
-					</Button>
+					</Button>*/}
 					<Button
 						startIcon={<FontAwesomeIcon icon={faMicrosoft} />}
-						variant="outlined"
+						variant="contained"
+						className={classes.signInButton}
 						fullWidth
 						sx={{ mt: 1 }}
 						onClick={() => {
 							dispatch({ type: LOGIN });
 						}}
 					>
-						Or sign in with Microsoft
+						Sign in with Microsoft
 					</Button>
 					<div className={classes.signUpWrapper}>
-						<Typography variant="body2" className={classes.signUpText}>
-								Don't have an account?
+						<Typography variant="body2" className={classes.signUpText} align="center">
+								If you are not granted access please contact your contact
+								at amaceit.
 						</Typography>
-						<Link href="/register" className={classes.signUpLink}>
+						{/*<Link href="/register" className={classes.signUpLink}>
 							Sign Up
-						</Link>
+					</Link>*/}
+						
 					</div>
+					<br/>
+					<Alert severity="warning">
+						Known bug: Sometimes you have to press the login button twice to log in.
+					</Alert>
+					<br/>
+					<Alert severity="warning" >
+						If the pop-up window won't open, please disable your adblocker. 
+					</Alert>
 				</form>
 			</Paper>
 		</div>
