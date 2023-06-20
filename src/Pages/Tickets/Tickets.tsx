@@ -14,12 +14,12 @@ import { Priority } from '../../Components/Priority';
 import { formatTime, formatTimeAgo } from '../../Utils/Other';
 
 const columns = [
-	'Ticket Name', 
-	'Last Updated',
-	'Status',
-	'Priority',
-	'ID',
-	'Assigned',
+  'Ticket Name',
+  'Last Updated',
+  'Status',
+  'Priority',
+  'ID',
+  'Assigned',
 ];
 
 export const Tickets: React.FC<{}> = () => {
@@ -39,24 +39,24 @@ export const Tickets: React.FC<{}> = () => {
 
     async function getTickets() {
       // Get myProjects
-        requestApi("/myTickets", "GET", token).then((response) => {
-          if (response) {
-            const myTickets = response.sort((a: TicketResponse, b: TicketResponse) => a.lastUpdated > b.lastUpdated ? -1 : 1).map((t: TicketResponse) => {
-              return {
-                ticketname: t.title,
-                lastUpdated: formatTimeAgo(t.lastUpdated),
-                status: <Status value={t.status} />,
-                priority: <Priority value={t.priority} />,
-                ID: t.id,
-                assigned: t.assignedName
-              }
-            })
-            setMyTickets(myTickets);
-            if(user?.role !== 'ADMIN'){
-              dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: false });
+      requestApi("/myTickets", "GET", token).then((response) => {
+        if (response) {
+          const myTickets = response.sort((a: TicketResponse, b: TicketResponse) => a.lastUpdated > b.lastUpdated ? -1 : 1).map((t: TicketResponse) => {
+            return {
+              ticketname: t.title,
+              lastUpdated: formatTimeAgo(t.lastUpdated),
+              status: <Status value={t.status} />,
+              priority: <Priority value={t.priority} />,
+              ID: t.id,
+              assigned: t.assignedName
             }
+          })
+          setMyTickets(myTickets);
+          if (user?.role !== 'ADMIN') {
+            dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: false });
           }
-        });
+        }
+      });
 
       // Get allProjects if admin
       if (user?.role === 'ADMIN') {
@@ -101,17 +101,17 @@ export const Tickets: React.FC<{}> = () => {
             variant="contained"
             color="primary"
             startIcon={<FontAwesomeIcon icon={faPlus} />}
-						sx={{ color: "white", marginBottom: 1 }}
+            sx={{ color: "white", marginBottom: 1 }}
             onClick={() => navigate("/ticket/create")}
           >
             Create Ticket
           </Button>
         </Box>
         <Box>
-          <CustomTable rowOnClickDestination='/ticket/' rows={myTickets} columns={columns} maxHeight='calc(46vh - 90px)'/>
+          <CustomTable rowOnClickDestination='/ticket/' rows={myTickets} columns={columns} maxHeight='calc(46vh - 90px)' />
         </Box>
       </Grid>
-      <Grid item sx={{ height: "55%" }}>
+      {user?.role === 'ADMIN' && <Grid item sx={{ height: "55%" }}>
         <Box
           display="flex"
           alignItems="center"
@@ -120,7 +120,7 @@ export const Tickets: React.FC<{}> = () => {
           width={"80%"}
           sx={{ margin: "0 auto" }}
         >
-          <Typography variant="h4" component="h1"  mb={1} sx={{ marginLeft: -3 }}>
+          <Typography variant="h4" component="h1" mb={1} sx={{ marginLeft: -3 }}>
             All Tickets
           </Typography>
           <Box display="flex" alignItems="center">
@@ -129,28 +129,28 @@ export const Tickets: React.FC<{}> = () => {
               variant="outlined"
               size="small"
               margin="dense"
-							sx={{ marginBottom: 1, marginRight: 1 }}
+              sx={{ marginBottom: 1, marginRight: 1 }}
             />
             <TextField
               label="Search Assignee"
               variant="outlined"
               size="small"
               margin="dense"
-							sx={{ marginBottom: 1, marginRight: 1 }}
+              sx={{ marginBottom: 1, marginRight: 1 }}
             />
             <TextField
               label="Search Ticket nr"
               variant="outlined"
               size="small"
               margin="dense"
-							sx={{ marginBottom: 1 }}
+              sx={{ marginBottom: 1 }}
             />
           </Box>
         </Box>
-        {user?.role === 'ADMIN' && <Box flexGrow={1}>
-          <CustomTable rowOnClickDestination='/ticket/' rows={allTickets} columns={columns} maxHeight='calc(53vh - 90px)'/>
-        </Box>}
-      </Grid>
+        <Box flexGrow={1}>
+          <CustomTable rowOnClickDestination='/ticket/' rows={allTickets} columns={columns} maxHeight='calc(53vh - 90px)' />
+        </Box>
+      </Grid>}
     </Grid>
   );
 };
