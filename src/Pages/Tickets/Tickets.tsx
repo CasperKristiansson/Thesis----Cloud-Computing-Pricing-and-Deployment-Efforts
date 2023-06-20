@@ -33,6 +33,10 @@ export const Tickets: React.FC<{}> = () => {
   const [myTickets, setMyTickets] = useState<any[]>([]);
   const [allTickets, setAllTickets] = useState<any[]>([]);
 
+  const [searchSubject, setSearchSubject] = useState<string>("");
+  const [searchID, setSearchID] = useState<string>("");
+  const [searchAssigned, setSearchAssigned] = useState<string>("");
+
   // Fetch
   useEffect(() => {
     dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: true });
@@ -108,7 +112,12 @@ export const Tickets: React.FC<{}> = () => {
           </Button>
         </Box>
         <Box>
-          <CustomTable rowOnClickDestination='/ticket/' rows={myTickets} columns={columns} maxHeight='calc(46vh - 90px)' />
+          <CustomTable
+            rowOnClickDestination='/ticket/'
+            rows={myTickets}
+            columns={columns}
+            maxHeight={user?.role === 'ADMIN' ? 'calc(46vh - 90px)' : 'calc(80vh)'}
+          />
         </Box>
       </Grid>
       {user?.role === 'ADMIN' && <Grid item sx={{ height: "55%" }}>
@@ -130,6 +139,8 @@ export const Tickets: React.FC<{}> = () => {
               size="small"
               margin="dense"
               sx={{ marginBottom: 1, marginRight: 1 }}
+              value={searchSubject}
+              onChange={(e) => setSearchSubject(e.target.value)}
             />
             <TextField
               label="Search Assignee"
@@ -137,6 +148,8 @@ export const Tickets: React.FC<{}> = () => {
               size="small"
               margin="dense"
               sx={{ marginBottom: 1, marginRight: 1 }}
+              value={searchAssigned}
+              onChange={(e) => setSearchAssigned(e.target.value)}
             />
             <TextField
               label="Search Ticket nr"
@@ -144,11 +157,22 @@ export const Tickets: React.FC<{}> = () => {
               size="small"
               margin="dense"
               sx={{ marginBottom: 1 }}
+              value={searchID}
+              onChange={(e) => setSearchID(e.target.value)}
             />
           </Box>
         </Box>
         <Box flexGrow={1}>
-          <CustomTable rowOnClickDestination='/ticket/' rows={allTickets} columns={columns} maxHeight='calc(53vh - 90px)' />
+          <CustomTable 
+            rowOnClickDestination='/ticket/' 
+            rows={allTickets.filter(t => {
+              return t.ticketname.toLowerCase().includes(searchSubject.toLowerCase()) &&
+              t.ID.toLowerCase().includes(searchID.toLowerCase()) &&
+              t.assigned.toLowerCase().includes(searchAssigned.toLowerCase())
+            })} 
+            columns={columns} 
+            maxHeight='calc(53vh - 90px)' 
+          />
         </Box>
       </Grid>}
     </Grid>

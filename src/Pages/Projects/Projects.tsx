@@ -73,6 +73,9 @@ export const Projects: React.FC<{}> = () => {
 
   const [allProjects, setAllProjects] = React.useState([]);
 
+  const [searchProject, setSearchProject] = React.useState("");
+  const [searchCustomer, setSearchCustomer] = React.useState("");
+
   const token = useSelector(getToken);
 
   const user = useSelector(getUser);
@@ -153,7 +156,7 @@ export const Projects: React.FC<{}> = () => {
           <CustomTable 
             rows={myProjects} 
             columns={columns} 
-            maxHeight='calc(46vh - 90px)' 
+            maxHeight={user?.role === 'ADMIN' ? 'calc(46vh - 90px)' : 'calc(80vh)'}
             columnSpacing='45px' 
             rowOnClickDestination='/project/'
           />
@@ -180,6 +183,8 @@ export const Projects: React.FC<{}> = () => {
               size="small"
               margin="dense"
               sx={{ marginBottom: 1, marginRight: 1 }}
+              value={searchProject}
+              onChange={(e) => setSearchProject(e.target.value)}
             />
 
             <TextField
@@ -188,13 +193,18 @@ export const Projects: React.FC<{}> = () => {
               size="small"
               margin="dense"
               sx={{ marginBottom: 1 }}
+              value={searchCustomer}
+              onChange={(e) => setSearchCustomer(e.target.value)}
             />
           </Box>
         </Box>
 
         <Box flexGrow={1}>
           <CustomTable 
-            rows={allProjects} 
+            rows={allProjects.filter((p: any) => {
+              return p?.projectName?.toLowerCase().includes(searchProject.toLowerCase()) && 
+              p?.customer?.toLowerCase().includes(searchCustomer.toLowerCase())
+            })} 
             columns={columns} 
             maxHeight='calc(53vh - 90px)' 
             columnSpacing='45px' 

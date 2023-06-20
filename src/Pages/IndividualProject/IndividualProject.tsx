@@ -244,6 +244,8 @@ export const IndividualProject: React.FC<{ dispatch: AppDispatch }> = ({ dispatc
   }, [id, token]);
 
   const handleAddComment = () => {
+    dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: true })
+
     requestApi("/createProjectComment", "POST", token, { projectId: id, comment: commentText }).then((response) => {
       if (response && project) {
         console.log(response);
@@ -263,6 +265,7 @@ export const IndividualProject: React.FC<{ dispatch: AppDispatch }> = ({ dispatc
         alert("Error, could not add comment");
         window.location.reload();
       }
+      dispatch({ type: SET_OPERATION_IN_PROGRESS, payload: false });
     });
   }
 
